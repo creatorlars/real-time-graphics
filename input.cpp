@@ -40,6 +40,19 @@ input::input() : message_handler(L"input")
 		sizeof(RAWINPUTDEVICE));
 }
 
+void input::update()
+{
+	for (auto &it : keys_)
+	{
+		if (it & 0b10)
+		{
+			it &= 0b01;
+		}
+	}
+
+	message_handler::update();
+}
+
 void input::message(UINT msg, WPARAM w, LPARAM l)
 {
 	if (WM_INPUT != msg) {
@@ -59,10 +72,16 @@ void input::message(UINT msg, WPARAM w, LPARAM l)
 	{
 		if (~input->data.keyboard.Flags & 0b01)
 		{
-			keys_[input->data.keyboard.VKey] = true;
+			if (~keys_[input->data.keyboard.VKey] & 0b01)
+			{
+				keys_[input->data.keyboard.VKey] = 0b11;
+			}
 		}
 		else {
-			keys_[input->data.keyboard.VKey] = false;
+			if (keys_[input->data.keyboard.VKey] & 0b01)
+			{
+				keys_[input->data.keyboard.VKey] = 0b10;
+			}
 		}
 		break;
 	}

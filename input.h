@@ -2,7 +2,7 @@
 
 #include "message_handler.h"
 
-enum KEYS : std::uint8_t
+enum KEYBOARD : std::uint8_t
 {
 	ESCAPE = 0x1B,
 	TAB = 0x09,
@@ -19,10 +19,16 @@ class input final : public message_handler
 public:
 	input();
 
-	inline bool get(KEYS key) const { return keys_.at(key); }
+	void update();
+
+	inline std::uint8_t get(std::uint8_t key) const { return keys_.at(key); }
+	inline bool down(std::uint8_t key) const { return keys_.at(key) & 0b01; }
+	inline bool up(std::uint8_t key) const { return !down(key); }
+	inline bool pressed(std::uint8_t key) const { return keys_.at(key) == 0b11; }
+	inline bool released(std::uint8_t key) const { return keys_.at(key) == 0b10; }
 
 private:
 	void message(UINT, WPARAM, LPARAM) override;
 
-	std::array<bool, 256U> keys_ = {};
+	std::array<std::uint8_t, 256U> keys_ = {};
 };

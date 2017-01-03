@@ -250,3 +250,13 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+/libs/AntTweakBar64.lib
+/libs/AntTweakBar64.dll
+/libs/AntTweakBar.lib
+/libs/AntTweakBar.h
+/libs/AntTweakBar.dll
+/libs/AntTweakBar64.lib
+/libs/AntTweakBar64.dll
+/libs/AntTweakBar.lib
+/libs/AntTweakBar.h
+/libs/AntTweakBar.dll

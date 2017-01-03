@@ -22,6 +22,8 @@ application::application()
 	cube_ = std::make_shared<cube>(graphics_->d3d());
 
 	camera_.position({ 0.f, 0.f, -15.f });
+
+	test_bar_ = TwNewBar("test_bar");
 }
 
 void application::update()
@@ -36,23 +38,24 @@ void application::update()
 void application::frame()
 {
 	// exit application
-	if (input_->get(KEYS::ESCAPE) || !window_->alive())
+	if (input_->pressed(KEYBOARD::ESCAPE) || !window_->alive())
 	{
+		TwTerminate();
 		alive_ = false;
 		return;
 	}
 
 	// restart application
-	if (input_->get(KEYS::R))
+	if (input_->pressed(KEYBOARD::R))
 	{
 		restart_ = true;
 		alive_ = false;
 		return;
 	}
 
-	if (input_->get(KEYS::T))
+	if (input_->down(KEYBOARD::T))
 	{
-		if (input_->get(KEYS::SHIFT))
+		if (input_->down(KEYBOARD::SHIFT))
 		{
 			// increase time factor
 		}
@@ -63,15 +66,16 @@ void application::frame()
 	}
 
 	// statistics display
-	if (input_->get(KEYS::TAB))
+	if (input_->pressed(KEYBOARD::TAB))
 	{
-		// toggle statistics display
+		graphics_->toggle_atb();
 	}
 
 	// camera movement
-	if (input_->get(KEYS::UP) || input_->get(KEYS::W) || input_->get(KEYS::I))
+	if (input_->down(KEYBOARD::UP) || input_->down(KEYBOARD::W)
+		|| input_->down(KEYBOARD::I))
 	{
-		if (input_->get(KEYS::CTRL))
+		if (input_->down(KEYBOARD::CTRL))
 		{
 			camera_.move({ 0.f, 0.f, .1f }); // pan forwards
 		}
@@ -80,9 +84,10 @@ void application::frame()
 			camera_.rotate({ -.1f, 0.f, 0.f }); // rotate up
 		}
 	}
-	if (input_->get(KEYS::DOWN) || input_->get(KEYS::S) || input_->get(KEYS::K))
+	if (input_->down(KEYBOARD::DOWN) || input_->down(KEYBOARD::S)
+		|| input_->down(KEYBOARD::K))
 	{
-		if (input_->get(KEYS::CTRL))
+		if (input_->down(KEYBOARD::CTRL))
 		{
 			camera_.move({ 0.f, 0.f, -.1f }); // pan backwards
 		}
@@ -91,9 +96,10 @@ void application::frame()
 			camera_.rotate({ .1f, 0.f, 0.f }); // rotate down
 		}
 	}
-	if (input_->get(KEYS::LEFT) || input_->get(KEYS::A) || input_->get(KEYS::J))
+	if (input_->down(KEYBOARD::LEFT) || input_->down(KEYBOARD::A)
+		|| input_->down(KEYBOARD::J))
 	{
-		if (input_->get(KEYS::CTRL))
+		if (input_->down(KEYBOARD::CTRL))
 		{
 			camera_.move({ .1f, 0.f, 0.f }); // pan left
 		}
@@ -102,9 +108,10 @@ void application::frame()
 			camera_.rotate({ 0.f, -.1f, 0.f }); // rotate left
 		}
 	}
-	if (input_->get(KEYS::RIGHT) || input_->get(KEYS::D) || input_->get(KEYS::L))
+	if (input_->down(KEYBOARD::RIGHT) || input_->down(KEYBOARD::D)
+		|| input_->down(KEYBOARD::L))
 	{
-		if (input_->get(KEYS::CTRL))
+		if (input_->down(KEYBOARD::CTRL))
 		{
 			camera_.move({ -.1f, 0.f, 0.f }); // pan right
 		}
@@ -113,9 +120,9 @@ void application::frame()
 			camera_.rotate({ 0.f, .1f, 0.f }); // rotate right
 		}
 	}
-	if (input_->get(KEYS::PAGEUP))
+	if (input_->down(KEYBOARD::PAGEUP))
 	{
-		if (input_->get(KEYS::CTRL))
+		if (input_->down(KEYBOARD::CTRL))
 		{
 			camera_.move({ 0.f, -.1f, 0.f }); // pan up
 		}
@@ -124,9 +131,9 @@ void application::frame()
 			camera_.rotate({ 0.f, 0.f, -.1f }); // rotate clockwise
 		}
 	}
-	if (input_->get(KEYS::PAGEDOWN))
+	if (input_->down(KEYBOARD::PAGEDOWN))
 	{
-		if (input_->get(KEYS::CTRL))
+		if (input_->down(KEYBOARD::CTRL))
 		{
 			camera_.move({ 0.f, .1f, 0.f }); // pan down
 		}
@@ -137,33 +144,33 @@ void application::frame()
 	}
 
 	// camera switching
-	if (input_->get(KEYS::F1))
+	if (input_->pressed(KEYBOARD::F1))
 	{
 		// select camera 1
 	}
-	else if (input_->get(KEYS::F2))
+	else if (input_->pressed(KEYBOARD::F2))
 	{
 		// select camera 2
 	}
-	else if (input_->get(KEYS::F3))
+	else if (input_->pressed(KEYBOARD::F3))
 	{
 		// select camera 3
 	}
 
 	// camera 3 control
-	if (input_->get(KEYS::F4))
+	if (input_->pressed(KEYBOARD::F4))
 	{
 		// switch camera 3 focus
 	}
 
 	// render mode control
-	if (input_->get(KEYS::F5))
+	if (input_->pressed(KEYBOARD::F5))
 	{
 		// switch render modes
 	}
 
 	// deferred rendering visualisations
-	if (input_->get(KEYS::F6))
+	if (input_->pressed(KEYBOARD::F6))
 	{
 		// switch visualisations
 	}

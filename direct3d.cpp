@@ -231,10 +231,15 @@ direct3d::direct3d(unsigned screenWidth, unsigned screenHeight, bool vsync,
 	auto const ortho_matrix = XMMatrixOrthographicLH(width_f, height_f,
 		screenNear, screenDepth);
 	XMStoreFloat4x4(&ortho_matrix_, ortho_matrix);
+
+	TwInit(TW_DIRECT3D11, device_.Get());
+	TwWindowSize(screenWidth, screenHeight);
 }
 
 direct3d::~direct3d()
 {
+	TwTerminate();
+
 	// Before shutting down set to windowed mode or when you release the swap
 	// chain it will throw an exception.
 	if (swap_chain_)

@@ -5,13 +5,13 @@ int main()
 {
 	for (;;)
 	{
-		application application{};
-		while (application.alive())
+		auto app = application{};
+		while (app.alive())
 		{
-			application.update();
+			app.update();
 		}
 
-		if (!application.restart())
+		if (!app.restart())
 		{
 			break;
 		}

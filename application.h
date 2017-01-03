@@ -27,6 +27,9 @@ private:
 	bool alive_ = true;
 	bool restart_ = false;
 
+	// AntTweakBar
+	TwBar *test_bar_ = nullptr;
+
 	// camera
 	camera camera_;
 

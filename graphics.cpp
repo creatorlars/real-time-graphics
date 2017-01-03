@@ -5,8 +5,7 @@
 
 graphics::graphics(HWND handle) :
 	d3d_(WINDOW_WIDTH, WINDOW_HEIGHT, VSYNC_ENABLED, handle, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR)
-{
-}
+{}
 
 void graphics::begin_render()
 {
@@ -16,6 +15,11 @@ void graphics::begin_render()
 
 void graphics::end_render()
 {
+	if (show_atb_)
+	{
+		TwDraw();
+	}
+	
 	d3d_.disable_alpha_blending();
 	d3d_.end();
 }

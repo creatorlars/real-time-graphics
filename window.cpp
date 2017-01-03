@@ -36,5 +36,8 @@ void window::message(UINT msg, WPARAM w, LPARAM l)
 	if (WM_DESTROY == msg)
 	{
 		alive_ = false;
+		return;
 	}
+
+	TwEventWin(handle_, msg, w, l);
 }
