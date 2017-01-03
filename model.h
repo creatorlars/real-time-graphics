@@ -11,7 +11,7 @@ public:
 
 	void render();
 
-	inline int index_count() const { return index_count_; }
+	inline unsigned index_count() const { return index_count_; }
 	inline ComPtr<ID3D11ShaderResourceView> view() const { return texture_.view(); }
 
 private:

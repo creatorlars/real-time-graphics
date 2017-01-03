@@ -4,7 +4,7 @@
 direct3d::direct3d(unsigned screenWidth, unsigned screenHeight, bool vsync,
 	HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
 {
-	HRESULT result;
+	HRESULT result{};
 
 	// Store the vsync setting.
 	vsync_ = vsync;
@@ -279,7 +279,7 @@ void direct3d::enable_alpha_blending()
 	};
 
 	static ID3D11BlendState *blend_state = nullptr;
-	if (blend_state == nullptr)
+	if (nullptr == blend_state)
 	{
 		device_->CreateBlendState(&blend_description, &blend_state);
 	}
@@ -300,7 +300,7 @@ void direct3d::disable_alpha_blending()
 	};
 
 	static ID3D11BlendState *blend_state = nullptr;
-	if (blend_state == nullptr)
+	if (nullptr == blend_state)
 	{
 		device_->CreateBlendState(&blend_description, &blend_state);
 	}

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "window.h"
 
-window::window()
+window::window() : message_handler(L"window")
 {
 	auto const window_class = WNDCLASS
 	{
@@ -10,7 +10,7 @@ window::window()
 		0, 0,
 		instance_,
 		NULL, NULL, NULL,
-		NULL, class_name_
+		NULL, name_
 	};
 	RegisterClass(&window_class);
 
@@ -31,26 +31,10 @@ window::window()
 	UnhookWindowsHookEx(hook);
 }
 
-window::~window()
-{
-	DestroyWindow(handle_);
-	handle_ = nullptr;
-
-	UnregisterClass(class_name_, instance_);
-	instance_ = nullptr;
-	class_name_ = nullptr;
-}
-
-void window::update()
-{
-	MSG msg{};
-	while (PeekMessage(&msg, handle_, 0U, 0U, PM_REMOVE))
-	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
-}
-
 void window::message(UINT msg, WPARAM w, LPARAM l)
 {
+	if (WM_DESTROY == msg)
+	{
+		alive_ = false;
+	}
 }

@@ -16,7 +16,7 @@ namespace {
 
 texture_shader::texture_shader(direct3d const& d3d) : d3d_(d3d)
 {
-	HRESULT result;
+	HRESULT result{};
 	auto const device = d3d_.device();
 
 	// Load vertex shader
@@ -70,8 +70,8 @@ texture_shader::texture_shader(direct3d const& d3d) : d3d_(d3d)
 	}};
 
 	result = device->CreateInputLayout(polygon_layout.data(),
-		polygon_layout.size(), vs_data.data(), vs_data.size(),
-		layout_.GetAddressOf());
+		static_cast<UINT>(polygon_layout.size()), vs_data.data(),
+		static_cast<UINT>(vs_data.size()), layout_.GetAddressOf());
 	if (FAILED(result))
 	{
 		throw "";
@@ -118,15 +118,14 @@ texture_shader::texture_shader(direct3d const& d3d) : d3d_(d3d)
 void texture_shader::render(std::shared_ptr<object> const &object,
 	camera const &camera) const
 {
-	HRESULT result;
 	auto const context = d3d_.context();
 
 	object->render();
 
 	// Lock the constant buffer so it can be written to.
 	auto mapped_resource = D3D11_MAPPED_SUBRESOURCE{};
-	result = context->Map(matrix_buffer_.Get(), 0U, D3D11_MAP_WRITE_DISCARD, 0U,
-		&mapped_resource);
+	auto const result = context->Map(matrix_buffer_.Get(), 0U,
+		D3D11_MAP_WRITE_DISCARD, 0U, &mapped_resource);
 	if (FAILED(result))
 	{
 		throw "";

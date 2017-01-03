@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "input.h"
 
-input::input()
+input::input() : message_handler(L"input")
 {
 	auto const window_class = WNDCLASS
 	{
@@ -10,7 +10,7 @@ input::input()
 		0, 0,
 		instance_,
 		NULL, NULL, NULL,
-		NULL, class_name_
+		NULL, name_
 	};
 	RegisterClass(&window_class);
 
@@ -36,33 +36,13 @@ input::input()
 		{ 0x01, 0x06, RIDEV_INPUTSINK, handle_ }	// keyboard
 	}};
 
-	RegisterRawInputDevices(devices.data(), devices.size(),
+	RegisterRawInputDevices(devices.data(), static_cast<UINT>(devices.size()),
 		sizeof(RAWINPUTDEVICE));
-}
-
-input::~input()
-{
-	DestroyWindow(handle_);
-	handle_ = nullptr;
-
-	UnregisterClass(class_name_, instance_);
-	instance_ = nullptr;
-	class_name_ = nullptr;
-}
-
-void input::update()
-{
-	MSG msg{};
-	while (PeekMessage(&msg, handle_, 0U, 0U, PM_REMOVE))
-	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
 }
 
 void input::message(UINT msg, WPARAM w, LPARAM l)
 {
-	if (msg != WM_INPUT) {
+	if (WM_INPUT != msg) {
 		return;
 	}
 
@@ -71,8 +51,8 @@ void input::message(UINT msg, WPARAM w, LPARAM l)
 	GetRawInputData(raw, RID_INPUT, NULL, &size, sizeof(RAWINPUTHEADER));
 	auto data = std::make_unique<BYTE[]>(size);
 	GetRawInputData(raw, RID_INPUT, data.get(), &size, sizeof(RAWINPUTHEADER));
-	auto const input = reinterpret_cast<PRAWINPUT>(data.get());
 
+	auto const input = reinterpret_cast<PRAWINPUT>(data.get());
 	switch (input->header.dwType)
 	{
 	case RIM_TYPEKEYBOARD:

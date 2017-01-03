@@ -36,9 +36,10 @@ void application::update()
 void application::frame()
 {
 	// exit application
-	if (input_->get(KEYS::ESCAPE))
+	if (input_->get(KEYS::ESCAPE) || !window_->alive())
 	{
 		alive_ = false;
+		return;
 	}
 
 	// restart application
@@ -46,6 +47,7 @@ void application::frame()
 	{
 		restart_ = true;
 		alive_ = false;
+		return;
 	}
 
 	if (input_->get(KEYS::T))

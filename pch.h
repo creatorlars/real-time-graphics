@@ -37,6 +37,9 @@ using namespace DirectX;
 #include <cstdio>
 #include <cstdint>
 
+// libs
+#include "libs\AntTweakBar.h"
+
 // Globals
 bool constexpr FULL_SCREEN = false;
 bool constexpr VSYNC_ENABLED = true;

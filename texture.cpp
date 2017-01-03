@@ -8,7 +8,7 @@
 
 texture::texture(direct3d const& d3d, char const *const filename)
 {
-	HRESULT hResult;
+	HRESULT hResult{};
 
 	auto const image = load(filename);
 
@@ -37,8 +37,9 @@ texture::texture(direct3d const& d3d, char const *const filename)
 	}
 
 	// Copy the image data into the texture.
-	auto rowPitch = (image.width * 4) * sizeof(unsigned char);
-	context->UpdateSubresource(texture_.Get(), 0U, NULL, image.data.data(), rowPitch, 0U);
+	auto const rowPitch = static_cast<UINT>((image.width * 4) * sizeof(unsigned char));
+	context->UpdateSubresource(texture_.Get(), 0U, nullptr, image.data.data(),
+		rowPitch, 0U);
 
 	// Create the shader resource view for the texture.
 	auto const srvDesc = D3D11_SHADER_RESOURCE_VIEW_DESC
@@ -48,7 +49,8 @@ texture::texture(direct3d const& d3d, char const *const filename)
 		{ 0U, UINT_MAX }
 	};
 
-	hResult = device->CreateShaderResourceView(texture_.Get(), &srvDesc, view_.GetAddressOf());
+	hResult = device->CreateShaderResourceView(texture_.Get(), &srvDesc,
+		view_.GetAddressOf());
 	if (FAILED(hResult))
 	{
 		throw "";

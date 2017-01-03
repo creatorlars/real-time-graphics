@@ -26,7 +26,7 @@ model::model(direct3d const& d3d, char const *const modelFilename,
 
 	// Load in the model data
 	auto vertices = load(modelFilename);
-	index_count_ = vertices.size();
+	index_count_ = static_cast<UINT>(vertices.size());
 
 	auto const vertex_data = D3D11_SUBRESOURCE_DATA
 	{
@@ -36,7 +36,7 @@ model::model(direct3d const& d3d, char const *const modelFilename,
 
 	auto const vertex_buffer_desc = D3D11_BUFFER_DESC
 	{
-		sizeof(ModelType) * vertices.size(),
+		static_cast<UINT>(sizeof(ModelType) * vertices.size()),
 		D3D11_USAGE_DEFAULT,
 		D3D11_BIND_VERTEX_BUFFER, 0U, 0U,
 		0U
@@ -64,7 +64,7 @@ model::model(direct3d const& d3d, char const *const modelFilename,
 
 	auto const indexBufferDesc = D3D11_BUFFER_DESC
 	{
-		sizeof(unsigned long) * vertices.size(),
+		static_cast<UINT>(sizeof(unsigned long) * vertices.size()),
 		D3D11_USAGE_DEFAULT,
 		D3D11_BIND_INDEX_BUFFER, 0U, 0U,
 		0U
@@ -83,7 +83,7 @@ void model::render()
 	auto const context = d3d_.context();
 
 	// Set the vertex buffer to active so it can be rendered.
-	auto constexpr stride = sizeof(ModelType);
+	auto constexpr stride = static_cast<UINT>(sizeof(ModelType));
 	auto constexpr offset = 0U;
 	context->IASetVertexBuffers(0U, 1U, vertex_buffer_.GetAddressOf(), &stride,
 		&offset);
@@ -118,10 +118,10 @@ std::vector<ModelType> load(char const *const filename)
 	while (!data.eof()) {
 		std::string type{};
 		data >> type;
-		if (type == "v") ++vertex_count;
-		else if (type == "vt") ++texture_count;
-		else if (type == "vn") ++normal_count;
-		else if (type == "f") ++face_count;
+		if ("v" == type) ++vertex_count;
+		else if ("vt" == type) ++texture_count;
+		else if ("vn" == type) ++normal_count;
+		else if ("f" == type) ++face_count;
 		data.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	}
 	face_count *= 3U;
@@ -147,7 +147,7 @@ std::vector<ModelType> load(char const *const filename)
 		std::string type{};
 		data >> type;
 
-		if (type == "v") {
+		if ("v" == type) {
 			data
 				>> vertices[vertex_index].x
 				>> vertices[vertex_index].y
@@ -157,7 +157,7 @@ std::vector<ModelType> load(char const *const filename)
 			vertices[vertex_index].z *= -1.f;
 			++vertex_index;
 		}
-		else if (type == "vt")
+		else if ("vt" == type)
 		{
 			data
 				>> textures[texture_index].x
@@ -167,7 +167,7 @@ std::vector<ModelType> load(char const *const filename)
 			textures[texture_index].y = 1.f - textures[texture_index].y;
 			++texture_index;
 		}
-		else if (type == "vn")
+		else if ("vn" == type)
 		{
 			data
 				>> normals[normal_index].x
@@ -178,7 +178,7 @@ std::vector<ModelType> load(char const *const filename)
 			normals[normal_index].z *= -1.f;
 			++normal_index;
 		}
-		else if (type == "f")
+		else if ("f" == type)
 		{
 			char dummy;
 

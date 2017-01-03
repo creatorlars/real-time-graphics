@@ -2,20 +2,15 @@
 
 #include "message_handler.h"
 
-class window : private message_handler
+class window : public message_handler
 {
 public:
 	window();
-	~window();
 
-	void update();
-
-	inline HWND const& handle() const { return handle_; }
+	inline bool const alive() const { return alive_; }
 
 private:
-	HWND handle_ = nullptr;
-	HINSTANCE instance_ = GetModuleHandle(NULL);
-	LPCWSTR class_name_ = L"WINDOW";
+	bool alive_ = true;
 
 	void message(UINT, WPARAM, LPARAM) override;
 };

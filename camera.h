@@ -19,9 +19,5 @@ public:
 private:
 	XMFLOAT3 position_ = { 0.f, 0.f, 0.f };
 	XMFLOAT3 rotation_ = { 0.f, 0.f, 0.f };
-	// X+/- == down/up
-	// Y+/- == right/left
-	// Z+/- == counter-clockwise/clockwise
-
-	XMFLOAT4X4 matrix_;
+	XMFLOAT4X4 matrix_ = {};
 };

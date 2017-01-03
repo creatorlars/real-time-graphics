@@ -14,22 +14,15 @@ enum KEYS : std::uint8_t
 	F1 = 0x70, F2, F3, F4, F5, F6
 };
 
-class input final : private message_handler
+class input final : public message_handler
 {
 public:
 	input();
-	~input();
-
-	void update();
 
 	inline bool get(KEYS key) const { return keys_.at(key); }
 
 private:
 	void message(UINT, WPARAM, LPARAM) override;
 
-	std::array<bool, 256U> keys_;
-
-	HWND handle_;
-	HINSTANCE instance_ = GetModuleHandle(NULL);
-	LPCWSTR class_name_ = L"INPUT";
+	std::array<bool, 256U> keys_ = {};
 };

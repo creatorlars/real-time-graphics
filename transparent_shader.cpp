@@ -22,7 +22,7 @@ namespace {
 
 transparent_shader::transparent_shader(direct3d const& d3d) : d3d_(d3d)
 {
-	HRESULT result;
+	HRESULT result{};
 	auto const device = d3d_.device();
 
 	// Load vertex shader
@@ -76,8 +76,8 @@ transparent_shader::transparent_shader(direct3d const& d3d) : d3d_(d3d)
 	}};
 
 	result = device->CreateInputLayout(polygon_layout.data(),
-		polygon_layout.size(), vs_data.data(), vs_data.size(),
-		layout_.GetAddressOf());
+		static_cast<UINT>(polygon_layout.size()), vs_data.data(),
+		static_cast<UINT>(vs_data.size()), layout_.GetAddressOf());
 	if (FAILED(result))
 	{
 		throw "";
@@ -141,7 +141,7 @@ void transparent_shader::render(std::shared_ptr<object> const &object,
 	camera const &camera,
 	float blend) const
 {
-	HRESULT result;
+	HRESULT result{};
 	auto const context = d3d_.context();
 
 	object->render();
