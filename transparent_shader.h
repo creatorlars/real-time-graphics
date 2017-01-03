@@ -7,9 +7,18 @@ class camera;
 class transparent_shader
 {
 public:
-	transparent_shader(direct3d const&);
+	explicit transparent_shader(direct3d const&);
 
-	void render(std::shared_ptr<object> const&, camera const&, float) const;
+	transparent_shader() = default;
+	~transparent_shader() = default;
+
+	explicit transparent_shader(transparent_shader const&) = default;
+	explicit transparent_shader(transparent_shader&&) = default;
+
+	transparent_shader& operator=(transparent_shader const&) = default;
+	transparent_shader& operator=(transparent_shader&&) = default;
+
+	void render(std::shared_ptr<object> const&, std::shared_ptr<camera> const&, float) const;
 
 private:
 	ComPtr<ID3D11VertexShader> vertex_shader_ = nullptr;

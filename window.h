@@ -12,5 +12,5 @@ public:
 private:
 	bool alive_ = true;
 
-	void message(UINT, WPARAM, LPARAM) override;
+	void message(UINT const, WPARAM const, LPARAM const) override;
 };

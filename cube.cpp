@@ -4,18 +4,20 @@
 #include "direct3d.h"
 
 cube::cube(direct3d const& d3d)
-	: d3d_(d3d), object(d3d, "data/cube.obj", "data/stone01.tga")
+	: object(d3d, "data/cube.obj", "data/stone01.tga"), d3d_(d3d)
 {
 }
 
 void cube::render()
 {
-	auto matrix = XMMatrixRotationY(rotation_);
-	matrix *= XMMatrixRotationX(rotation_);
-	matrix *= XMMatrixTranslation(5.f, 0.f, 0.f);
-	XMStoreFloat4x4(&matrix_, matrix);
+	auto xmmatrix = XMMatrixRotationY(rotation_);
+	xmmatrix *= XMMatrixRotationX(rotation_);
+	xmmatrix *= XMMatrixTranslation(5.f, 0.f, 0.f);
+	auto fmatrix = XMFLOAT4X4{};
+	XMStoreFloat4x4(&fmatrix, xmmatrix);
+	matrix(fmatrix);
 
-	model_.render();
+	model()->render();
 }
 
 void cube::frame()

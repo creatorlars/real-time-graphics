@@ -7,7 +7,16 @@ class direct3d;
 class submarine final : public object
 {
 public:
-	submarine(direct3d const&);
+	explicit submarine(direct3d const&);
+
+	submarine() = default;
+	~submarine() = default;
+
+	explicit submarine(submarine const&) = default;
+	explicit submarine(submarine&&) = default;
+
+	submarine& operator=(submarine const&) = default;
+	submarine& operator=(submarine&&) = default;
 
 	void frame() override;
 	void render() override;

@@ -8,30 +8,30 @@ window::window() : message_handler(L"window")
 		CS_HREDRAW | CS_VREDRAW | CS_OWNDC,
 		message_handler::proc,
 		0, 0,
-		instance_,
-		NULL, NULL, NULL,
-		NULL, name_
+		instance(),
+		nullptr, nullptr, nullptr,
+		nullptr, name()
 	};
 	RegisterClass(&window_class);
 
-	auto const hook = SetWindowsHookEx(WH_CBT, message_handler::hook, NULL,
+	auto const hook = SetWindowsHookEx(WH_CBT, message_handler::hook, nullptr,
 		GetCurrentThreadId());
 
-	handle_ = CreateWindow
+	handle(CreateWindow
 	(
-		window_class.lpszClassName, NULL,
+		window_class.lpszClassName, nullptr,
 		WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE,
 		0, 0,
 		WINDOW_WIDTH, WINDOW_HEIGHT,
-		NULL, NULL,
-		instance_,
+		nullptr, nullptr,
+		instance(),
 		this
-	);
+	));
 
 	UnhookWindowsHookEx(hook);
 }
 
-void window::message(UINT msg, WPARAM w, LPARAM l)
+void window::message(UINT const msg, WPARAM const w, LPARAM const l)
 {
 	if (WM_DESTROY == msg)
 	{
@@ -39,5 +39,5 @@ void window::message(UINT msg, WPARAM w, LPARAM l)
 		return;
 	}
 
-	TwEventWin(handle_, msg, w, l);
+	TwEventWin(handle(), msg, w, l);
 }

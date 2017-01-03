@@ -4,17 +4,19 @@
 #include "direct3d.h"
 
 submarine::submarine(direct3d const& d3d)
-	: d3d_(d3d), object(d3d, "data/submarine.obj", "data/stone01.tga")
+	: object(d3d, "data/submarine.obj", "data/stone01.tga"), d3d_(d3d)
 {
 }
 
 void submarine::render()
 {
-	auto matrix = XMMatrixRotationY(rotation_);
-	matrix *= XMMatrixRotationX(rotation_);
-	XMStoreFloat4x4(&matrix_, matrix);
+	auto xmmatrix = XMMatrixRotationY(rotation_);
+	xmmatrix *= XMMatrixRotationX(rotation_);
+	auto fmatrix = XMFLOAT4X4{};
+	XMStoreFloat4x4(&fmatrix, xmmatrix);
+	matrix(fmatrix);
 
-	model_.render();
+	model()->render();
 }
 
 void submarine::frame()

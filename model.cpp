@@ -6,13 +6,25 @@
 namespace {
 	struct ModelType
 	{
-		XMFLOAT3 position;
-		XMFLOAT2 texture;
-		XMFLOAT3 normal;
+		XMFLOAT3 position_;
+		XMFLOAT2 texture_;
+		XMFLOAT3 normal_;
+
+		ModelType(XMFLOAT3 const &position, XMFLOAT2 const &texture, XMFLOAT3 const &normal)
+			: position_(position), texture_(texture), normal_(normal) {}
+
+		ModelType(XMFLOAT3 &&position, XMFLOAT2 &&texture, XMFLOAT3 &&normal)
+			: position_(std::move(position)), texture_(std::move(texture)),
+			normal_(std::move(normal)) {}
 
 		ModelType() = default;
-		ModelType(XMFLOAT3 position, XMFLOAT2 texture, XMFLOAT3 normal)
-			: position(position), texture(texture), normal(normal) {}
+		~ModelType() = default;
+		
+		explicit ModelType(ModelType const&) = default;
+		explicit ModelType(ModelType&&) = default;
+
+		ModelType& operator=(ModelType const&) = default;
+		ModelType& operator=(ModelType&&) = default;
 	};
 }
 
@@ -20,9 +32,9 @@ std::vector<ModelType> load(char const *const);
 
 model::model(direct3d const& d3d, char const *const modelFilename,
 	char const *const textureFilename)
-	: d3d_(d3d), texture_(d3d, textureFilename)
+	: texture_(d3d, textureFilename), d3d_(d3d)
 {
-	HRESULT hResult;
+	HRESULT hResult{};
 
 	// Load in the model data
 	auto vertices = load(modelFilename);

@@ -19,16 +19,16 @@ class input final : public message_handler
 public:
 	input();
 
-	void update();
+	void update() override;
 
-	inline std::uint8_t get(std::uint8_t key) const { return keys_.at(key); }
-	inline bool down(std::uint8_t key) const { return keys_.at(key) & 0b01; }
-	inline bool up(std::uint8_t key) const { return !down(key); }
-	inline bool pressed(std::uint8_t key) const { return keys_.at(key) == 0b11; }
-	inline bool released(std::uint8_t key) const { return keys_.at(key) == 0b10; }
+	inline std::uint8_t get(std::uint8_t const key) const { return keys_.at(key); }
+	inline bool down(std::uint8_t const key) const { return keys_.at(key) & 0b01; }
+	inline bool up(std::uint8_t const key) const { return !down(key); }
+	inline bool pressed(std::uint8_t const key) const { return keys_.at(key) == 0b11; }
+	inline bool released(std::uint8_t const key) const { return keys_.at(key) == 0b10; }
 
 private:
-	void message(UINT, WPARAM, LPARAM) override;
+	void message(UINT const, WPARAM const, LPARAM const) override;
 
 	std::array<std::uint8_t, 256U> keys_ = {};
 };

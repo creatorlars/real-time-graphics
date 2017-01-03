@@ -5,7 +5,7 @@
 class graphics
 {
 public:
-	graphics(HWND);
+	explicit graphics(HWND const&);
 
 	void begin_render();
 	void end_render();

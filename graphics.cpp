@@ -3,7 +3,7 @@
 
 #include "direct3d.h"
 
-graphics::graphics(HWND handle) :
+graphics::graphics(HWND const& handle) :
 	d3d_(WINDOW_WIDTH, WINDOW_HEIGHT, VSYNC_ENABLED, handle, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR)
 {}
 

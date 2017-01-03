@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "message_handler.h"
 
-message_handler::message_handler(LPCWSTR name) : name_(name)
+message_handler::message_handler(LPCWSTR const name) : name_(name)
 {}
 
 message_handler::~message_handler()
@@ -22,7 +22,10 @@ void message_handler::update()
 	}
 }
 
-LRESULT CALLBACK message_handler::hook(int msg, WPARAM w, LPARAM l)
+void message_handler::message(UINT const msg, WPARAM const w, LPARAM const l)
+{}
+
+LRESULT CALLBACK message_handler::hook(int const msg, WPARAM const w, LPARAM const l)
 {
 	if (HCBT_CREATEWND == msg) {
 		auto const data = reinterpret_cast<LPCBT_CREATEWND>(l);
@@ -31,10 +34,10 @@ LRESULT CALLBACK message_handler::hook(int msg, WPARAM w, LPARAM l)
 			reinterpret_cast<LONG_PTR>(data->lpcs->lpCreateParams));
 	}
 
-	return CallNextHookEx(NULL, msg, w, l);
+	return CallNextHookEx(nullptr, msg, w, l);
 }
 
-LRESULT CALLBACK message_handler::proc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
+LRESULT CALLBACK message_handler::proc(HWND const wnd, UINT const msg, WPARAM const w, LPARAM const l)
 {
 	auto const pointer = GetWindowLongPtr(wnd, GWLP_USERDATA);
 	auto const target = reinterpret_cast<message_handler*>(pointer);

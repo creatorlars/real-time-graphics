@@ -25,7 +25,7 @@ texture_shader::texture_shader(direct3d const& d3d) : d3d_(d3d)
 	vs_stream << std::ifstream{ vs_path, std::ios::binary }.rdbuf();
 	auto const vs_data = vs_stream.str();
 
-	result = device->CreateVertexShader(vs_data.data(), vs_data.size(), NULL,
+	result = device->CreateVertexShader(vs_data.data(), vs_data.size(), nullptr,
 		vertex_shader_.GetAddressOf());
 	if (FAILED(result))
 	{
@@ -38,7 +38,7 @@ texture_shader::texture_shader(direct3d const& d3d) : d3d_(d3d)
 	ps_stream << std::ifstream{ ps_path, std::ios::binary }.rdbuf();
 	auto const ps_data = ps_stream.str();
 
-	result = device->CreatePixelShader(ps_data.data(), ps_data.size(), NULL,
+	result = device->CreatePixelShader(ps_data.data(), ps_data.size(), nullptr,
 		pixel_shader_.GetAddressOf());
 	if (FAILED(result))
 	{
@@ -89,7 +89,7 @@ texture_shader::texture_shader(direct3d const& d3d) : d3d_(d3d)
 
 	// Create the constant buffer pointer so we can access the vertex shader
 	// constant buffer from within this class.
-	result = device->CreateBuffer(&buffer_description, NULL,
+	result = device->CreateBuffer(&buffer_description, nullptr,
 		matrix_buffer_.GetAddressOf());
 	if (FAILED(result))
 	{
@@ -116,7 +116,7 @@ texture_shader::texture_shader(direct3d const& d3d) : d3d_(d3d)
 }
 
 void texture_shader::render(std::shared_ptr<object> const &object,
-	camera const &camera) const
+	std::shared_ptr<camera> const &camera) const
 {
 	auto const context = d3d_.context();
 
@@ -137,7 +137,7 @@ void texture_shader::render(std::shared_ptr<object> const &object,
 	// Get matrices.
 	auto const projection_matrix = XMLoadFloat4x4(&d3d_.projection_matrix());
 	auto const object_matrix = XMLoadFloat4x4(&object->matrix());
-	auto const camera_matrix = XMLoadFloat4x4(&camera.matrix());
+	auto const camera_matrix = XMLoadFloat4x4(&camera->matrix());
 
 	// Copy the matrices into the constant buffer.
 	matrix_buffer->projection = XMMatrixTranspose(projection_matrix);
@@ -152,7 +152,7 @@ void texture_shader::render(std::shared_ptr<object> const &object,
 	context->VSSetConstantBuffers(0U, 1U, matrix_buffer_.GetAddressOf());
 
 	// Set shader texture resource in the pixel shader.
-	auto const texture = object->model().view();
+	auto const texture = object->model()->view();
 	context->PSSetShaderResources(0U, 1U, texture.GetAddressOf());
 
 	// Set the vertex input layout.
@@ -160,12 +160,12 @@ void texture_shader::render(std::shared_ptr<object> const &object,
 
 	// Set the vertex and pixel shaders that will be used to render this
 	// triangle.
-	context->VSSetShader(vertex_shader_.Get(), NULL, 0U);
-	context->PSSetShader(pixel_shader_.Get(), NULL, 0U);
+	context->VSSetShader(vertex_shader_.Get(), nullptr, 0U);
+	context->PSSetShader(pixel_shader_.Get(), nullptr, 0U);
 
 	// Set the sampler state in the pixel shader.
 	context->PSSetSamplers(0U, 1U, sample_state_.GetAddressOf());
 
 	// Render the triangle.
-	context->DrawIndexed(object->model().index_count(), 0U, 0);
+	context->DrawIndexed(object->model()->index_count(), 0U, 0);
 }

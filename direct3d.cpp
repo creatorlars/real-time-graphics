@@ -1,13 +1,11 @@
 #include "pch.h"
 #include "direct3d.h"
 
-direct3d::direct3d(unsigned screenWidth, unsigned screenHeight, bool vsync,
-	HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
+direct3d::direct3d(unsigned const width, unsigned const height, bool const vsync,
+	HWND const &hwnd, bool const fullscreen, float const depth_far, float const depth_near)
+	: vsync_(vsync)
 {
 	HRESULT result{};
-
-	// Store the vsync setting.
-	vsync_ = vsync;
 
 	// Create a DirectX graphics interface factory.
 	auto factory = ComPtr<IDXGIFactory>{};
@@ -39,7 +37,7 @@ direct3d::direct3d(unsigned screenWidth, unsigned screenHeight, bool vsync,
 	// format for the adapter output (monitor).
 	auto count = unsigned{};
 	result = output->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM,
-		DXGI_ENUM_MODES_INTERLACED, &count, NULL);
+		DXGI_ENUM_MODES_INTERLACED, &count, nullptr);
 	if (FAILED(result))
 	{
 		throw "";
@@ -60,7 +58,7 @@ direct3d::direct3d(unsigned screenWidth, unsigned screenHeight, bool vsync,
 	auto refresh_rate = DXGI_RATIONAL{ 0U, 1U };
 	for (auto const &it : display_modes)
 	{
-		if (it.Width == screenWidth && it.Height == screenHeight)
+		if (it.Width == width && it.Height == height)
 		{
 			refresh_rate = it.RefreshRate;
 		}
@@ -69,7 +67,7 @@ direct3d::direct3d(unsigned screenWidth, unsigned screenHeight, bool vsync,
 	auto const swap_chain_desc = DXGI_SWAP_CHAIN_DESC
 	{
 		{
-			screenWidth, screenHeight,
+			width, height,
 			refresh_rate,
 			DXGI_FORMAT_R8G8B8A8_UNORM,
 			DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED,
@@ -89,9 +87,9 @@ direct3d::direct3d(unsigned screenWidth, unsigned screenHeight, bool vsync,
 
 	// Create the swap chain, Direct3D device, and Direct3D device context.
 	auto constexpr feature_level = D3D_FEATURE_LEVEL_11_0;
-	result = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL,
+	result = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr,
 		0U, &feature_level, 1U, D3D11_SDK_VERSION, &swap_chain_desc,
-		swap_chain_.GetAddressOf(), device_.GetAddressOf(), NULL,
+		swap_chain_.GetAddressOf(), device_.GetAddressOf(), nullptr,
 		context_.GetAddressOf());
 	if (FAILED(result))
 	{
@@ -108,7 +106,7 @@ direct3d::direct3d(unsigned screenWidth, unsigned screenHeight, bool vsync,
 	}
 
 	// Create the render target view with the back buffer pointer.
-	result = device_->CreateRenderTargetView(back_buffer.Get(), NULL,
+	result = device_->CreateRenderTargetView(back_buffer.Get(), nullptr,
 		&render_target_view_);
 	if (FAILED(result))
 	{
@@ -117,7 +115,7 @@ direct3d::direct3d(unsigned screenWidth, unsigned screenHeight, bool vsync,
 
 	auto const depth_buffer_desc = D3D11_TEXTURE2D_DESC
 	{
-		screenWidth, screenHeight,
+		width, height,
 		1U,
 		1U,
 		DXGI_FORMAT_D24_UNORM_S8_UINT,
@@ -131,7 +129,7 @@ direct3d::direct3d(unsigned screenWidth, unsigned screenHeight, bool vsync,
 	};
 
 	// Create the texture for the depth buffer using the filled out description.
-	result = device_->CreateTexture2D(&depth_buffer_desc, NULL,
+	result = device_->CreateTexture2D(&depth_buffer_desc, nullptr,
 		depth_stencil_buffer_.GetAddressOf());
 	if (FAILED(result))
 	{
@@ -205,8 +203,8 @@ direct3d::direct3d(unsigned screenWidth, unsigned screenHeight, bool vsync,
 	// Now set the rasterizer state.
 	context_->RSSetState(raster_state_.Get());
 
-	auto const width_f = static_cast<float>(screenWidth);
-	auto const height_f = static_cast<float>(screenHeight);
+	auto const width_f = static_cast<float>(width);
+	auto const height_f = static_cast<float>(height);
 
 	auto const viewport = D3D11_VIEWPORT
 	{
@@ -220,7 +218,7 @@ direct3d::direct3d(unsigned screenWidth, unsigned screenHeight, bool vsync,
 
 	// Create the projection matrix for 3D rendering.
 	auto const projection_matrix = XMMatrixPerspectiveFovLH(XM_PI / 4.f,
-		width_f / height_f, screenNear, screenDepth);
+		width_f / height_f, depth_near, depth_far);
 	XMStoreFloat4x4(&projection_matrix_, projection_matrix);
 
 	// Initialize the world matrix to the identity matrix.
@@ -229,26 +227,19 @@ direct3d::direct3d(unsigned screenWidth, unsigned screenHeight, bool vsync,
 
 	// Create an orthographic projection matrix for 2D rendering.
 	auto const ortho_matrix = XMMatrixOrthographicLH(width_f, height_f,
-		screenNear, screenDepth);
+		depth_near, depth_far);
 	XMStoreFloat4x4(&ortho_matrix_, ortho_matrix);
 
 	TwInit(TW_DIRECT3D11, device_.Get());
-	TwWindowSize(screenWidth, screenHeight);
+	TwWindowSize(width, height);
 }
 
 direct3d::~direct3d()
 {
 	TwTerminate();
-
-	// Before shutting down set to windowed mode or when you release the swap
-	// chain it will throw an exception.
-	if (swap_chain_)
-	{
-		swap_chain_->SetFullscreenState(FALSE, NULL);
-	}
 }
 
-void direct3d::begin(float r, float g, float b, float a)
+void direct3d::begin(float const r, float const g, float const b, float const a) const
 {
 	auto const colour = std::array<float, 4> {r, g, b, a};
 
@@ -260,7 +251,7 @@ void direct3d::begin(float r, float g, float b, float a)
 		0U);
 }
 
-void direct3d::end()
+void direct3d::end() const
 {
 	if (vsync_)
 	{

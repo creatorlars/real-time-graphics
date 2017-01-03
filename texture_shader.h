@@ -7,9 +7,18 @@ class camera;
 class texture_shader
 {
 public:
-	texture_shader(direct3d const&);
+	explicit texture_shader(direct3d const&);
 
-	void render(std::shared_ptr<object> const&, camera const&) const;
+	texture_shader() = default;
+	~texture_shader() = default;
+
+	explicit texture_shader(texture_shader const&) = default;
+	explicit texture_shader(texture_shader&&) = default;
+
+	texture_shader& operator=(texture_shader const&) = default;
+	texture_shader& operator=(texture_shader&&) = default;
+
+	void render(std::shared_ptr<object> const&, std::shared_ptr<camera> const&) const;
 
 private:
 	ComPtr<ID3D11VertexShader> vertex_shader_ = nullptr;

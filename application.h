@@ -15,6 +15,13 @@ class application
 {
 public:
 	application();
+	~application() = default;
+
+	explicit application(application const&) = default;
+	explicit application(application&&) = default;
+
+	application& operator=(application const&) = default;
+	application& operator=(application&&) = default;
 
 	void update();
 	void frame();
@@ -31,7 +38,7 @@ private:
 	TwBar *test_bar_ = nullptr;
 
 	// camera
-	camera camera_;
+	std::shared_ptr<camera> camera_ = nullptr;
 
 	// objects
 	std::shared_ptr<object> submarine_ = nullptr;

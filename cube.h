@@ -5,7 +5,9 @@
 class cube final : public object
 {
 public:
-	cube(direct3d const&);
+	explicit cube(direct3d const&);
+	
+	cube& operator=(cube const&) = default;
 
 	void frame() override;
 	void render() override;

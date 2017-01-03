@@ -3,14 +3,21 @@
 class direct3d
 {
 public:
-	direct3d(unsigned, unsigned, bool, HWND, bool, float, float);
+	direct3d(unsigned const, unsigned const, bool const, HWND const&,
+		bool const, float const, float const);
 	~direct3d();
 
-	void begin(float, float, float, float);
-	void end();
+	explicit direct3d(direct3d const&) = default;
+	explicit direct3d(direct3d&&) = default;
 
-	inline ComPtr<ID3D11Device> device() const { return device_; }
-	inline ComPtr<ID3D11DeviceContext> context() const { return context_; }
+	direct3d& operator=(direct3d const&) = default;
+	direct3d& operator=(direct3d&&) = default;
+
+	void begin(float const, float const, float const, float const) const;
+	void end() const;
+
+	inline ComPtr<ID3D11Device> const& device() const { return device_; }
+	inline ComPtr<ID3D11DeviceContext> const& context() const { return context_; }
 	inline XMFLOAT4X4 const& projection_matrix() const { return projection_matrix_; }
 	inline XMFLOAT4X4 const& world_matrix() const { return world_matrix_; }
 	inline XMFLOAT4X4 const& ortho_matrix() const { return ortho_matrix_; }

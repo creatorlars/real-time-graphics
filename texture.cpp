@@ -28,15 +28,14 @@ texture::texture(direct3d const& d3d, char const *const filename)
 	};
 
 	auto const device = d3d.device();
-	auto const context = d3d.context();
-
-	hResult = device->CreateTexture2D(&textureDesc, NULL, texture_.GetAddressOf());
+	hResult = device->CreateTexture2D(&textureDesc, nullptr, texture_.GetAddressOf());
 	if (FAILED(hResult))
 	{
 		throw "";
 	}
 
 	// Copy the image data into the texture.
+	auto const context = d3d.context();
 	auto const rowPitch = static_cast<UINT>((image.width * 4) * sizeof(unsigned char));
 	context->UpdateSubresource(texture_.Get(), 0U, nullptr, image.data.data(),
 		rowPitch, 0U);
@@ -60,7 +59,7 @@ texture::texture(direct3d const& d3d, char const *const filename)
 	context->GenerateMips(view_.Get());
 }
 
-texture::ImageData texture::load(char const *const filename)
+texture::ImageData texture::load(char const *const filename) const
 {
 	struct TargaHeader
 	{

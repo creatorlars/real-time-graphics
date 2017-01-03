@@ -5,35 +5,35 @@ input::input() : message_handler(L"input")
 {
 	auto const window_class = WNDCLASS
 	{
-		NULL,
+		0U,
 		message_handler::proc,
 		0, 0,
-		instance_,
-		NULL, NULL, NULL,
-		NULL, name_
+		instance(),
+		nullptr, nullptr, nullptr,
+		nullptr, name()
 	};
 	RegisterClass(&window_class);
 
-	auto const hook = SetWindowsHookEx(WH_CBT, message_handler::hook, NULL,
+	auto const hook = SetWindowsHookEx(WH_CBT, message_handler::hook, nullptr,
 		GetCurrentThreadId());
 
-	handle_ = CreateWindow
+	handle(CreateWindow
 	(
-		window_class.lpszClassName, NULL,
-		NULL,
+		window_class.lpszClassName, nullptr,
+		0UL,
 		0, 0,
 		0, 0,
-		HWND_MESSAGE, NULL,
-		instance_,
+		HWND_MESSAGE, nullptr,
+		instance(),
 		this
-	);
+	));
 
 	UnhookWindowsHookEx(hook);
 
 	auto const devices = std::array<RAWINPUTDEVICE, 2U>
 	{{
-		{ 0x01, 0x02, RIDEV_INPUTSINK, handle_ },	// mouse
-		{ 0x01, 0x06, RIDEV_INPUTSINK, handle_ }	// keyboard
+		{ 0x01, 0x02, RIDEV_INPUTSINK, handle() },	// mouse
+		{ 0x01, 0x06, RIDEV_INPUTSINK, handle() }	// keyboard
 	}};
 
 	RegisterRawInputDevices(devices.data(), static_cast<UINT>(devices.size()),
@@ -53,7 +53,7 @@ void input::update()
 	message_handler::update();
 }
 
-void input::message(UINT msg, WPARAM w, LPARAM l)
+void input::message(UINT const msg, WPARAM const w, LPARAM const l)
 {
 	if (WM_INPUT != msg) {
 		return;
@@ -61,7 +61,7 @@ void input::message(UINT msg, WPARAM w, LPARAM l)
 
 	auto const raw = reinterpret_cast<HRAWINPUT>(l);
 	auto size = UINT{};
-	GetRawInputData(raw, RID_INPUT, NULL, &size, sizeof(RAWINPUTHEADER));
+	GetRawInputData(raw, RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER));
 	auto data = std::make_unique<BYTE[]>(size);
 	GetRawInputData(raw, RID_INPUT, data.get(), &size, sizeof(RAWINPUTHEADER));
 

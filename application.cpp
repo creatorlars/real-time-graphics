@@ -21,7 +21,8 @@ application::application()
 	sphere_ = std::make_shared<sphere>(graphics_->d3d());
 	cube_ = std::make_shared<cube>(graphics_->d3d());
 
-	camera_.position({ 0.f, 0.f, -15.f });
+	camera_ = std::make_shared<camera>();
+	camera_->position({ 0.f, 0.f, -15.f });
 
 	test_bar_ = TwNewBar("test_bar");
 }
@@ -77,11 +78,11 @@ void application::frame()
 	{
 		if (input_->down(KEYBOARD::CTRL))
 		{
-			camera_.move({ 0.f, 0.f, .1f }); // pan forwards
+			camera_->move({ 0.f, 0.f, .1f }); // pan forwards
 		}
 		else
 		{
-			camera_.rotate({ -.1f, 0.f, 0.f }); // rotate up
+			camera_->rotate({ -.1f, 0.f, 0.f }); // rotate up
 		}
 	}
 	if (input_->down(KEYBOARD::DOWN) || input_->down(KEYBOARD::S)
@@ -89,11 +90,11 @@ void application::frame()
 	{
 		if (input_->down(KEYBOARD::CTRL))
 		{
-			camera_.move({ 0.f, 0.f, -.1f }); // pan backwards
+			camera_->move({ 0.f, 0.f, -.1f }); // pan backwards
 		}
 		else
 		{
-			camera_.rotate({ .1f, 0.f, 0.f }); // rotate down
+			camera_->rotate({ .1f, 0.f, 0.f }); // rotate down
 		}
 	}
 	if (input_->down(KEYBOARD::LEFT) || input_->down(KEYBOARD::A)
@@ -101,11 +102,11 @@ void application::frame()
 	{
 		if (input_->down(KEYBOARD::CTRL))
 		{
-			camera_.move({ .1f, 0.f, 0.f }); // pan left
+			camera_->move({ .1f, 0.f, 0.f }); // pan left
 		}
 		else
 		{
-			camera_.rotate({ 0.f, -.1f, 0.f }); // rotate left
+			camera_->rotate({ 0.f, -.1f, 0.f }); // rotate left
 		}
 	}
 	if (input_->down(KEYBOARD::RIGHT) || input_->down(KEYBOARD::D)
@@ -113,33 +114,33 @@ void application::frame()
 	{
 		if (input_->down(KEYBOARD::CTRL))
 		{
-			camera_.move({ -.1f, 0.f, 0.f }); // pan right
+			camera_->move({ -.1f, 0.f, 0.f }); // pan right
 		}
 		else
 		{
-			camera_.rotate({ 0.f, .1f, 0.f }); // rotate right
+			camera_->rotate({ 0.f, .1f, 0.f }); // rotate right
 		}
 	}
 	if (input_->down(KEYBOARD::PAGEUP))
 	{
 		if (input_->down(KEYBOARD::CTRL))
 		{
-			camera_.move({ 0.f, -.1f, 0.f }); // pan up
+			camera_->move({ 0.f, -.1f, 0.f }); // pan up
 		}
 		else
 		{
-			camera_.rotate({ 0.f, 0.f, -.1f }); // rotate clockwise
+			camera_->rotate({ 0.f, 0.f, -.1f }); // rotate clockwise
 		}
 	}
 	if (input_->down(KEYBOARD::PAGEDOWN))
 	{
 		if (input_->down(KEYBOARD::CTRL))
 		{
-			camera_.move({ 0.f, .1f, 0.f }); // pan down
+			camera_->move({ 0.f, .1f, 0.f }); // pan down
 		}
 		else
 		{
-			camera_.rotate({ 0.f, 0.f, .1f }); // rotate counter-clockwise
+			camera_->rotate({ 0.f, 0.f, .1f }); // rotate counter-clockwise
 		}
 	}
 
@@ -175,7 +176,7 @@ void application::frame()
 		// switch visualisations
 	}
 
-	camera_.frame();
+	camera_->frame();
 
 	submarine_->frame();
 	sphere_->frame();
@@ -186,7 +187,7 @@ void application::render()
 {
 	graphics_->begin_render();
 
-	camera_.render();
+	camera_->render();
 
 	texture_shader_->render(submarine_, camera_);
 	texture_shader_->render(cube_, camera_);

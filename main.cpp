@@ -5,7 +5,7 @@ int main()
 {
 	for (;;)
 	{
-		auto app = application{};
+		application app{};
 		while (app.alive())
 		{
 			app.update();

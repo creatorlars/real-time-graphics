@@ -4,16 +4,18 @@
 #include "direct3d.h"
 
 sphere::sphere(direct3d const& d3d)
-	: d3d_(d3d), object(d3d, "data/sphere.obj", "data/blue.tga")
+	: object(d3d, "data/sphere.obj", "data/blue.tga"), d3d_(d3d)
 {
 }
 
 void sphere::render()
 {
-	auto const matrix = XMMatrixScaling(5.f, 5.f, 5.f);
-	XMStoreFloat4x4(&matrix_, matrix);
+	auto const xmmatrix = XMMatrixScaling(5.f, 5.f, 5.f);
+	auto fmatrix = XMFLOAT4X4{};
+	XMStoreFloat4x4(&fmatrix, xmmatrix);
+	matrix(fmatrix);	
 
-	model_.render();
+	model()->render();
 }
 
 void sphere::frame()

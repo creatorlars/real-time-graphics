@@ -7,7 +7,7 @@ class texture
 public:
 	texture(direct3d const&, char const *const);
 
-	inline ComPtr<ID3D11ShaderResourceView> view() const { return view_; }
+	inline ComPtr<ID3D11ShaderResourceView> const& view() const { return view_; }
 
 private:
 	struct ImageData
@@ -17,7 +17,7 @@ private:
 		unsigned height;
 	};
 
-	ImageData load(char const *const);
+	ImageData load(char const *const) const;
 
 	ComPtr<ID3D11Texture2D> texture_ = nullptr;
 	ComPtr<ID3D11ShaderResourceView> view_ = nullptr;
