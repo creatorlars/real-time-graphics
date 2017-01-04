@@ -22,18 +22,34 @@ application::application()
 	cube_ = std::make_shared<cube>(graphics_->d3d());
 
 	camera_ = std::make_shared<camera>();
-	camera_->position({ 0.f, 0.f, -150.f });
+	camera_->position({ 0.f, 0.f, -15.f });
 
 	test_bar_ = TwNewBar("test_bar");
+
+	timeBeginPeriod(1U);
+}
+
+application::~application()
+{
+	timeEndPeriod(1U);
 }
 
 void application::update()
 {
 	window_->update();
 	input_->update();
-
 	frame();
-	render();
+
+	auto const frame = std::chrono::high_resolution_clock::now();
+	auto difference = frame - time_;
+	while (difference < delay_)
+	{
+		render();
+		Sleep(1);
+		difference = std::chrono::high_resolution_clock::now() - time_;
+	}
+
+	time_ = frame;
 }
 
 void application::frame()
@@ -54,16 +70,21 @@ void application::frame()
 		return;
 	}
 
-	if (input_->down(KEYBOARD::T))
+	// increase / decrease frame time delay
+	if (input_->pressed(KEYBOARD::T))
 	{
 		if (input_->down(KEYBOARD::SHIFT))
 		{
-			// increase time factor
+			delay_ += 1ms;
 		}
 		else
 		{
-			// decrease time factor
+			if (delay_ > 1ms)
+			{
+				delay_ -= 1ms;
+			}
 		}
+		std::cout << delay_.count() << '\n';
 	}
 
 	// statistics display

@@ -70,28 +70,28 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>C:\Programming\real-time-graphics-ACW\libs;$(LibraryPath)</LibraryPath>
-	<LocalDebuggerEnvironment>PATH=%PATH%;$(ProjectDir)\libs</LocalDebuggerEnvironment>
-    <EnableCppCoreCheck>true</EnableCppCoreCheck>
-    <EnableExperimentalCppCoreCheck>true</EnableExperimentalCppCoreCheck>
+    <LocalDebuggerEnvironment>PATH=%PATH%;$(ProjectDir)\libs</LocalDebuggerEnvironment>
+    <EnableCppCoreCheck>false</EnableCppCoreCheck>
+    <EnableExperimentalCppCoreCheck>false</EnableExperimentalCppCoreCheck>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>C:\Programming\real-time-graphics-ACW\libs;$(LibraryPath)</LibraryPath>
-	<LocalDebuggerEnvironment>PATH=%PATH%;$(ProjectDir)\libs</LocalDebuggerEnvironment>
-    <EnableCppCoreCheck>true</EnableCppCoreCheck>
-    <EnableExperimentalCppCoreCheck>true</EnableExperimentalCppCoreCheck>
+    <LocalDebuggerEnvironment>PATH=%PATH%;$(ProjectDir)\libs</LocalDebuggerEnvironment>
+    <EnableCppCoreCheck>false</EnableCppCoreCheck>
+    <EnableExperimentalCppCoreCheck>false</EnableExperimentalCppCoreCheck>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>C:\Programming\real-time-graphics-ACW\libs;$(LibraryPath)</LibraryPath>
-	<LocalDebuggerEnvironment>PATH=%PATH%;$(ProjectDir)\libs</LocalDebuggerEnvironment>
-    <EnableCppCoreCheck>true</EnableCppCoreCheck>
-    <EnableExperimentalCppCoreCheck>true</EnableExperimentalCppCoreCheck>
+    <LocalDebuggerEnvironment>PATH=%PATH%;$(ProjectDir)\libs</LocalDebuggerEnvironment>
+    <EnableCppCoreCheck>false</EnableCppCoreCheck>
+    <EnableExperimentalCppCoreCheck>false</EnableExperimentalCppCoreCheck>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>C:\Programming\real-time-graphics-ACW\libs;$(LibraryPath)</LibraryPath>
-	<LocalDebuggerEnvironment>PATH=%PATH%;$(ProjectDir)\libs</LocalDebuggerEnvironment>
+    <LocalDebuggerEnvironment>PATH=%PATH%;$(ProjectDir)\libs</LocalDebuggerEnvironment>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <EnableCppCoreCheck>true</EnableCppCoreCheck>
-    <EnableExperimentalCppCoreCheck>true</EnableExperimentalCppCoreCheck>
+    <EnableCppCoreCheck>false</EnableCppCoreCheck>
+    <EnableExperimentalCppCoreCheck>false</EnableExperimentalCppCoreCheck>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

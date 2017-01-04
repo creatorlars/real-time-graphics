@@ -44,7 +44,7 @@ direct3d::direct3d(unsigned const width, unsigned const height, bool const vsync
 	}
 
 	// Now fill the display mode list structures.
-	auto display_modes = std::vector<DXGI_MODE_DESC>(count);
+	auto display_modes = std::vector<DXGI_MODE_DESC>(static_cast<size_t>(count));
 	result = output->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM,
 		DXGI_ENUM_MODES_INTERLACED, &count, display_modes.data());
 	if (FAILED(result))
@@ -281,7 +281,7 @@ void direct3d::enable_alpha_blending()
 	}
 
 	auto constexpr factor = std::array<float, 4U>{};
-	context_->OMSetBlendState(blend_state, factor.data(), 0xFFFFFFFF);
+	context_->OMSetBlendState(blend_state, factor.data(), std::numeric_limits<UINT>().max());
 }
 
 void direct3d::disable_alpha_blending()
@@ -302,5 +302,5 @@ void direct3d::disable_alpha_blending()
 	}
 
 	auto constexpr factor = std::array<float, 4U>{};
-	context_->OMSetBlendState(blend_state, factor.data(), 0xFFFFFFFF);
+	context_->OMSetBlendState(blend_state, factor.data(), std::numeric_limits<UINT>().max());
 }

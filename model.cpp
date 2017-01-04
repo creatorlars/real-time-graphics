@@ -19,7 +19,7 @@ namespace {
 
 		ModelType() = default;
 		~ModelType() = default;
-		
+
 		explicit ModelType(ModelType const&) = default;
 		explicit ModelType(ModelType&&) = default;
 
@@ -34,7 +34,7 @@ model::model(direct3d const& d3d, char const *const modelFilename,
 	char const *const textureFilename)
 	: texture_(d3d, textureFilename), d3d_(d3d)
 {
-	HRESULT hResult{};
+	HRESULT result{};
 
 	// Load in the model data
 	auto vertices = load(modelFilename);
@@ -56,9 +56,9 @@ model::model(direct3d const& d3d, char const *const modelFilename,
 
 	auto const device = d3d_.device();
 
-	hResult = device->CreateBuffer(&vertex_buffer_desc, &vertex_data,
+	result = device->CreateBuffer(&vertex_buffer_desc, &vertex_data,
 		vertex_buffer_.GetAddressOf());
-	if (FAILED(hResult))
+	if (FAILED(result))
 	{
 		throw "";
 	}
@@ -82,9 +82,9 @@ model::model(direct3d const& d3d, char const *const modelFilename,
 		0U
 	};
 
-	hResult = device->CreateBuffer(&indexBufferDesc, &indexData,
+	result = device->CreateBuffer(&indexBufferDesc, &indexData,
 		index_buffer_.GetAddressOf());
-	if (FAILED(hResult))
+	if (FAILED(result))
 	{
 		throw "";
 	}
@@ -121,10 +121,10 @@ std::vector<ModelType> load(char const *const filename)
 	data << file.rdbuf();
 	file.close();
 
-	auto vertex_count = 0U;
-	auto texture_count = 0U;
-	auto normal_count = 0U;
-	auto face_count = 0U;
+	auto vertex_count = size_t{};
+	auto texture_count = size_t{};
+	auto normal_count = size_t{};
+	auto face_count = size_t{};
 
 	// calculate totals
 	while (!data.eof()) {
@@ -145,10 +145,10 @@ std::vector<ModelType> load(char const *const filename)
 	auto faces = std::vector<XMINT3>(face_count);
 
 	// initialise indexes
-	auto vertex_index = 0U;
-	auto texture_index = 0U;
-	auto normal_index = 0U;
-	auto face_index = 0U;
+	auto vertex_index = size_t{};
+	auto texture_index = size_t{};
+	auto normal_index = size_t{};
+	auto face_index = size_t{};
 
 	// reset data stream
 	data.rdbuf()->pubseekpos(0LL);

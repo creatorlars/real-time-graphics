@@ -15,7 +15,7 @@ class application
 {
 public:
 	application();
-	~application() = default;
+	~application();
 
 	explicit application(application const&) = default;
 	explicit application(application&&) = default;
@@ -33,6 +33,10 @@ public:
 private:
 	bool alive_ = true;
 	bool restart_ = false;
+
+	using high_resolution_clock = std::chrono::high_resolution_clock;
+	high_resolution_clock::time_point time_ = high_resolution_clock::now();
+	std::chrono::nanoseconds delay_ = 15ms;
 
 	// AntTweakBar
 	TwBar *test_bar_ = nullptr;

@@ -1,6 +1,3 @@
-////////////////////////////////////////////////////////////////////////////////
-// Filename: textureclass.cpp
-////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 #include "texture.h"
 
@@ -8,7 +5,7 @@
 
 texture::texture(direct3d const& d3d, char const *const filename)
 {
-	HRESULT hResult{};
+	HRESULT result{};
 
 	auto const image = load(filename);
 
@@ -28,15 +25,15 @@ texture::texture(direct3d const& d3d, char const *const filename)
 	};
 
 	auto const device = d3d.device();
-	hResult = device->CreateTexture2D(&textureDesc, nullptr, texture_.GetAddressOf());
-	if (FAILED(hResult))
+	result = device->CreateTexture2D(&textureDesc, nullptr, texture_.GetAddressOf());
+	if (FAILED(result))
 	{
 		throw "";
 	}
 
 	// Copy the image data into the texture.
 	auto const context = d3d.context();
-	auto const rowPitch = static_cast<UINT>((image.width * 4) * sizeof(unsigned char));
+	auto const rowPitch = (image.width * 4U) * static_cast<UINT>(sizeof(unsigned char));
 	context->UpdateSubresource(texture_.Get(), 0U, nullptr, image.data.data(),
 		rowPitch, 0U);
 
@@ -48,9 +45,9 @@ texture::texture(direct3d const& d3d, char const *const filename)
 		{ 0U, UINT_MAX }
 	};
 
-	hResult = device->CreateShaderResourceView(texture_.Get(), &srvDesc,
+	result = device->CreateShaderResourceView(texture_.Get(), &srvDesc,
 		view_.GetAddressOf());
-	if (FAILED(hResult))
+	if (FAILED(result))
 	{
 		throw "";
 	}
@@ -75,7 +72,8 @@ texture::ImageData texture::load(char const *const filename) const
 	// read image header
 	auto header = TargaHeader{};
 	file.read(reinterpret_cast<char *>(&header), sizeof(TargaHeader));
-	auto const imageSize = header.width * header.height * (header.bpp / 8U);
+	auto const imageSize = static_cast<size_t>(header.width * header.height
+		* (header.bpp / 8U));
 
 	// read image data
 	auto stream = std::stringstream{ std::ios::binary | std::ios::in | std::ios::out };
@@ -85,7 +83,7 @@ texture::ImageData texture::load(char const *const filename) const
 
 	// normalise image data (BGRA -> RGBA)
 	auto out = std::vector<unsigned char>(imageSize);
-	for (auto i = 0U, j = imageSize; i < imageSize; i += 4U) {
+	for (auto i = size_t{}, j = imageSize; i < imageSize; i += 4U) {
 		j -= 4U;
 		out[i + 0U] = data[j + 2U];  // Red.
 		out[i + 1U] = data[j + 1U];  // Green.

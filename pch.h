@@ -1,8 +1,9 @@
 #pragma once
 
 // Windows
-#define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
+
+#pragma comment(lib, "winmm.lib")
 
 #include <windows.h>
 #include <wrl/client.h>
@@ -32,6 +33,8 @@ using namespace DirectX;
 #include <array>
 #include <iostream>
 #include <functional>
+#include <chrono>
+using namespace std::literals;
 
 // CSTDLIB
 #include <cstdio>
@@ -42,7 +45,7 @@ using namespace DirectX;
 
 // Globals
 bool constexpr FULL_SCREEN = false;
-bool constexpr VSYNC_ENABLED = true;
+bool constexpr VSYNC_ENABLED = false;
 float constexpr SCREEN_DEPTH = 1000.f;
 float constexpr SCREEN_NEAR = .1f;
 unsigned constexpr WINDOW_WIDTH = 800;
