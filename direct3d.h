@@ -7,6 +7,8 @@ public:
 		bool const, float const, float const);
 	~direct3d();
 
+	direct3d() = delete;
+
 	explicit direct3d(direct3d const&) = default;
 	explicit direct3d(direct3d&&) = default;
 

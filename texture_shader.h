@@ -9,7 +9,7 @@ class texture_shader
 public:
 	explicit texture_shader(direct3d const&);
 
-	texture_shader() = default;
+	texture_shader() = delete;
 	~texture_shader() = default;
 
 	explicit texture_shader(texture_shader const&) = default;

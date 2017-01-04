@@ -9,16 +9,21 @@ class model
 public:
 	model(direct3d const&, char const *const, char const *const);
 
+	model() = delete;
+	~model() = default;
+
 	explicit model(model const&) = default;
 	explicit model(model&&) = default;
-	~model() = default;
+	
 	model& operator=(model const&) = default;
 	model& operator=(model&&) = default;
 
 	void render();
 
-	inline unsigned index_count() const { return index_count_; }
-	inline ComPtr<ID3D11ShaderResourceView> view() const { return texture_.view(); }
+	inline unsigned index_count() const
+	{ return index_count_; }
+	inline ComPtr<ID3D11ShaderResourceView> view() const
+	{ return texture_.view(); }
 
 private:
 	ComPtr<ID3D11Buffer> vertex_buffer_ = nullptr;

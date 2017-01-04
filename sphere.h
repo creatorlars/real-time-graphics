@@ -9,7 +9,7 @@ class sphere final : public object
 public:
 	explicit sphere(direct3d const&);
 
-	sphere() = default;
+	sphere() = delete;
 	~sphere() = default;
 
 	explicit sphere(sphere const&) = default;

@@ -27,8 +27,10 @@ public:
 	void frame();
 	void render();
 
-	inline bool alive() const { return alive_; }
-	inline bool restart() const { return restart_; }
+	inline bool alive() const
+	{ return alive_; }
+	inline bool restart() const
+	{ return restart_; }
 
 private:
 	bool alive_ = true;

@@ -71,17 +71,17 @@ void application::frame()
 	}
 
 	// increase / decrease frame time delay
-	if (input_->pressed(KEYBOARD::T))
+	if (input_->trigger(KEYBOARD::T))
 	{
 		if (input_->down(KEYBOARD::SHIFT))
 		{
-			delay_ += 1ms;
+			delay_ += 100us;
 		}
 		else
 		{
 			if (delay_ > 1ms)
 			{
-				delay_ -= 1ms;
+				delay_ -= 100us;
 			}
 		}
 		std::cout << delay_.count() << '\n';

@@ -7,7 +7,16 @@ class window : public message_handler
 public:
 	window();
 
-	inline bool const alive() const { return alive_; }
+	~window() = default;
+
+	explicit window(window const&) = default;
+	explicit window(window&&) = default;
+
+	window& operator=(window const&) = default;
+	window& operator=(window&&) = default;
+
+	inline bool const alive() const
+	{ return alive_; }
 
 private:
 	bool alive_ = true;

@@ -9,7 +9,7 @@ class transparent_shader
 public:
 	explicit transparent_shader(direct3d const&);
 
-	transparent_shader() = default;
+	transparent_shader() = delete;
 	~transparent_shader() = default;
 
 	explicit transparent_shader(transparent_shader const&) = default;

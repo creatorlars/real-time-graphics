@@ -6,6 +6,8 @@ public:
 	explicit message_handler(LPCWSTR);
 	virtual ~message_handler();
 
+	message_handler() = delete;
+
 	explicit message_handler(message_handler const&) = default;
 	explicit message_handler(message_handler&&) = default;
 
@@ -14,11 +16,15 @@ public:
 
 	virtual void update();
 
-	inline HWND const& handle() const { return handle_; }
-	inline LPCWSTR const& name() const { return name_; }
-	inline HINSTANCE const& instance() const { return instance_; }
+	inline HWND const& handle() const
+	{ return handle_; }
+	inline LPCWSTR const& name() const
+	{ return name_; }
+	inline HINSTANCE const& instance() const
+	{ return instance_; }
 
-	inline void handle(HWND const& handle) { handle_ = handle; }
+	inline void handle(HWND const& handle)
+	{ handle_ = handle; }
 
 protected:
 	virtual void message(UINT const, WPARAM const, LPARAM const);

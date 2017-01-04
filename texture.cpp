@@ -3,6 +3,15 @@
 
 #include "direct3d.h"
 
+struct ImageData
+{
+	std::vector<unsigned char> data;
+	unsigned width;
+	unsigned height;
+};
+
+ImageData load(char const *const);
+
 texture::texture(direct3d const& d3d, char const *const filename)
 {
 	HRESULT result{};
@@ -56,7 +65,7 @@ texture::texture(direct3d const& d3d, char const *const filename)
 	context->GenerateMips(view_.Get());
 }
 
-texture::ImageData texture::load(char const *const filename) const
+ImageData load(char const *const filename)
 {
 	struct TargaHeader
 	{

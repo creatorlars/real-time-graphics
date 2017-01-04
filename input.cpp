@@ -30,10 +30,13 @@ input::input() : message_handler(L"input")
 
 	UnhookWindowsHookEx(hook);
 
+	constexpr auto usage_page = USHORT{ 0x01 };
+	constexpr auto mouse_usage = USHORT{ 0x02 };
+	constexpr auto keyboard_usage = USHORT{ 0x06 };
 	auto const devices = std::array<RAWINPUTDEVICE, 2U>
 	{{
-		{ 0x01, 0x02, RIDEV_INPUTSINK, handle() },	// mouse
-		{ 0x01, 0x06, RIDEV_INPUTSINK, handle() }	// keyboard
+		{ usage_page, mouse_usage, RIDEV_INPUTSINK, handle() },
+		{ usage_page, keyboard_usage, RIDEV_INPUTSINK, handle() }
 	}};
 
 	RegisterRawInputDevices(devices.data(), static_cast<UINT>(devices.size()),
@@ -44,10 +47,8 @@ void input::update()
 {
 	for (auto &it : keys_)
 	{
-		if (it & 0b10)
-		{
-			it &= 0b01;
-		}
+		// clear flags 
+		it &= 0b001;
 	}
 
 	message_handler::update();
@@ -70,17 +71,20 @@ void input::message(UINT const msg, WPARAM const w, LPARAM const l)
 	{
 	case RIM_TYPEKEYBOARD:
 	{
-		if (~input->data.keyboard.Flags & 0b01)
+		// check if key is being released (highest bit set)
+		if (input->data.keyboard.Flags & 0b1)
 		{
-			if (~keys_[input->data.keyboard.VKey] & 0b01)
-			{
-				keys_[input->data.keyboard.VKey] = 0b11;
-			}
+			keys_[input->data.keyboard.VKey] = KEYSTATES::RELEASED;
 		}
 		else {
-			if (keys_[input->data.keyboard.VKey] & 0b01)
+			// check if the key is already held down
+			if (~keys_[input->data.keyboard.VKey] & 0b1)
 			{
-				keys_[input->data.keyboard.VKey] = 0b10;
+				keys_[input->data.keyboard.VKey] = KEYSTATES::PRESSED;
+			}
+			else
+			{
+				keys_[input->data.keyboard.VKey] = KEYSTATES::REPEAT;
 			}
 		}
 		break;

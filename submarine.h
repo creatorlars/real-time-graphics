@@ -9,7 +9,7 @@ class submarine final : public object
 public:
 	explicit submarine(direct3d const&);
 
-	submarine() = default;
+	submarine() = delete;
 	~submarine() = default;
 
 	explicit submarine(submarine const&) = default;
