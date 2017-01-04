@@ -120,6 +120,9 @@ void texture_shader::render(std::shared_ptr<object> const &object,
 {
 	auto const context = d3d_.context();
 
+	//auto object_matrix = XMLoadFloat4x4(&d3d_.world_matrix());
+	//auto world_matrix = XMLoadFloat4x4(&object->matrix());
+	//object_matrix += world_matrix;
 	object->render();
 
 	// Lock the constant buffer so it can be written to.
