@@ -14,18 +14,20 @@ public:
 
 	void render();
 
+	void move(XMFLOAT3);
+
 	inline void move_forward()
-	{ move({ 0.f, 0.f, 1.f }); }
+	{ move({ 0.f, 0.f, .1f }); }
 	inline void move_backward()
-	{ move({ 0.f, 0.f, -1.f }); }
+	{ move({ 0.f, 0.f, -.1f }); }
 	inline void move_up()
-	{ move({ 0.f, 1.f, 0.f }); }
+	{ move({ 0.f, .1f, 0.f }); }
 	inline void move_down()
-	{ move({ 0.f, -1.f, 0.f }); }
+	{ move({ 0.f, -.1f, 0.f }); }
 	inline void move_left()
-	{ move({ -1.f, 0.f, 0.f }); }
+	{ move({ -.1f, 0.f, 0.f }); }
 	inline void move_right()
-	{ move({ 1.f, 0.f, 0.f }); }
+	{ move({ .1f, 0.f, 0.f }); }
 
 	inline void rotate_left()
 	{ rotation_.y -= 1.f; }
@@ -51,8 +53,6 @@ public:
 	{ return matrix_; }
 
 private:
-	void move(XMFLOAT3);
-
 	XMFLOAT3 up_ = { 0.f, 1.f, 0.f };
 	XMFLOAT3 target_ = { 0.f, 0.f, 1.f };
 	XMFLOAT3 position_ = {};

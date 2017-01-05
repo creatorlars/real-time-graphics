@@ -18,9 +18,6 @@ public:
 	sphere& operator=(sphere const&) = default;
 	sphere& operator=(sphere&&) = default;
 
-	void frame() override;
-	void render() override;
-
 private:
 	direct3d const& d3d_;
 };

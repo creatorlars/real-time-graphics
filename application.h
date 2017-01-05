@@ -7,9 +7,12 @@
 #include "camera.h"
 
 class object;
+class submarine;
+class cube;
 
 class texture_shader;
 class transparent_shader;
+class light_shader;
 
 class application
 {
@@ -47,13 +50,16 @@ private:
 	std::shared_ptr<camera> camera_ = nullptr;
 
 	// objects
-	std::shared_ptr<object> submarine_ = nullptr;
-	std::shared_ptr<object> sphere_ = nullptr;
-	std::shared_ptr<object> cube_ = nullptr;
+	std::shared_ptr<submarine> submarine_ = nullptr;
+	std::shared_ptr<cube> cube_ = nullptr;
+	std::shared_ptr<object> inner_sphere_ = nullptr;
+	std::shared_ptr<object> outer_sphere_ = nullptr;
+	std::shared_ptr<object> terrain_ = nullptr;
 
 	// shaders
 	std::shared_ptr<texture_shader> texture_shader_ = nullptr;
 	std::shared_ptr<transparent_shader> transparent_shader_ = nullptr;
+	std::shared_ptr<light_shader> light_shader_ = nullptr;
 
 	// engines
 	std::unique_ptr<window> window_ = nullptr;

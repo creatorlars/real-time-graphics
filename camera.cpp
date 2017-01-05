@@ -4,9 +4,9 @@
 void camera::render()
 {
 	// convert to radians and create rotation matrix
-	auto const pitch = rotation_.x * .0174532925f;
-	auto const yaw = rotation_.y * .0174532925f;
-	auto const roll = rotation_.z * .0174532925f;
+	auto const pitch = XMConvertToRadians(rotation_.x);
+	auto const yaw = XMConvertToRadians(rotation_.y);
+	auto const roll = XMConvertToRadians(rotation_.z);
 	auto const rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
 
 	// transform the target and up vectors by the rotation matrix
@@ -27,9 +27,9 @@ void camera::render()
 void camera::move(XMFLOAT3 delta)
 {
 	// convert to radians and create rotation matrix
-	auto const pitch = rotation_.x * .0174532925f;
-	auto const yaw = rotation_.y * .0174532925f;
-	auto const roll = rotation_.z * .0174532925f;
+	auto const pitch = XMConvertToRadians(rotation_.x);
+	auto const yaw = XMConvertToRadians(rotation_.y);
+	auto const roll = XMConvertToRadians(rotation_.z);
 	auto const matrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
 
 	// transform movement vector by rotation matrix

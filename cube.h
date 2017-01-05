@@ -16,11 +16,8 @@ public:
 	cube& operator=(cube const&) = default;
 	cube& operator=(cube&&) = default;
 
-	void frame() override;
-	void render() override;
+	void frame();
 
 private:
 	direct3d const& d3d_;
-
-	float rotation_ = 0.f;
 };

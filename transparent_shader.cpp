@@ -113,7 +113,7 @@ transparent_shader::transparent_shader(direct3d const& d3d) : d3d_(d3d)
 
 	// Create the texture sampler state.
 	result = device->CreateSamplerState(&sampler_description,
-		sample_state_.GetAddressOf());
+		sampler_state_.GetAddressOf());
 	if (FAILED(result))
 	{
 		throw "";
@@ -204,7 +204,7 @@ void transparent_shader::render(std::shared_ptr<object> const &object,
 	context->PSSetShader(pixel_shader_.Get(), nullptr, 0U);
 
 	// Set the sampler state in the pixel shader.
-	context->PSSetSamplers(0U, 1U, sample_state_.GetAddressOf());
+	context->PSSetSamplers(0U, 1U, sampler_state_.GetAddressOf());
 
 	// Render the triangle.
 	context->DrawIndexed(object->model()->index_count(), 0U, 0);

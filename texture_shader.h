@@ -25,7 +25,7 @@ private:
 	ComPtr<ID3D11PixelShader> pixel_shader_ = nullptr;
 	ComPtr<ID3D11InputLayout> layout_ = nullptr;
 	ComPtr<ID3D11Buffer> matrix_buffer_ = nullptr;
-	ComPtr<ID3D11SamplerState> sample_state_ = nullptr;
+	ComPtr<ID3D11SamplerState> sampler_state_ = nullptr;
 
 	direct3d const& d3d_;
 };

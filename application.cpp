@@ -3,10 +3,12 @@
 
 #include "texture_shader.h"
 #include "transparent_shader.h"
+#include "light_shader.h"
 
 #include "submarine.h"
 #include "sphere.h"
 #include "cube.h"
+#include "terrain.h"
 
 application::application()
 {
@@ -16,13 +18,25 @@ application::application()
 
 	texture_shader_ = std::make_shared<texture_shader>(graphics_->d3d());
 	transparent_shader_ = std::make_shared<transparent_shader>(graphics_->d3d());
+	light_shader_ = std::make_shared<light_shader>(graphics_->d3d());
 
 	submarine_ = std::make_shared<submarine>(graphics_->d3d());
-	sphere_ = std::make_shared<sphere>(graphics_->d3d());
+
 	cube_ = std::make_shared<cube>(graphics_->d3d());
+	cube_->move({ 5.f, 0.f, 0.f });
+
+	inner_sphere_ = std::make_shared<sphere>(graphics_->d3d());
+	inner_sphere_->scale({ -5, -5, -5 });
+
+	outer_sphere_ = std::make_shared<sphere>(graphics_->d3d());
+	outer_sphere_->scale({ 5, 5, 5.f });
+
+	terrain_ = std::make_shared<terrain>(graphics_->d3d());
+	terrain_->scale({ 4.99f, 4.99f, 4.99f });
 
 	camera_ = std::make_shared<camera>();
-	camera_->position({ 0.f, 0.f, -15.f });
+	camera_->rotation({ 40.f, 0.f, 0.f });
+	camera_->move({ 0.f, 0.f, -15.f });	
 
 	test_bar_ = TwNewBar("test_bar");
 
@@ -184,7 +198,6 @@ void application::frame()
 	}
 
 	submarine_->frame();
-	sphere_->frame();
 	cube_->frame();
 }
 
@@ -194,10 +207,12 @@ void application::render()
 
 	camera_->render();
 
-	texture_shader_->render(submarine_, camera_);
-	texture_shader_->render(cube_, camera_);
+	light_shader_->render(submarine_, camera_);
+	light_shader_->render(cube_, camera_);
+	light_shader_->render(terrain_, camera_);
 
-	transparent_shader_->render(sphere_, camera_, .5f);
+	transparent_shader_->render(inner_sphere_, camera_, .25f);
+	transparent_shader_->render(outer_sphere_, camera_, .25f);
 
 	graphics_->end_render();
 }
