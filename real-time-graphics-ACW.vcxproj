@@ -154,6 +154,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="direct3d.cpp" />
+    <ClCompile Include="fish.cpp" />
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light_shader.cpp" />
@@ -292,6 +293,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="direct3d.h" />
+    <ClInclude Include="fish.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light_shader.h" />

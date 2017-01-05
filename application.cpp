@@ -9,6 +9,7 @@
 #include "sphere.h"
 #include "cube.h"
 #include "terrain.h"
+#include "fish.h"
 
 application::application()
 {
@@ -20,7 +21,17 @@ application::application()
 	transparent_shader_ = std::make_shared<transparent_shader>(graphics_->d3d());
 	light_shader_ = std::make_shared<light_shader>(graphics_->d3d());
 
+	for (auto i = 0U; i < 9U; ++i)
+	{
+		fish_.emplace_back(std::make_shared<fish>(graphics_->d3d()));
+		fish_.at(i)->scale({ .1f, .1f, .1f });
+		fish_.at(i)->move({ static_cast<float>(i) - 4.f, 2.f, 0.f });
+
+	}
+
 	submarine_ = std::make_shared<submarine>(graphics_->d3d());
+	submarine_->move({ 0.f, 1.f, 0.f });
+	submarine_->scale({ .5f, .5f, .5f });
 
 	cube_ = std::make_shared<cube>(graphics_->d3d());
 	cube_->move({ 5.f, 0.f, 0.f });
@@ -36,9 +47,15 @@ application::application()
 
 	camera_ = std::make_shared<camera>();
 	camera_->rotation({ 40.f, 0.f, 0.f });
-	camera_->move({ 0.f, 0.f, -15.f });	
+	camera_->move({ 0.f, 0.f, -15.f });
 
-	test_bar_ = TwNewBar("test_bar");
+	tweak_bar_ = TwNewBar("AntTweakBar");
+	TwAddVarRW(tweak_bar_, "Frame Delay", TW_TYPE_INT32, &atb_delay_,
+		"min=1000 max=100000 step=100");
+	TwAddVarRW(tweak_bar_, "Ambient Light", TW_TYPE_COLOR4F, &atb_ambient_,
+		"colormode=hls");
+	TwAddVarRW(tweak_bar_, "Diffuse Light", TW_TYPE_COLOR4F, &atb_diffuse_,
+		"colormode=hls");
 
 	timeBeginPeriod(1U);
 }
@@ -68,6 +85,8 @@ void application::update()
 
 void application::frame()
 {
+	delay_ = std::chrono::microseconds{ atb_delay_ };
+
 	// exit application
 	if (input_->pressed(KEYBOARD::ESCAPE) || !window_->alive())
 	{
@@ -98,7 +117,8 @@ void application::frame()
 				delay_ -= 100us;
 			}
 		}
-		std::cout << delay_.count() << '\n';
+
+		atb_delay_ = delay_.count();
 	}
 
 	// statistics display
@@ -207,9 +227,19 @@ void application::render()
 
 	camera_->render();
 
-	light_shader_->render(submarine_, camera_);
-	light_shader_->render(cube_, camera_);
-	light_shader_->render(terrain_, camera_);
+	// TEMPORARY - FOR TESTING
+	auto ambient = XMFLOAT4{ atb_ambient_[0], atb_ambient_[1], atb_ambient_[2], atb_ambient_[3] };
+	auto diffuse = XMFLOAT4{ atb_diffuse_[0], atb_diffuse_[1], atb_diffuse_[2], atb_diffuse_[3] };
+	auto constexpr direction = XMFLOAT3{ -.75f, .75f, -.75f };
+
+	for (auto const& fish : fish_)
+	{
+		light_shader_->render(fish, camera_, ambient, diffuse, direction);
+	}
+
+	light_shader_->render(submarine_, camera_, ambient, diffuse, direction);
+	light_shader_->render(cube_, camera_, ambient, diffuse, direction);
+	light_shader_->render(terrain_, camera_, ambient, diffuse, direction);
 
 	transparent_shader_->render(inner_sphere_, camera_, .25f);
 	transparent_shader_->render(outer_sphere_, camera_, .25f);

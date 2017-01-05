@@ -146,7 +146,8 @@ light_shader::light_shader(direct3d const& d3d) : d3d_(d3d)
 }
 
 void light_shader::render(std::shared_ptr<object> const &object,
-	std::shared_ptr<camera> const &camera) const
+	std::shared_ptr<camera> const &camera, XMFLOAT4 const &ambient,
+	XMFLOAT4 const &diffuse, XMFLOAT3 const &direction) const
 {
 	HRESULT result{};
 	auto const context = d3d_.context();
@@ -193,15 +194,10 @@ void light_shader::render(std::shared_ptr<object> const &object,
 		throw "";
 	}
 
-	// TEMPORARY - FOR TESTING
-	auto constexpr ambient_color_temp = XMFLOAT4{ .25f, .25f, .25f, 1.f };
-	auto constexpr diffuse_color_temp = XMFLOAT4{ .75f, .75f, .75f, 1.f };
-	auto constexpr light_direction_temp = XMFLOAT3{ -.75f, .75f, -.75f };
-
 	// Get vectors
-	auto const ambient_color = XMLoadFloat4(&ambient_color_temp);
-	auto const diffuse_color = XMLoadFloat4(&diffuse_color_temp);
-	auto const light_direction = XMLoadFloat3(&light_direction_temp);
+	auto const ambient_color = XMLoadFloat4(&ambient);
+	auto const diffuse_color = XMLoadFloat4(&diffuse);
+	auto const light_direction = XMLoadFloat3(&direction);
 
 	// Copy the matrices into the constant buffer
 	auto const light_buffer = static_cast<LightBufferType*>(mapped_resource.pData);

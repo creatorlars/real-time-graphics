@@ -41,10 +41,14 @@ private:
 
 	using high_resolution_clock = std::chrono::high_resolution_clock;
 	high_resolution_clock::time_point time_ = high_resolution_clock::now();
-	std::chrono::nanoseconds delay_ = 15ms;
+	std::chrono::microseconds delay_ = 15ms;
 
 	// AntTweakBar
-	TwBar *test_bar_ = nullptr;
+	TwBar *tweak_bar_ = nullptr;
+	long long atb_delay_ = std::chrono::microseconds{ 15ms }.count();
+	std::array<float, 4U> atb_ambient_ = { .25f, .25f, .25f, 1.f };
+	std::array<float, 4U> atb_diffuse_ = { .75f, .75f, .75f, 1.f };
+	std::array<float, 3U> atb_direction = { -.75f, .75f, -.75f };
 
 	// camera
 	std::shared_ptr<camera> camera_ = nullptr;
@@ -55,6 +59,7 @@ private:
 	std::shared_ptr<object> inner_sphere_ = nullptr;
 	std::shared_ptr<object> outer_sphere_ = nullptr;
 	std::shared_ptr<object> terrain_ = nullptr;
+	std::vector<std::shared_ptr<object>> fish_ = {};
 
 	// shaders
 	std::shared_ptr<texture_shader> texture_shader_ = nullptr;

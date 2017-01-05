@@ -18,7 +18,8 @@ public:
 	light_shader& operator=(light_shader const&) = default;
 	light_shader& operator=(light_shader&&) = default;
 
-	void render(std::shared_ptr<object> const&, std::shared_ptr<camera> const&) const;
+	void render(std::shared_ptr<object> const&, std::shared_ptr<camera> const&,
+		XMFLOAT4 const&, XMFLOAT4 const&, XMFLOAT3 const&) const;
 
 private:
 	ComPtr<ID3D11VertexShader> vertex_shader_ = nullptr;
