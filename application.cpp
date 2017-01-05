@@ -11,6 +11,8 @@
 #include "terrain.h"
 #include "fish.h"
 
+#include "particle.h"
+
 application::application()
 {
 	window_ = std::make_unique<window>();
@@ -58,6 +60,8 @@ application::application()
 		"colormode=hls");
 
 	timeBeginPeriod(1U);
+
+	test_particles_.emplace_back(std::make_shared<particle>(graphics_->d3d(), "data/bubble.tga", 100U));
 }
 
 application::~application()
@@ -219,6 +223,18 @@ void application::frame()
 
 	submarine_->frame();
 	cube_->frame();
+
+	for (auto i = test_particles_.cbegin(); i < test_particles_.cend(); ++i)
+	{
+		if ((*i)->alive())
+		{
+			(*i)->frame();
+		}
+		else
+		{
+			test_particles_.erase(i);
+		}
+	}
 }
 
 void application::render()
@@ -242,6 +258,12 @@ void application::render()
 	light_shader_->render(terrain_, camera_, ambient, diffuse, direction);
 
 	transparent_shader_->render(inner_sphere_, camera_, .25f);
+
+	for (auto const& it : test_particles_)
+	{
+		transparent_shader_->render(it, camera_, .25f);
+	}
+
 	transparent_shader_->render(outer_sphere_, camera_, .25f);
 
 	graphics_->end_render();

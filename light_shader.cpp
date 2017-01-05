@@ -92,7 +92,7 @@ light_shader::light_shader(direct3d const& d3d) : d3d_(d3d)
 	}
 
 	// Create a texture sampler state description.
-	auto constexpr sampler_description = D3D11_SAMPLER_DESC
+	auto constexpr sampler_desc = D3D11_SAMPLER_DESC
 	{
 		D3D11_FILTER_MIN_MAG_MIP_LINEAR,
 		D3D11_TEXTURE_ADDRESS_WRAP, D3D11_TEXTURE_ADDRESS_WRAP, D3D11_TEXTURE_ADDRESS_WRAP,
@@ -102,7 +102,7 @@ light_shader::light_shader(direct3d const& d3d) : d3d_(d3d)
 	};
 
 	// Create the texture sampler state.
-	result = device->CreateSamplerState(&sampler_description,
+	result = device->CreateSamplerState(&sampler_desc,
 		sampler_state_.GetAddressOf());
 	if (FAILED(result))
 	{
@@ -111,7 +111,7 @@ light_shader::light_shader(direct3d const& d3d) : d3d_(d3d)
 
 	// Setup the description of the dynamic matrix constant buffer that is in
 	// the vertex shader.
-	auto constexpr buffer_description = D3D11_BUFFER_DESC
+	auto constexpr buffer_desc = D3D11_BUFFER_DESC
 	{
 		sizeof(MatrixBufferType),
 		D3D11_USAGE_DYNAMIC,
@@ -121,7 +121,7 @@ light_shader::light_shader(direct3d const& d3d) : d3d_(d3d)
 
 	// Create the constant buffer pointer so we can access the vertex shader
 	// constant buffer from within this class.
-	result = device->CreateBuffer(&buffer_description, nullptr,
+	result = device->CreateBuffer(&buffer_desc, nullptr,
 		matrix_buffer_.GetAddressOf());
 	if (FAILED(result))
 	{

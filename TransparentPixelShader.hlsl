@@ -18,8 +18,8 @@ float4 main(PixelInputType input) : SV_TARGET
 	float4 color = shaderTexture.Sample(SampleType, input.tex);
 	
 	// Set the alpha value of this pixel to the blending amount to create the
-	// alpha blending effect.
-	color.a = blendAmount;
+	// alpha blending effect.	
+	color.a = blendAmount * color.a;
 
 	return color;
 }

@@ -14,6 +14,8 @@ class texture_shader;
 class transparent_shader;
 class light_shader;
 
+class particle;
+
 class application
 {
 public:
@@ -70,4 +72,7 @@ private:
 	std::unique_ptr<window> window_ = nullptr;
 	std::unique_ptr<input> input_ = nullptr;
 	std::unique_ptr<graphics> graphics_ = nullptr;
+
+	// test
+	std::vector<std::shared_ptr<particle>> test_particles_ = {};
 };

@@ -81,6 +81,12 @@
     <ClCompile Include="fish.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_emitter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
@@ -100,24 +106,22 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="data\blue.tga">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="data\stone01.tga">
-      <Filter>Textures</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <Object Include="data\cube.obj">
       <Filter>Models</Filter>
     </Object>
     <Object Include="data\sphere.obj">
       <Filter>Models</Filter>
     </Object>
-    <Object Include="data\submarine.obj">
+    <Object Include="data\fish.obj">
       <Filter>Models</Filter>
     </Object>
-    <Object Include="data\submarine2.obj">
+    <Object Include="data\terrain.obj">
+      <Filter>Models</Filter>
+    </Object>
+    <Object Include="data\old_submarine.obj">
+      <Filter>Models</Filter>
+    </Object>
+    <Object Include="data\new_submarine.obj">
       <Filter>Models</Filter>
     </Object>
   </ItemGroup>
@@ -179,5 +183,28 @@
     <ClInclude Include="fish.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_emitter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\blue.tga">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="data\bubble.tga">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="data\orange.tga">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="data\sand.tga">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="data\stone.tga">
+      <Filter>Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

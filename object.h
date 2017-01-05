@@ -44,6 +44,11 @@ public:
 	void rotate(XMFLOAT3 const&);
 	void move(XMFLOAT3 const&);
 
+	inline unsigned index_count() const
+	{ return model_->index_count(); }
+	inline ComPtr<ID3D11ShaderResourceView> view() const
+	{ return model_->view(); }
+
 private:
 	XMFLOAT4X4 matrix_ = {};
 	std::shared_ptr<::model> model_ = nullptr;

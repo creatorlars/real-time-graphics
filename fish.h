@@ -3,6 +3,7 @@
 #include "object.h"
 
 class direct3d;
+class particle_emitter;
 
 class fish final : public object
 {
@@ -22,4 +23,5 @@ public:
 
 private:
 	direct3d const& d3d_;
+	std::shared_ptr<particle_emitter> emitter_ = nullptr;
 };

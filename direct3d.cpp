@@ -265,7 +265,7 @@ void direct3d::end() const
 
 void direct3d::enable_alpha_blending()
 {
-	auto constexpr blend_description = D3D11_BLEND_DESC
+	auto constexpr blend_desc = D3D11_BLEND_DESC
 	{
 		FALSE, FALSE,
 		TRUE,
@@ -277,7 +277,7 @@ void direct3d::enable_alpha_blending()
 	static ID3D11BlendState *blend_state = nullptr;
 	if (nullptr == blend_state)
 	{
-		device_->CreateBlendState(&blend_description, &blend_state);
+		device_->CreateBlendState(&blend_desc, &blend_state);
 	}
 
 	auto constexpr factor = std::array<float, 4U>{};
@@ -286,7 +286,7 @@ void direct3d::enable_alpha_blending()
 
 void direct3d::disable_alpha_blending()
 {
-	auto constexpr blend_description = D3D11_BLEND_DESC
+	auto constexpr blend_desc = D3D11_BLEND_DESC
 	{
 		FALSE, FALSE,
 		FALSE,
@@ -298,7 +298,7 @@ void direct3d::disable_alpha_blending()
 	static ID3D11BlendState *blend_state = nullptr;
 	if (nullptr == blend_state)
 	{
-		device_->CreateBlendState(&blend_description, &blend_state);
+		device_->CreateBlendState(&blend_desc, &blend_state);
 	}
 
 	auto constexpr factor = std::array<float, 4U>{};

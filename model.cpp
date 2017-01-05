@@ -10,18 +10,20 @@ namespace {
 		XMFLOAT2 texture_;
 		XMFLOAT3 normal_;
 
-		ModelType(XMFLOAT3 const &position, XMFLOAT2 const &texture, XMFLOAT3 const &normal)
-			: position_(position), texture_(texture), normal_(normal) {}
+		constexpr ModelType(XMFLOAT3 const &position, XMFLOAT2 const &texture, XMFLOAT3 const &normal)
+			: position_(position), texture_(texture), normal_(normal)
+		{}
 
-		ModelType(XMFLOAT3 &&position, XMFLOAT2 &&texture, XMFLOAT3 &&normal)
+		constexpr ModelType(XMFLOAT3 &&position, XMFLOAT2 &&texture, XMFLOAT3 &&normal)
 			: position_(std::move(position)), texture_(std::move(texture)),
-			normal_(std::move(normal)) {}
+			normal_(std::move(normal))
+		{}
 
 		ModelType() = default;
 		~ModelType() = default;
 
-		explicit ModelType(ModelType const&) = default;
-		explicit ModelType(ModelType&&) = default;
+		constexpr explicit ModelType(ModelType const&) = default;
+		constexpr explicit ModelType(ModelType&&) = default;
 
 		ModelType& operator=(ModelType const&) = default;
 		ModelType& operator=(ModelType&&) = default;
@@ -68,13 +70,13 @@ model::model(direct3d const& d3d, char const *const modelFilename,
 	indices.resize(vertices.size());
 	std::iota(indices.begin(), indices.end(), 0UL);
 
-	auto const indexData = D3D11_SUBRESOURCE_DATA
+	auto const index_data = D3D11_SUBRESOURCE_DATA
 	{
 		indices.data(),
 		0U, 0U
 	};
 
-	auto const indexBufferDesc = D3D11_BUFFER_DESC
+	auto const index_buffer_desc = D3D11_BUFFER_DESC
 	{
 		static_cast<UINT>(sizeof(unsigned long) * vertices.size()),
 		D3D11_USAGE_DEFAULT,
@@ -82,7 +84,7 @@ model::model(direct3d const& d3d, char const *const modelFilename,
 		0U
 	};
 
-	result = device->CreateBuffer(&indexBufferDesc, &indexData,
+	result = device->CreateBuffer(&index_buffer_desc, &index_data,
 		index_buffer_.GetAddressOf());
 	if (FAILED(result))
 	{
