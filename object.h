@@ -3,6 +3,8 @@
 #include "model.h"
 
 class direct3d;
+class transparent_shader;
+class camera;
 
 class object
 {
@@ -40,6 +42,10 @@ public:
 	{ position_ = position; }
 
 	virtual void render();
+	virtual void render(std::shared_ptr<transparent_shader> const&, std::shared_ptr<camera> const&)
+	{}
+	virtual void frame()
+	{}
 
 	void rotate(XMFLOAT3 const&);
 	void move(XMFLOAT3 const&);

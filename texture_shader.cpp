@@ -11,7 +11,7 @@ texture_shader::texture_shader(direct3d const& d3d) : d3d_(d3d)
 	auto const device = d3d_.device();
 
 	// Load vertex shader
-	auto constexpr vs_path = L"data/VertexShader.cso";
+	auto constexpr vs_path = L"data/texture_vs.cso";
 	auto vs_stream = std::stringstream{};
 	vs_stream << std::ifstream{ vs_path, std::ios::binary }.rdbuf();
 	auto const vs_data = vs_stream.str();
@@ -24,7 +24,7 @@ texture_shader::texture_shader(direct3d const& d3d) : d3d_(d3d)
 	}
 
 	// Load pixel shader
-	auto constexpr ps_path = L"data/PixelShader.cso";
+	auto constexpr ps_path = L"data/texture_ps.cso";
 	auto ps_stream = std::stringstream{};
 	ps_stream << std::ifstream{ ps_path, std::ios::binary }.rdbuf();
 	auto const ps_data = ps_stream.str();
@@ -72,7 +72,7 @@ texture_shader::texture_shader(direct3d const& d3d) : d3d_(d3d)
 	// the vertex shader.
 	auto constexpr buffer_desc = D3D11_BUFFER_DESC
 	{
-		sizeof(MatrixBufferType),
+		sizeof(MATRICES),
 		D3D11_USAGE_DYNAMIC,
 		D3D11_BIND_CONSTANT_BUFFER, D3D11_CPU_ACCESS_WRITE, 0U,
 		0U

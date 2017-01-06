@@ -2,12 +2,37 @@
 #include "fish.h"
 
 #include "direct3d.h"
+#include "particle_emitter.h"
+#include "transparent_shader.h"
+#include "camera.h"
 
 fish::fish(direct3d const& d3d)
 	: object(d3d, "data/fish.obj", "data/orange.tga"), d3d_(d3d)
-{}
+{
+	emitter_ = std::make_shared<particle_emitter>(d3d);
+
+}
 
 void fish::frame()
 {
-	rotate({ 1.f, 1.f, 0.f });
+	emitter_->position(position());
+	emitter_->frame();
+
+	--wait_;
+	if (wait_ == 0U)
+	{
+		wait_ = 20U;
+		emitter_->emit();
+	}
+}
+
+void fish::render()
+{
+	object::render();
+}
+
+void fish::render(std::shared_ptr<transparent_shader> const &shader,
+	std::shared_ptr<camera> const &camera)
+{
+	emitter_->render(shader, camera);
 }

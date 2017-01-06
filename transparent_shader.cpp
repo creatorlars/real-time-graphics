@@ -11,7 +11,7 @@ transparent_shader::transparent_shader(direct3d const& d3d) : d3d_(d3d)
 	auto const device = d3d_.device();
 
 	// Load vertex shader
-	auto constexpr vs_path = L"data/VertexShader.cso";
+	auto constexpr vs_path = L"data/transparent_vs.cso";
 	auto vs_stream = std::stringstream{};
 	vs_stream << std::ifstream{ vs_path, std::ios::binary }.rdbuf();
 	auto const vs_data = vs_stream.str();
@@ -24,7 +24,7 @@ transparent_shader::transparent_shader(direct3d const& d3d) : d3d_(d3d)
 	}
 
 	// Load pixel shader
-	auto constexpr ps_path = L"data/TransparentPixelShader.cso";
+	auto constexpr ps_path = L"data/transparent_ps.cso";
 	auto ps_stream = std::stringstream{};
 	ps_stream << std::ifstream{ ps_path, std::ios::binary }.rdbuf();
 	auto const ps_data = ps_stream.str();

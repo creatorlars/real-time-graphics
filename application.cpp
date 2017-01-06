@@ -11,7 +11,7 @@
 #include "terrain.h"
 #include "fish.h"
 
-#include "particle.h"
+#include "particle_emitter.h"
 
 application::application()
 {
@@ -28,7 +28,6 @@ application::application()
 		fish_.emplace_back(std::make_shared<fish>(graphics_->d3d()));
 		fish_.at(i)->scale({ .1f, .1f, .1f });
 		fish_.at(i)->move({ static_cast<float>(i) - 4.f, 2.f, 0.f });
-
 	}
 
 	submarine_ = std::make_shared<submarine>(graphics_->d3d());
@@ -60,8 +59,6 @@ application::application()
 		"colormode=hls");
 
 	timeBeginPeriod(1U);
-
-	test_particles_.emplace_back(std::make_shared<particle>(graphics_->d3d(), "data/bubble.tga", 100U));
 }
 
 application::~application()
@@ -224,16 +221,9 @@ void application::frame()
 	submarine_->frame();
 	cube_->frame();
 
-	for (auto i = test_particles_.cbegin(); i < test_particles_.cend(); ++i)
+	for (auto const& fish : fish_)
 	{
-		if ((*i)->alive())
-		{
-			(*i)->frame();
-		}
-		else
-		{
-			test_particles_.erase(i);
-		}
+		fish->frame();
 	}
 }
 
@@ -246,12 +236,7 @@ void application::render()
 	// TEMPORARY - FOR TESTING
 	auto ambient = XMFLOAT4{ atb_ambient_[0], atb_ambient_[1], atb_ambient_[2], atb_ambient_[3] };
 	auto diffuse = XMFLOAT4{ atb_diffuse_[0], atb_diffuse_[1], atb_diffuse_[2], atb_diffuse_[3] };
-	auto constexpr direction = XMFLOAT3{ -.75f, .75f, -.75f };
-
-	for (auto const& fish : fish_)
-	{
-		light_shader_->render(fish, camera_, ambient, diffuse, direction);
-	}
+	auto const direction = XMFLOAT3{ -.5f, -.5f, -.5f };
 
 	light_shader_->render(submarine_, camera_, ambient, diffuse, direction);
 	light_shader_->render(cube_, camera_, ambient, diffuse, direction);
@@ -259,9 +244,10 @@ void application::render()
 
 	transparent_shader_->render(inner_sphere_, camera_, .25f);
 
-	for (auto const& it : test_particles_)
+	for (auto const& fish : fish_)
 	{
-		transparent_shader_->render(it, camera_, .25f);
+		fish->render(transparent_shader_, camera_);
+		texture_shader_->render(fish, camera_);
 	}
 
 	transparent_shader_->render(outer_sphere_, camera_, .25f);

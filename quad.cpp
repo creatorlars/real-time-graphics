@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "particle.h"
+#include "quad.h"
 
 #include "direct3d.h"
 
@@ -9,13 +9,17 @@ namespace
 	{
 		XMFLOAT3 position_;
 		XMFLOAT2 texture_;
+		XMFLOAT4 color_;
 
-		constexpr VertexType(XMFLOAT3 const &position, XMFLOAT2 const &texture)
-			: position_(position), texture_(texture)
+		constexpr VertexType(XMFLOAT3 const &position, XMFLOAT2 const &texture,
+			XMFLOAT4 const &color)
+			: position_(position), texture_(texture), color_(color)
 		{}
 
-		constexpr VertexType(XMFLOAT3 &&position, XMFLOAT2 &&texture)
-			: position_(std::move(position)), texture_(std::move(texture))
+		constexpr VertexType(XMFLOAT3 &&position, XMFLOAT2 &&texture,
+			XMFLOAT4 &&color)
+			: position_(std::move(position)), texture_(std::move(texture)),
+			color_(std::move(color))
 		{}
 
 		VertexType() = delete;
@@ -29,21 +33,19 @@ namespace
 	};
 }
 
-particle::particle(direct3d const& d3d, char const *const filename,
-	unsigned life)
-	: d3d_(d3d), texture_(d3d, filename), life_(life)
+quad::quad(direct3d const& d3d)
+	: d3d_(d3d)
 {
 	HRESULT result{};
 
 	auto constexpr vertices = std::array<VertexType, index_count_>
 	{ {
-		{ { -1.f, -1.f, 0.f }, { 0.f, 1.f } },	// bottom left
-		{ { -1.f, 1.f, 0.f }, { 0.f, 0.f } },	// top left
-		{ { 1.f, -1.f, 0.0f }, { -1.f, 1.f } },	// bottom right
-		{ { 1.f, 1.f, 0.0f }, { -1.f, 0.f } },	// top right
-		{ { 1.f, -1.f, 0.0f }, { -1.f, 1.f } },	// bottom right
-		{ { -1.f, 1.f, 0.0f }, { 0.f, 1.f } }	// top left
-		
+		{ { -1.f, -1.f, 0.f }, { 1.f, 1.f }, {} },	// bottom left
+		{ { -1.f, 1.f, 0.f }, { 1.f, 0.f }, {} },	// top left
+		{ { 1.f, -1.f, 0.0f }, { 0.f, 1.f }, {} },	// bottom right
+		{ { 1.f, 1.f, 0.0f }, { 0.f, 0.f }, {} },	// top right
+		{ { 1.f, -1.f, 0.0f }, { 0.f, 1.f }, {} },	// bottom right
+		{ { -1.f, 1.f, 0.0f }, { 1.f, 0.f }, {} }	// top left
 	} };
 
 	auto constexpr vertex_buffer_desc = D3D11_BUFFER_DESC
@@ -54,7 +56,7 @@ particle::particle(direct3d const& d3d, char const *const filename,
 		0U
 	};
 
-	auto const vertex_data = D3D11_SUBRESOURCE_DATA
+	static auto const vertex_data = D3D11_SUBRESOURCE_DATA
 	{
 		vertices.data(),
 		0U, 0U
@@ -81,7 +83,7 @@ particle::particle(direct3d const& d3d, char const *const filename,
 		0U
 	};
 
-	auto const index_data = D3D11_SUBRESOURCE_DATA
+	static auto const index_data = D3D11_SUBRESOURCE_DATA
 	{
 		indices.data(),
 		0U, 0U
@@ -93,25 +95,10 @@ particle::particle(direct3d const& d3d, char const *const filename,
 	{
 		throw "";
 	}
-
-	auto const xmmatrix = XMMatrixIdentity();
-	XMStoreFloat4x4(&matrix_, xmmatrix);
 }
 
-void particle::render()
+void quad::render()
 {
-	if (life_ == 0U)
-	{
-		return;
-	}
-
-	auto xmmatrix = XMMatrixIdentity();
-	xmmatrix *= XMMatrixScaling(scale_.x, scale_.y, scale_.z);
-
-	xmmatrix *= XMMatrixTranslation(position_.x, position_.y, position_.z);
-
-	XMStoreFloat4x4(&matrix_, xmmatrix);
-
 	auto const context = d3d_.context();
 
 	// Set the vertex buffer to active so it can be rendered.
@@ -125,17 +112,4 @@ void particle::render()
 
 	// Set the type of primitive to triangles.
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-}
-
-void particle::frame()
-{
-	--life_;
-	if (life_ == 0U)
-	{
-		return;
-	}
-
-	position_.x += direction_.x;
-	position_.y += direction_.y;
-	position_.z += direction_.z;
 }

@@ -36,7 +36,7 @@ public:
 		}
 
 		// Get a pointer to the data in the constant buffer.
-		auto const matrix_buffer = static_cast<MatrixBufferType*>(mapped_resource.pData);
+		auto const matrix_buffer = static_cast<MATRICES*>(mapped_resource.pData);
 
 		// Get matrices.
 		auto const projection_matrix = XMLoadFloat4x4(&d3d_.projection_matrix());
@@ -75,7 +75,7 @@ public:
 	}
 
 private:
-	struct MatrixBufferType
+	struct MATRICES
 	{
 		XMMATRIX world;
 		XMMATRIX view;
