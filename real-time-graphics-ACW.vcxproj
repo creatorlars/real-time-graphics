@@ -155,6 +155,7 @@
     <ClCompile Include="config.cpp" />
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="direct3d.cpp" />
+    <ClCompile Include="drebbel.cpp" />
     <ClCompile Include="fish.cpp" />
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="input.cpp" />
@@ -384,13 +385,13 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Object>
-    <Object Include="data\new_submarine.obj">
+    <Object Include="data\submarine.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Object>
-    <Object Include="data\old_submarine.obj">
+    <Object Include="data\drebbel.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -409,6 +410,7 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="direct3d.h" />
+    <ClInclude Include="drebbel.h" />
     <ClInclude Include="fish.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="input.h" />

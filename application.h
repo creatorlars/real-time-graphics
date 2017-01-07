@@ -4,10 +4,9 @@
 #include "input.h"
 #include "graphics.h"
 
-#include "camera.h"
-
 class object;
 class submarine;
+class drebbel;
 class cube;
 
 class texture_shader;
@@ -16,6 +15,7 @@ class light_shader;
 
 class particle_emitter;
 class light;
+class camera;
 
 class application
 {
@@ -55,6 +55,7 @@ private:
 
 	// objects
 	std::shared_ptr<submarine> submarine_ = nullptr;
+	std::shared_ptr<drebbel> drebbel_ = nullptr;
 	std::shared_ptr<cube> cube_ = nullptr;
 	std::shared_ptr<object> inner_sphere_ = nullptr;
 	std::shared_ptr<object> outer_sphere_ = nullptr;

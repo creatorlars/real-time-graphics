@@ -135,6 +135,9 @@
     <ClCompile Include="object.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="drebbel.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="transparent_vs.hlsl">
@@ -169,10 +172,10 @@
     <Object Include="data\terrain.obj">
       <Filter>Models</Filter>
     </Object>
-    <Object Include="data\old_submarine.obj">
+    <Object Include="data\submarine.obj">
       <Filter>Models</Filter>
     </Object>
-    <Object Include="data\new_submarine.obj">
+    <Object Include="data\drebbel.obj">
       <Filter>Models</Filter>
     </Object>
   </ItemGroup>
@@ -253,6 +256,9 @@
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="terrain.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="drebbel.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,6 +6,7 @@
 #include "light_shader.h"
 
 #include "submarine.h"
+#include "drebbel.h"
 #include "sphere.h"
 #include "cube.h"
 #include "terrain.h"
@@ -13,6 +14,7 @@
 
 #include "particle_emitter.h"
 #include "light.h"
+#include "camera.h"
 
 #include "config.h"
 
@@ -29,8 +31,12 @@ application::application()
 	light_shader_ = std::make_shared<light_shader>(graphics_->d3d());
 
 	submarine_ = std::make_shared<submarine>(graphics_->d3d());
-	submarine_->translate({ 0.f, 1.f, 0.f });
+	submarine_->translate({ 2.f, 1.f, 0.f });
 	submarine_->scale({ .5f, .5f, .5f });
+
+	drebbel_ = std::make_shared<drebbel>(graphics_->d3d());
+	drebbel_->translate({ -2.f, 1.f, 0.f });
+	drebbel_->scale({ .5f, .5f, .5f });
 
 	cube_ = std::make_shared<cube>(graphics_->d3d());
 	cube_->translate({ 5.f, 0.f, 0.f });
@@ -223,6 +229,7 @@ void application::frame()
 	}
 
 	submarine_->frame();
+	drebbel_->frame();
 	cube_->frame();
 
 	for (auto const& fish : fish_)
@@ -238,6 +245,7 @@ void application::render()
 	camera_->render();
 
 	light_shader_->render(submarine_, camera_, lights_);
+	light_shader_->render(drebbel_, camera_, lights_);
 	light_shader_->render(cube_, camera_, lights_);
 	light_shader_->render(terrain_, camera_, lights_);
 
