@@ -157,6 +157,7 @@
     <ClCompile Include="fish.cpp" />
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="input.cpp" />
+    <ClCompile Include="light.cpp" />
     <ClCompile Include="light_shader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message_handler.cpp" />
@@ -406,6 +407,7 @@
     <ClInclude Include="fish.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="light.h" />
     <ClInclude Include="light_shader.h" />
     <ClInclude Include="message_handler.h" />
     <ClInclude Include="model.h" />

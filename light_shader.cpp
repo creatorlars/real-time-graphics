@@ -4,6 +4,7 @@
 #include "direct3d.h"
 #include "object.h"
 #include "camera.h"
+#include "light.h"
 
 struct MatrixBufferType
 {
@@ -12,11 +13,13 @@ struct MatrixBufferType
 	XMMATRIX projection;
 };
 
+#define MAXLIGHTS 10
 struct LightBufferType
 {
-	XMVECTOR ambientColor;
-	XMVECTOR diffuseColor;
-	XMVECTOR lightDirection;
+	XMVECTOR ambient[MAXLIGHTS];
+	XMVECTOR diffuse[MAXLIGHTS];
+	XMVECTOR direction[MAXLIGHTS];
+	int count;
 };
 
 light_shader::light_shader(direct3d const& d3d) : d3d_(d3d)
@@ -146,8 +149,8 @@ light_shader::light_shader(direct3d const& d3d) : d3d_(d3d)
 }
 
 void light_shader::render(std::shared_ptr<object> const &object,
-	std::shared_ptr<camera> const &camera, XMFLOAT4 const &ambient,
-	XMFLOAT4 const &diffuse, XMFLOAT3 const &direction) const
+	std::shared_ptr<camera> const &camera,
+	std::vector<std::shared_ptr<light>> const &lights) const
 {
 	HRESULT result{};
 	auto const context = d3d_.context();
@@ -194,16 +197,20 @@ void light_shader::render(std::shared_ptr<object> const &object,
 		throw "";
 	}
 
-	// Get vectors
-	auto const ambient_color = XMLoadFloat4(&ambient);
-	auto const diffuse_color = XMLoadFloat4(&diffuse);
-	auto const light_direction = XMLoadFloat3(&direction);
-
-	// Copy the matrices into the constant buffer
 	auto const light_buffer = static_cast<LightBufferType*>(mapped_resource.pData);
-	light_buffer->ambientColor = ambient_color;
-	light_buffer->diffuseColor = diffuse_color;
-	light_buffer->lightDirection = light_direction;
+	light_buffer->count = static_cast<int>(lights.size());
+	for (auto i = 0U; i < lights.size(); ++i)
+	{
+		// Get vectors
+		auto const ambient_color = XMLoadFloat4(&lights[i]->ambient());
+		auto const diffuse_color = XMLoadFloat4(&lights[i]->diffuse());
+		auto const light_direction = XMLoadFloat3(&lights[i]->direction());
+
+		// Copy the matrices into the constant buffer		
+		light_buffer->ambient[i] = ambient_color;
+		light_buffer->diffuse[i] = diffuse_color;
+		light_buffer->direction[i] = light_direction;
+	}	
 
 	// Unlock the buffer.
 	context->Unmap(light_buffer_.Get(), 0U);

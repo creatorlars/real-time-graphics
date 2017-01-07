@@ -3,6 +3,7 @@
 class direct3d;
 class object;
 class camera;
+class light;
 
 class light_shader
 {
@@ -19,7 +20,7 @@ public:
 	light_shader& operator=(light_shader&&) = default;
 
 	void render(std::shared_ptr<object> const&, std::shared_ptr<camera> const&,
-		XMFLOAT4 const&, XMFLOAT4 const&, XMFLOAT3 const&) const;
+		std::vector<std::shared_ptr<light>> const&) const;
 
 private:
 	ComPtr<ID3D11VertexShader> vertex_shader_ = nullptr;

@@ -12,6 +12,7 @@
 #include "fish.h"
 
 #include "particle_emitter.h"
+#include "light.h"
 
 application::application()
 {
@@ -53,10 +54,8 @@ application::application()
 	tweak_bar_ = TwNewBar("AntTweakBar");
 	TwAddVarRW(tweak_bar_, "Frame Delay", TW_TYPE_INT32, &atb_delay_,
 		"min=1000 max=100000 step=100");
-	TwAddVarRW(tweak_bar_, "Ambient Light", TW_TYPE_COLOR4F, &atb_ambient_,
-		"colormode=hls");
-	TwAddVarRW(tweak_bar_, "Diffuse Light", TW_TYPE_COLOR4F, &atb_diffuse_,
-		"colormode=hls");
+
+	lights_.emplace_back(std::make_shared<light>());
 
 	timeBeginPeriod(1U);
 }
@@ -233,14 +232,9 @@ void application::render()
 
 	camera_->render();
 
-	// TEMPORARY - FOR TESTING
-	auto ambient = XMFLOAT4{ atb_ambient_[0], atb_ambient_[1], atb_ambient_[2], atb_ambient_[3] };
-	auto diffuse = XMFLOAT4{ atb_diffuse_[0], atb_diffuse_[1], atb_diffuse_[2], atb_diffuse_[3] };
-	auto const direction = XMFLOAT3{ -.5f, -.5f, -.5f };
-
-	light_shader_->render(submarine_, camera_, ambient, diffuse, direction);
-	light_shader_->render(cube_, camera_, ambient, diffuse, direction);
-	light_shader_->render(terrain_, camera_, ambient, diffuse, direction);
+	light_shader_->render(submarine_, camera_, lights_);
+	light_shader_->render(cube_, camera_, lights_);
+	light_shader_->render(terrain_, camera_, lights_);
 
 	transparent_shader_->render(inner_sphere_, camera_, .25f);
 

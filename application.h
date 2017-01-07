@@ -15,6 +15,7 @@ class transparent_shader;
 class light_shader;
 
 class particle_emitter;
+class light;
 
 class application
 {
@@ -48,9 +49,6 @@ private:
 	// AntTweakBar
 	TwBar *tweak_bar_ = nullptr;
 	long long atb_delay_ = std::chrono::microseconds{ 15ms }.count();
-	std::array<float, 4U> atb_ambient_ = { .25f, .25f, .25f, 1.f };
-	std::array<float, 4U> atb_diffuse_ = { .75f, .75f, .75f, 1.f };
-	std::array<float, 3U> atb_direction = { -.75f, .75f, -.75f };
 
 	// camera
 	std::shared_ptr<camera> camera_ = nullptr;
@@ -74,5 +72,5 @@ private:
 	std::unique_ptr<graphics> graphics_ = nullptr;
 
 	// test
-	std::shared_ptr<particle_emitter> particle_emitter_ = nullptr;
+	std::vector<std::shared_ptr<light>> lights_ = {};
 };

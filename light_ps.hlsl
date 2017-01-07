@@ -1,11 +1,15 @@
 Texture2D tex;
 SamplerState state;
 
+#define MAXLIGHTS 10
+
 cbuffer DATA
 {
-	float4 ambient;
-	float4 diffuse;
-	float3 direction;
+	float4 ambient[MAXLIGHTS];
+	float4 diffuse[MAXLIGHTS];
+	float3 direction[MAXLIGHTS];
+	float padding;
+	int count;
 };
 
 struct PS_INPUT
@@ -17,18 +21,23 @@ struct PS_INPUT
 
 float4 main(PS_INPUT input) : SV_TARGET
 {
-	// calculate light intensity
-	float intensity = dot(input.normal, -direction);
-	
-	// calculate diffuse colour
-	float4 color = ambient;
-	if (intensity > 0.0f)
+	float4 total = 0.f;
+	for (int i = 0; i < count; ++i)
 	{
-		color += (diffuse * intensity);
+		// calculate light intensity
+		float intensity = dot(input.normal, -direction[i]);
+
+		// calculate diffuse colour
+		float4 colour = ambient[i];
+		if (intensity > 0.0f)
+		{
+			colour += (diffuse[i] * intensity);
+		}
+		total += colour;
 	}
-	
+
 	// multiply by the texture pixel
-	color = color * tex.Sample(state, input.tex);
-	
-	return color;
+	total = total * tex.Sample(state, input.tex);
+
+	return total;
 }
