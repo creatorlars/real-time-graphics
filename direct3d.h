@@ -1,10 +1,11 @@
 #pragma once
 
+class config;
+
 class direct3d
 {
 public:
-	direct3d(unsigned const, unsigned const, bool const, HWND const&,
-		bool const, float const, float const);
+	direct3d(HWND const&, std::shared_ptr<config> const&);
 	~direct3d();
 
 	direct3d() = delete;

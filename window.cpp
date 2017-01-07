@@ -1,7 +1,10 @@
 #include "pch.h"
 #include "window.h"
 
-window::window() : message_handler(L"window")
+#include "config.h"
+
+window::window(std::shared_ptr<config> const &settings)
+	: message_handler(L"window")
 {
 	auto const window_class = WNDCLASS
 	{
@@ -17,12 +20,14 @@ window::window() : message_handler(L"window")
 	auto const hook = SetWindowsHookEx(WH_CBT, message_handler::hook, nullptr,
 		GetCurrentThreadId());
 
+	auto width = settings->read<unsigned>(L"general", L"width");
+	auto height = settings->read<unsigned>(L"general", L"height");
 	handle(CreateWindow
 	(
 		window_class.lpszClassName, nullptr,
 		WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE,
 		0, 0,
-		WINDOW_WIDTH, WINDOW_HEIGHT,
+		width, height,
 		nullptr, nullptr,
 		instance(),
 		this

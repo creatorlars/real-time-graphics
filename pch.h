@@ -44,9 +44,5 @@ using namespace std::literals;
 #include "libs\AntTweakBar.h"
 
 // Globals
-bool constexpr FULL_SCREEN = false;
-bool constexpr VSYNC_ENABLED = false;
-float constexpr SCREEN_DEPTH = 1000.f;
-float constexpr SCREEN_NEAR = .1f;
-unsigned constexpr WINDOW_WIDTH = 1024;
-unsigned constexpr WINDOW_HEIGHT = 768;
+float constexpr SCREEN_DEPTH_FAR = 1000.f;
+float constexpr SCREEN_DEPTH_NEAR = .1f;

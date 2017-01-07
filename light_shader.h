@@ -42,7 +42,6 @@ public:
 
 		// Get matrices.
 		auto const projection_matrix = XMLoadFloat4x4(&d3d_.projection_matrix());
-		//auto const object_matrix = XMLoadFloat4x4(&object->matrix());
 		auto const camera_matrix = XMLoadFloat4x4(&camera->matrix());
 
 		// Copy the matrices into the constant buffer.

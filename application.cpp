@@ -14,11 +14,15 @@
 #include "particle_emitter.h"
 #include "light.h"
 
+#include "config.h"
+
 application::application()
 {
-	window_ = std::make_unique<window>();
+	auto const settings = std::make_shared<config>(L"data/config.ini");
+
+	window_ = std::make_unique<window>(settings);
 	input_ = std::make_unique<input>();
-	graphics_ = std::make_unique<graphics>(window_->handle());
+	graphics_ = std::make_unique<graphics>(window_->handle(), settings);
 
 	texture_shader_ = std::make_shared<texture_shader>(graphics_->d3d());
 	transparent_shader_ = std::make_shared<transparent_shader>(graphics_->d3d());

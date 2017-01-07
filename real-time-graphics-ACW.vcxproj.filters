@@ -37,6 +37,9 @@
     <Filter Include="Source Files\Particles">
       <UniqueIdentifier>{589d8461-4fd6-4703-bf76-a7823690c470}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{7bf62f9d-d660-4d94-a13c-00908c8364ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp">
@@ -116,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="bubble.cpp">
       <Filter>Source Files\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="config.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +240,9 @@
     <ClInclude Include="bubble.h">
       <Filter>Header Files\Particles</Filter>
     </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\blue.tga">
@@ -251,5 +260,10 @@
     <Image Include="data\stone.tga">
       <Filter>Textures</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config.ini">
+      <Filter>Config</Filter>
+    </None>
   </ItemGroup>
 </Project>

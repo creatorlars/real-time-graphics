@@ -2,10 +2,12 @@
 
 #include "message_handler.h"
 
+class config;
+
 class window : public message_handler
 {
 public:
-	window();
+	window(std::shared_ptr<config> const&);
 
 	~window() = default;
 

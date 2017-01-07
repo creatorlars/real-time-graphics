@@ -1,11 +1,16 @@
 #include "pch.h"
 #include "direct3d.h"
 
-direct3d::direct3d(unsigned const width, unsigned const height, bool const vsync,
-	HWND const &hwnd, bool const fullscreen, float const depth_far, float const depth_near)
-	: vsync_(vsync)
+#include "config.h"
+
+direct3d::direct3d(HWND const &hwnd, std::shared_ptr<config> const &settings)
 {
 	HRESULT result{};
+
+	vsync_ = settings->read<bool>(L"general", L"vsync");
+	auto fullscreen = settings->read<bool>(L"general", L"fullscreen");
+	auto width = settings->read<unsigned>(L"general", L"width");
+	auto height = settings->read<unsigned>(L"general", L"height");
 
 	// Create a DirectX graphics interface factory.
 	auto factory = ComPtr<IDXGIFactory>{};
@@ -218,7 +223,7 @@ direct3d::direct3d(unsigned const width, unsigned const height, bool const vsync
 
 	// Create the projection matrix for 3D rendering.
 	auto const projection_matrix = XMMatrixPerspectiveFovLH(XM_PI / 4.f,
-		width_f / height_f, depth_near, depth_far);
+		width_f / height_f, SCREEN_DEPTH_NEAR, SCREEN_DEPTH_FAR);
 	XMStoreFloat4x4(&projection_matrix_, projection_matrix);
 
 	// Initialize the world matrix to the identity matrix.
@@ -227,7 +232,7 @@ direct3d::direct3d(unsigned const width, unsigned const height, bool const vsync
 
 	// Create an orthographic projection matrix for 2D rendering.
 	auto const ortho_matrix = XMMatrixOrthographicLH(width_f, height_f,
-		depth_near, depth_far);
+		SCREEN_DEPTH_NEAR, SCREEN_DEPTH_FAR);
 	XMStoreFloat4x4(&ortho_matrix_, ortho_matrix);
 
 	TwInit(TW_DIRECT3D11, device_.Get());

@@ -3,8 +3,10 @@
 
 #include "direct3d.h"
 
-graphics::graphics(HWND const& handle) :
-	d3d_(WINDOW_WIDTH, WINDOW_HEIGHT, VSYNC_ENABLED, handle, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR)
+class config;
+
+graphics::graphics(HWND const& handle, std::shared_ptr<config> const &settings)
+	: d3d_(handle, settings)
 {}
 
 void graphics::begin_render()

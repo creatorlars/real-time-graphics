@@ -5,7 +5,7 @@
 class graphics
 {
 public:
-	explicit graphics(HWND const&);
+	explicit graphics(HWND const&, std::shared_ptr<config> const&);
 
 	graphics() = delete;
 	~graphics() = default;
