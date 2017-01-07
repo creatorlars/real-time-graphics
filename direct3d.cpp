@@ -222,18 +222,12 @@ direct3d::direct3d(HWND const &hwnd, std::shared_ptr<config> const &settings)
 	context_->RSSetViewports(1U, &viewport);
 
 	// Create the projection matrix for 3D rendering.
-	auto const projection_matrix = XMMatrixPerspectiveFovLH(XM_PI / 4.f,
+	projection_matrix_ = XMMatrixPerspectiveFovLH(XM_PI / 4.f,
 		width_f / height_f, SCREEN_DEPTH_NEAR, SCREEN_DEPTH_FAR);
-	XMStoreFloat4x4(&projection_matrix_, projection_matrix);
-
-	// Initialize the world matrix to the identity matrix.
-	auto const world_matrix = XMMatrixIdentity();
-	XMStoreFloat4x4(&world_matrix_, world_matrix);
 
 	// Create an orthographic projection matrix for 2D rendering.
-	auto const ortho_matrix = XMMatrixOrthographicLH(width_f, height_f,
-		SCREEN_DEPTH_NEAR, SCREEN_DEPTH_FAR);
-	XMStoreFloat4x4(&ortho_matrix_, ortho_matrix);
+	ortho_matrix_ = XMMatrixOrthographicLH(width_f, height_f, SCREEN_DEPTH_NEAR,
+		SCREEN_DEPTH_FAR);
 
 	TwInit(TW_DIRECT3D11, device_.Get());
 	TwWindowSize(width, height);

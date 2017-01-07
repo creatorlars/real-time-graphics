@@ -138,11 +138,11 @@ void application::frame()
 	{
 		if (input_->down(KEYBOARD::CTRL))
 		{
-			camera_->move_forward();
+			camera_->move_forward(.1f);
 		}
 		else
 		{
-			camera_->rotate_up();
+			camera_->rotate_up(1.f);
 		}
 	}
 	if (input_->down(KEYBOARD::DOWN) || input_->down(KEYBOARD::S)
@@ -150,11 +150,11 @@ void application::frame()
 	{
 		if (input_->down(KEYBOARD::CTRL))
 		{
-			camera_->move_backward();
+			camera_->move_backward(.1f);
 		}
 		else
 		{
-			camera_->rotate_down();
+			camera_->rotate_down(1.f);
 		}
 	}
 	if (input_->down(KEYBOARD::LEFT) || input_->down(KEYBOARD::A)
@@ -162,11 +162,11 @@ void application::frame()
 	{
 		if (input_->down(KEYBOARD::CTRL))
 		{
-			camera_->move_left();
+			camera_->move_left(.1f);
 		}
 		else
 		{
-			camera_->rotate_left();
+			camera_->rotate_left(1.f);
 		}
 	}
 	if (input_->down(KEYBOARD::RIGHT) || input_->down(KEYBOARD::D)
@@ -174,20 +174,20 @@ void application::frame()
 	{
 		if (input_->down(KEYBOARD::CTRL))
 		{
-			camera_->move_right();
+			camera_->move_right(.1f);
 		}
 		else
 		{
-			camera_->rotate_right();
+			camera_->rotate_right(1.f);
 		}
 	}
 	if (input_->down(KEYBOARD::PAGEUP) && input_->down(KEYBOARD::CTRL))
 	{
-		camera_->move_up();
+		camera_->move_up(.1f);
 	}
 	if (input_->down(KEYBOARD::PAGEDOWN) && input_->down(KEYBOARD::CTRL))
 	{
-		camera_->move_down();
+		camera_->move_down(.1f);
 	}
 
 	// camera switching
