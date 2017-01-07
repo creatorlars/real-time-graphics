@@ -1,8 +1,9 @@
 #pragma once
 
-class direct3d;
+#include "direct3d.h"
+#include "camera.h"
+
 class object;
-class camera;
 
 class texture_shader
 {

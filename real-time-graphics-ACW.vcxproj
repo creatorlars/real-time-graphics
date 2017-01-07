@@ -151,6 +151,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
+    <ClCompile Include="bubble.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="direct3d.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="light.cpp" />
     <ClCompile Include="light_shader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="matrix.cpp" />
     <ClCompile Include="message_handler.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="object.cpp" />
@@ -401,6 +403,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
+    <ClInclude Include="bubble.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="direct3d.h" />
@@ -409,6 +412,7 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="light_shader.h" />
+    <ClInclude Include="matrix.h" />
     <ClInclude Include="message_handler.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="object.h" />

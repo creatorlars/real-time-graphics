@@ -14,6 +14,12 @@ struct MatrixBufferType
 };
 
 #define MAXLIGHTS 10
+struct LightPositionBufferType
+{
+	XMVECTOR position[MAXLIGHTS];
+	int count;
+};
+
 struct LightBufferType
 {
 	XMVECTOR ambient[MAXLIGHTS];
@@ -146,6 +152,22 @@ light_shader::light_shader(direct3d const& d3d) : d3d_(d3d)
 	{
 		throw "";
 	}
+
+	auto constexpr light_position_buffer_desc = D3D11_BUFFER_DESC
+	{
+		sizeof(LightBufferType),
+		D3D11_USAGE_DYNAMIC,
+		D3D11_BIND_CONSTANT_BUFFER, D3D11_CPU_ACCESS_WRITE, 0U, 0U
+	};
+
+	// Create the constant buffer pointer so we can access the pixel shader
+	// constant buffer from within this class.
+	result = device->CreateBuffer(&light_position_buffer_desc, nullptr,
+		light_position_buffer_.GetAddressOf());
+	if (FAILED(result))
+	{
+		throw "";
+	}
 }
 
 void light_shader::render(std::shared_ptr<object> const &object,
@@ -185,6 +207,11 @@ void light_shader::render(std::shared_ptr<object> const &object,
 	// finally set the constant buffer in the vertex shader
 	context->VSSetConstantBuffers(0U, 1U, matrix_buffer_.GetAddressOf());
 
+
+
+
+	
+
 	// Set shader texture resource in the pixel shader.
 	auto const texture = object->model()->view();
 	context->PSSetShaderResources(0U, 1U, texture.GetAddressOf());
@@ -206,7 +233,7 @@ void light_shader::render(std::shared_ptr<object> const &object,
 		auto const diffuse_color = XMLoadFloat4(&lights[i]->diffuse());
 		auto const light_direction = XMLoadFloat3(&lights[i]->direction());
 
-		// Copy the matrices into the constant buffer		
+		// Copy the matrices into the constant buffer
 		light_buffer->ambient[i] = ambient_color;
 		light_buffer->diffuse[i] = diffuse_color;
 		light_buffer->direction[i] = light_direction;
@@ -218,6 +245,42 @@ void light_shader::render(std::shared_ptr<object> const &object,
 	// Now set the texture translation constant buffer in the pixel shader with
 	// the updated values.
 	context->PSSetConstantBuffers(0U, 1U, light_buffer_.GetAddressOf());
+
+
+
+
+
+	result = context->Map(light_position_buffer_.Get(), 0U, D3D11_MAP_WRITE_DISCARD, 0U,
+		&mapped_resource);
+	if (FAILED(result))
+	{
+		throw "";
+	}
+
+	// Get a pointer to the data in the constant buffer.
+	auto const light_position_buffer = static_cast<LightPositionBufferType*>(mapped_resource.pData);
+
+	// Get positions.
+	auto constexpr test = XMFLOAT4{ 3.f, 0.f, 0.f, 0.f};
+	auto const test_position = XMLoadFloat4(&test);
+
+	auto constexpr test2 = XMFLOAT4{ 1.f, 0.f, 0.f, 0.f };
+	auto const test_position2 = XMLoadFloat4(&test2);
+
+	// Copy the matrices into the constant buffer.
+	light_position_buffer->position[0] = test_position;
+	light_position_buffer->position[1] = test_position2;
+	light_position_buffer->count = 2;
+
+	// Unlock the constant buffer.
+	context->Unmap(light_position_buffer_.Get(), 0U);
+
+	// finally set the constant buffer in the vertex shader
+	context->VSSetConstantBuffers(1U, 1U, light_position_buffer_.GetAddressOf());
+
+
+
+
 
 	// Set the vertex input layout.
 	context->IASetInputLayout(layout_.Get());

@@ -24,13 +24,6 @@ application::application()
 	transparent_shader_ = std::make_shared<transparent_shader>(graphics_->d3d());
 	light_shader_ = std::make_shared<light_shader>(graphics_->d3d());
 
-	for (auto i = 0U; i < 9U; ++i)
-	{
-		fish_.emplace_back(std::make_shared<fish>(graphics_->d3d()));
-		fish_.at(i)->scale({ .1f, .1f, .1f });
-		fish_.at(i)->move({ static_cast<float>(i) - 4.f, 2.f, 0.f });
-	}
-
 	submarine_ = std::make_shared<submarine>(graphics_->d3d());
 	submarine_->move({ 0.f, 1.f, 0.f });
 	submarine_->scale({ .5f, .5f, .5f });
@@ -55,7 +48,15 @@ application::application()
 	TwAddVarRW(tweak_bar_, "Frame Delay", TW_TYPE_INT32, &atb_delay_,
 		"min=1000 max=100000 step=100");
 
-	lights_.emplace_back(std::make_shared<light>());
+	for (auto i = 0U; i < 9U; ++i)
+	{
+		fish_.emplace_back(std::make_shared<fish>(graphics_->d3d(), camera_));
+		fish_.at(i)->scale({ .1f, .1f, .1f });
+		fish_.at(i)->move({ static_cast<float>(i) - 4.f, 2.f, 0.f });
+	}
+
+	lights_.emplace_back(std::make_shared<light>(XMFLOAT4{ .5f, 0.f, 0.f, 0.f }));
+	lights_.emplace_back(std::make_shared<light>(XMFLOAT4{ 0.f, .5f, 0.f, 0.f }));
 
 	timeBeginPeriod(1U);
 }
@@ -240,8 +241,8 @@ void application::render()
 
 	for (auto const& fish : fish_)
 	{
-		fish->render(transparent_shader_, camera_);
-		texture_shader_->render(fish, camera_);
+		fish->render(texture_shader_, camera_);
+		light_shader_->render(fish, camera_, lights_);
 	}
 
 	transparent_shader_->render(outer_sphere_, camera_, .25f);

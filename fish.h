@@ -4,13 +4,13 @@
 
 class direct3d;
 class particle_emitter;
-class transparent_shader;
+class texture_shader;
 class camera;
 
 class fish final : public object
 {
 public:
-	explicit fish(direct3d const&);
+	fish(direct3d const&, std::shared_ptr<camera> const&);
 
 	fish() = delete;
 	~fish() = default;
@@ -23,10 +23,11 @@ public:
 
 	void frame() override;
 	void render() override;
-	void render(std::shared_ptr<transparent_shader> const&, std::shared_ptr<camera> const&) override;
+	void render(std::shared_ptr<texture_shader> const&, std::shared_ptr<camera> const&) override;
 
 private:
 	direct3d const& d3d_;
+	std::shared_ptr<camera> camera_ = nullptr;
 	std::shared_ptr<particle_emitter> emitter_ = nullptr;
 
 	unsigned wait_ = 20U;

@@ -29,6 +29,7 @@ private:
 	ComPtr<ID3D11SamplerState> sampler_state_ = nullptr;
 	ComPtr<ID3D11Buffer> matrix_buffer_ = nullptr;
 	ComPtr<ID3D11Buffer> light_buffer_ = nullptr;
+	ComPtr<ID3D11Buffer> light_position_buffer_ = nullptr;
 
 	direct3d const& d3d_;
 };

@@ -3,7 +3,7 @@
 #include "model.h"
 
 class direct3d;
-class transparent_shader;
+class texture_shader;
 class camera;
 
 class object
@@ -42,7 +42,7 @@ public:
 	{ position_ = position; }
 
 	virtual void render();
-	virtual void render(std::shared_ptr<transparent_shader> const&, std::shared_ptr<camera> const&)
+	virtual void render(std::shared_ptr<texture_shader> const&, std::shared_ptr<camera> const&)
 	{}
 	virtual void frame()
 	{}

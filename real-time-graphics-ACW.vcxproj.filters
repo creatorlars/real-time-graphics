@@ -31,6 +31,12 @@
     <Filter Include="Header Files\Shaders">
       <UniqueIdentifier>{b2f9fb35-95d6-4b04-a66d-fd96f872f2df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Particles">
+      <UniqueIdentifier>{c8ed4153-069b-4f58-b5be-ba2370624eef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Particles">
+      <UniqueIdentifier>{589d8461-4fd6-4703-bf76-a7823690c470}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp">
@@ -100,6 +106,12 @@
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bubble.cpp">
+      <Filter>Source Files\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="matrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -209,6 +221,12 @@
     </ClInclude>
     <ClInclude Include="sphere.h">
       <Filter>Header Files\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="bubble.h">
+      <Filter>Header Files\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="matrix.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

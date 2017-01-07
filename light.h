@@ -3,7 +3,9 @@
 class light
 {
 public:
-	light() = default;
+	light(XMFLOAT4 const&);
+
+	light() = delete;
 	~light() = default;
 
 	explicit light(light const&) = default;
@@ -32,7 +34,7 @@ public:
 
 private:
 	XMFLOAT3 position_ = {};
-	XMFLOAT3 direction_ = { -.5f, -.5f, -.5f };
+	XMFLOAT3 direction_ = { -.5f, .5f, -.5f };
 	XMFLOAT4 ambient_ = { .25f, .25f, .25f, 1.f };
 	XMFLOAT4 diffuse_ = { .75f, .75f, .75f, 1.f };
 };

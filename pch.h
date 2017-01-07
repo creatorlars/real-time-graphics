@@ -48,5 +48,5 @@ bool constexpr FULL_SCREEN = false;
 bool constexpr VSYNC_ENABLED = false;
 float constexpr SCREEN_DEPTH = 1000.f;
 float constexpr SCREEN_NEAR = .1f;
-unsigned constexpr WINDOW_WIDTH = 800;
-unsigned constexpr WINDOW_HEIGHT = 600;
+unsigned constexpr WINDOW_WIDTH = 1024;
+unsigned constexpr WINDOW_HEIGHT = 768;
