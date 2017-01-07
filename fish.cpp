@@ -26,11 +26,6 @@ void fish::frame()
 	}
 }
 
-void fish::render()
-{
-	object::render();
-}
-
 void fish::render(std::shared_ptr<texture_shader> const &shader,
 	std::shared_ptr<camera> const &camera)
 {

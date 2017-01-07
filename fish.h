@@ -22,7 +22,6 @@ public:
 	fish& operator=(fish&&) = default;
 
 	void frame() override;
-	void render() override;
 	void render(std::shared_ptr<texture_shader> const&, std::shared_ptr<camera> const&) override;
 
 private:

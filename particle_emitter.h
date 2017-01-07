@@ -4,7 +4,7 @@
 
 class texture_shader;
 class camera;
-class bubble;
+class particle;
 class direct3d;
 
 class particle_emitter
@@ -31,7 +31,7 @@ public:
 	{ position_ = position; }
 
 private:
-	std::vector<std::shared_ptr<bubble>> particles_ = {};
+	std::vector<std::shared_ptr<particle>> particles_ = {};
 	texture texture_;
 
 	XMFLOAT3 position_ = {};

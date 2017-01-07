@@ -2,6 +2,8 @@
 
 #include "object.h"
 
+class direct3d;
+
 class cube final : public object
 {
 public:

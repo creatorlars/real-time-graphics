@@ -5,40 +5,39 @@
 
 namespace
 {
-	struct VertexType
+	struct VERTEX
 	{
 		XMFLOAT3 position_;
 		XMFLOAT2 texture_;
 		XMFLOAT4 color_;
 
-		constexpr VertexType(XMFLOAT3 const &position, XMFLOAT2 const &texture,
+		constexpr VERTEX(XMFLOAT3 const &position, XMFLOAT2 const &texture,
 			XMFLOAT4 const &color)
 			: position_(position), texture_(texture), color_(color)
 		{}
 
-		constexpr VertexType(XMFLOAT3 &&position, XMFLOAT2 &&texture,
+		constexpr VERTEX(XMFLOAT3 &&position, XMFLOAT2 &&texture,
 			XMFLOAT4 &&color)
 			: position_(std::move(position)), texture_(std::move(texture)),
 			color_(std::move(color))
 		{}
 
-		VertexType() = delete;
-		~VertexType() = default;
+		VERTEX() = delete;
+		~VERTEX() = default;
 
-		constexpr explicit VertexType(VertexType const&) = default;
-		constexpr explicit VertexType(VertexType&&) = default;
+		constexpr explicit VERTEX(VERTEX const&) = default;
+		constexpr explicit VERTEX(VERTEX&&) = default;
 
-		VertexType& operator=(VertexType const&) = default;
-		VertexType& operator=(VertexType&&) = default;
+		VERTEX& operator=(VERTEX const&) = default;
+		VERTEX& operator=(VERTEX&&) = default;
 	};
 }
 
-quad::quad(direct3d const& d3d)
-	: d3d_(d3d)
+quad::quad(direct3d const& d3d) : d3d_(d3d)
 {
 	HRESULT result{};
 
-	auto constexpr vertices = std::array<VertexType, index_count_>
+	auto constexpr vertices = std::array<VERTEX, index_count_>
 	{ {
 		{ { -1.f, -1.f, 0.f }, { 1.f, 1.f }, {} },	// bottom left
 		{ { -1.f, 1.f, 0.f }, { 1.f, 0.f }, {} },	// top left
@@ -50,7 +49,7 @@ quad::quad(direct3d const& d3d)
 
 	auto constexpr vertex_buffer_desc = D3D11_BUFFER_DESC
 	{
-		static_cast<UINT>(sizeof(VertexType) * vertices.size()),
+		static_cast<UINT>(sizeof(VERTEX) * vertices.size()),
 		D3D11_USAGE_DEFAULT,
 		D3D11_BIND_VERTEX_BUFFER, 0U, 0U,
 		0U
@@ -97,12 +96,12 @@ quad::quad(direct3d const& d3d)
 	}
 }
 
-void quad::render()
+void quad::render() const
 {
 	auto const context = d3d_.context();
 
 	// Set the vertex buffer to active so it can be rendered.
-	auto constexpr stride = static_cast<UINT>(sizeof(VertexType));
+	auto constexpr stride = static_cast<UINT>(sizeof(VERTEX));
 	auto constexpr offset = 0U;
 	context->IASetVertexBuffers(0U, 1U, vertex_buffer_.GetAddressOf(), &stride,
 		&offset);

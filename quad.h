@@ -16,7 +16,7 @@ public:
 	quad& operator=(quad const&) = default;
 	quad& operator=(quad&&) = default;
 
-	void render();
+	void render() const;
 
 	inline unsigned index_count() const
 	{ return index_count_; }

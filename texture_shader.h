@@ -20,12 +20,11 @@ public:
 	texture_shader& operator=(texture_shader&&) = default;
 
 	template <typename T>
-	void render(std::shared_ptr<T> const &object,
-		std::shared_ptr<camera> const &camera) const
+	void render(T const &object, std::shared_ptr<camera> const &camera) const
 	{
 		auto const context = d3d_.context();
 
-		object->render();
+		//object->render();
 
 		// Lock the constant buffer so it can be written to.
 		auto mapped_resource = D3D11_MAPPED_SUBRESOURCE{};
@@ -41,12 +40,11 @@ public:
 
 		// Get matrices.
 		auto const projection_matrix = XMLoadFloat4x4(&d3d_.projection_matrix());
-		auto const object_matrix = XMLoadFloat4x4(&object->matrix());
 		auto const camera_matrix = XMLoadFloat4x4(&camera->matrix());
 
 		// Copy the matrices into the constant buffer.
 		matrix_buffer->projection = XMMatrixTranspose(projection_matrix);
-		matrix_buffer->world = XMMatrixTranspose(object_matrix);
+		matrix_buffer->world = XMMatrixTranspose(object->render());
 		matrix_buffer->view = XMMatrixTranspose(camera_matrix);
 
 		// Unlock the constant buffer.

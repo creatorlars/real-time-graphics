@@ -84,9 +84,6 @@
     <ClCompile Include="fish.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="particle_emitter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cube.cpp">
       <Filter>Source Files\Primitives</Filter>
     </ClCompile>
@@ -108,11 +105,17 @@
     <ClCompile Include="light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bubble.cpp">
-      <Filter>Source Files\Particles</Filter>
-    </ClCompile>
     <ClCompile Include="matrix.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>Source Files\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_emitter.cpp">
+      <Filter>Source Files\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="bubble.cpp">
+      <Filter>Source Files\Particles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -198,9 +201,6 @@
     <ClInclude Include="fish.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="particle_emitter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -222,11 +222,17 @@
     <ClInclude Include="sphere.h">
       <Filter>Header Files\Primitives</Filter>
     </ClInclude>
-    <ClInclude Include="bubble.h">
-      <Filter>Header Files\Particles</Filter>
-    </ClInclude>
     <ClInclude Include="matrix.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>Header Files\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_emitter.h">
+      <Filter>Header Files\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="bubble.h">
+      <Filter>Header Files\Particles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

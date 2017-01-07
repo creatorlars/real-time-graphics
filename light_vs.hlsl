@@ -37,6 +37,7 @@ VS_OUTPUT main(VS_INPUT input)
 	VS_OUTPUT output;
 	output.position = mul(input.position, world);
 
+	[unroll]
 	for (int i = 0; i < count; ++i)
 	{
 		output.light_positions[i].xyz = normalize(light_positions[i].xyz - output.position.xyz);

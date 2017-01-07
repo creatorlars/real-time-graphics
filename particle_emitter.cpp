@@ -2,6 +2,7 @@
 #include "particle_emitter.h"
 
 #include "texture_shader.h"
+#include "particle.h"
 #include "bubble.h"
 #include "camera.h"
 
@@ -12,7 +13,7 @@ particle_emitter::particle_emitter(direct3d const &d3d)
 
 void particle_emitter::frame()
 {
-	std::vector<std::vector<std::shared_ptr<bubble>>::iterator> dead;
+	std::vector<std::vector<std::shared_ptr<particle>>::iterator> dead;
 	for (auto it = particles_.begin(); it != particles_.end(); ++it)
 	{
 		auto const particle = (*it);
@@ -46,6 +47,6 @@ void particle_emitter::render(std::shared_ptr<texture_shader> const &shader,
 
 void particle_emitter::emit(std::shared_ptr<camera> const &camera)
 {
-	particles_.emplace_back(std::make_shared<bubble>(d3d_, texture_, position_,
-		camera, 1'000U));
+	particles_.emplace_back(std::make_shared<bubble>(d3d_, camera,
+		texture_.view(), position_, 1'000U));
 }

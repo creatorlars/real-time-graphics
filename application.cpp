@@ -25,11 +25,11 @@ application::application()
 	light_shader_ = std::make_shared<light_shader>(graphics_->d3d());
 
 	submarine_ = std::make_shared<submarine>(graphics_->d3d());
-	submarine_->move({ 0.f, 1.f, 0.f });
+	submarine_->translate({ 0.f, 1.f, 0.f });
 	submarine_->scale({ .5f, .5f, .5f });
 
 	cube_ = std::make_shared<cube>(graphics_->d3d());
-	cube_->move({ 5.f, 0.f, 0.f });
+	cube_->translate({ 5.f, 0.f, 0.f });
 
 	inner_sphere_ = std::make_shared<sphere>(graphics_->d3d());
 	inner_sphere_->scale({ -5, -5, -5 });
@@ -52,7 +52,7 @@ application::application()
 	{
 		fish_.emplace_back(std::make_shared<fish>(graphics_->d3d(), camera_));
 		fish_.at(i)->scale({ .1f, .1f, .1f });
-		fish_.at(i)->move({ static_cast<float>(i) - 4.f, 2.f, 0.f });
+		fish_.at(i)->translate({ static_cast<float>(i) - 4.f, 2.f, 0.f });
 	}
 
 	lights_.emplace_back(std::make_shared<light>(XMFLOAT4{ .5f, 0.f, 0.f, 0.f }));
