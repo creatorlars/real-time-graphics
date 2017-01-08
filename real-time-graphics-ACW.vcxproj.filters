@@ -141,9 +141,6 @@
     <ClCompile Include="drebbel.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="light.cpp">
-      <Filter>Source Files\Lighting</Filter>
-    </ClCompile>
     <ClCompile Include="ambient.cpp">
       <Filter>Source Files\Lighting</Filter>
     </ClCompile>
@@ -269,9 +266,6 @@
     </ClInclude>
     <ClInclude Include="drebbel.h">
       <Filter>Header Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="light.h">
-      <Filter>Header Files\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="ambient.h">
       <Filter>Header Files\Lighting</Filter>

@@ -9,8 +9,8 @@ cbuffer MATRICES
 
 cbuffer DATA
 {
-	float4 light_positions[MAXLIGHTS];
-	int count;
+	float4 spotlight_positions[MAXLIGHTS];
+	int spotlight_count;
 };
 
 struct VS_INPUT
@@ -25,7 +25,7 @@ struct VS_OUTPUT
 	float4 position : SV_POSITION;
 	float2 tex : TEXCOORD0;
 	float3 normal : NORMAL;
-	float3 light_positions[MAXLIGHTS] : TEXCOORD1;
+	float3 spotlight_positions[MAXLIGHTS] : TEXCOORD1;
 };
 
 VS_OUTPUT main(VS_INPUT input)
@@ -38,9 +38,9 @@ VS_OUTPUT main(VS_INPUT input)
 	output.position = mul(input.position, world);
 
 	[unroll]
-	for (int i = 0; i < count; ++i)
+	for (int i = 0; i < spotlight_count; ++i)
 	{
-		output.light_positions[i].xyz = normalize(light_positions[i].xyz - output.position.xyz);
+		output.spotlight_positions[i] = normalize(spotlight_positions[i] - output.position);
 	}
 
 	output.position = mul(output.position, view);

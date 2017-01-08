@@ -24,10 +24,10 @@ public:
 	template<typename T>
 	void render(T const &object, std::shared_ptr<camera> const &camera,
 		std::shared_ptr<ambient> const &ambient,
-		std::vector<std::shared_ptr<spotlight>> const &spotlight) const
+		std::vector<std::shared_ptr<spotlight>> const &spotlights) const
 	{
 		render(object->render(), camera->render(), object->view(),
-			object->index_count(), ambient, spotlight);
+			object->index_count(), ambient, spotlights);
 	}
 
 private:

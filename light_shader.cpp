@@ -27,12 +27,11 @@ namespace
 
 	struct LightBufferType
 	{
-		XMVECTOR spotlight_min[MAXLIGHTS];
-		XMVECTOR spotlight_max[MAXLIGHTS];
+		XMVECTOR spotlight_colours[MAXLIGHTS];
 		XMVECTOR ambient_min;
 		XMVECTOR ambient_max;
 		XMVECTOR ambient_direction;
-		int count;
+		int spotlight_count;
 	};
 }
 
@@ -230,21 +229,19 @@ void light_shader::render(XMMATRIX const &world, XMMATRIX const &view,
 	auto const light_buffer = static_cast<LightBufferType*>(mapped_resource.pData);
 
 	// store ambient information
-	light_buffer->ambient_min = XMLoadFloat4(&ambient->min());
-	light_buffer->ambient_max = XMLoadFloat4(&ambient->max());
+	light_buffer->ambient_min = XMLoadFloat3(&ambient->min());
+	light_buffer->ambient_max = XMLoadFloat3(&ambient->max());
 	light_buffer->ambient_direction = XMLoadFloat3(&ambient->direction());
 
 	// store spotlight information
-	light_buffer->count = static_cast<int>(spotlights.size());
+	light_buffer->spotlight_count = static_cast<int>(spotlights.size());
 	for (auto i = 0U; i < spotlights.size(); ++i)
 	{
 		// Get vectors
-		auto const spotlight_min = XMLoadFloat4(&spotlights[i]->min());
-		auto const spotlight_max = XMLoadFloat4(&spotlights[i]->max());
+		auto const spotlight_colour = XMLoadFloat3(&spotlights[i]->colour());
 
 		// Copy the matrices into the constant buffer
-		light_buffer->spotlight_min[i] = spotlight_min;
-		light_buffer->spotlight_max[i] = spotlight_max;
+		light_buffer->spotlight_colours[i] = spotlight_colour;
 	}
 
 	// Unlock the buffer.

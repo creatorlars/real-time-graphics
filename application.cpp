@@ -68,25 +68,22 @@ application::application()
 	}
 
 	ambient_ = std::make_shared<ambient>(
-		XMFLOAT3{ -.75f, .75f, -.75f },		// direction
-		XMFLOAT4{ .25f, .25f, .25f, 0.f },	// minimum colour
-		XMFLOAT4{ .75f, .75f, .75f, 0.f }	// maximum colour
+		XMFLOAT3{ -.75f, .75f, -.75f },	// direction
+		XMFLOAT3{ .1f, .1f, .1f },		// minimum colour
+		XMFLOAT3{ .5f, .5f, .5f }		// maximum colour
 	);
 
 	lights_.emplace_back(std::make_shared<spotlight>(
-		XMFLOAT3{ -3.f, 0.f, 0.f },			// position
-		XMFLOAT4{ .25f, 0.f, 0.f, 0.f },	// minimum colour
-		XMFLOAT4{ .75f, 0.f, 0.f, 0.f }		// maximum colour
+		XMFLOAT3{ -3.f, 1.f, -3.f },	// position
+		XMFLOAT3{ .25f, 0.f, 0.f }		// colour
 	));
 	lights_.emplace_back(std::make_shared<spotlight>(
-		XMFLOAT3{ 0.f, 0.f, 0.f },			// position
-		XMFLOAT4{ 0.f, .25f, 0.f, 0.f },	// minimum colour
-		XMFLOAT4{ 0.f, .25f, 0.f, 0.f }		// maximum colour
+		XMFLOAT3{ 0.f, 0.f, 0.f },		// position
+		XMFLOAT3{ 0.f, .25f, 0.f }		// colour
 	));
 	lights_.emplace_back(std::make_shared<spotlight>(
-		XMFLOAT3{ 3.f, 0.f, 0.f },			// position
-		XMFLOAT4{ 0.f, 0.f, .25f, 0.f },	// minimum colour
-		XMFLOAT4{ 0.f, 0.f, .75f, 0.f }		// maximum colour
+		XMFLOAT3{ 3.f, 0.f, 3.f },		// position
+		XMFLOAT3{ 0.f, 0.f, .25f }		// colour
 	));
 
 	timeBeginPeriod(1U);
