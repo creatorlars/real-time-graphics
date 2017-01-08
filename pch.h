@@ -34,6 +34,7 @@ using namespace DirectX;
 #include <iostream>
 #include <functional>
 #include <chrono>
+#include <random>
 using namespace std::literals;
 
 // CSTDLIB

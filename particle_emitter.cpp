@@ -48,5 +48,5 @@ void particle_emitter::render(std::shared_ptr<camera> const &camera)
 void particle_emitter::emit()
 {
 	particles_.emplace_back(std::make_shared<bubble>(d3d_, texture_.view(),
-		position_, 1'000U));
+		position_, 500U));
 }
