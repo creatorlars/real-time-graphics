@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ambient.cpp" />
     <ClCompile Include="application.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="config.cpp" />
@@ -176,6 +177,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="sphere.cpp" />
+    <ClCompile Include="spotlight.cpp" />
     <ClCompile Include="submarine.cpp" />
     <ClCompile Include="terrain.cpp" />
     <ClCompile Include="bubble.cpp" />
@@ -405,6 +407,7 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ambient.h" />
     <ClInclude Include="application.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="config.h" />
@@ -425,6 +428,7 @@
     <ClInclude Include="particle_emitter.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="sphere.h" />
+    <ClInclude Include="spotlight.h" />
     <ClInclude Include="submarine.h" />
     <ClInclude Include="terrain.h" />
     <ClInclude Include="bubble.h" />

@@ -13,8 +13,10 @@
 #include "fish.h"
 
 #include "particle_emitter.h"
-#include "light.h"
 #include "camera.h"
+
+#include "ambient.h"
+#include "spotlight.h"
 
 #include "config.h"
 
@@ -65,8 +67,27 @@ application::application()
 		fish_.at(i)->translate({ static_cast<float>(i) - 4.f, 2.f, 0.f });
 	}
 
-	lights_.emplace_back(std::make_shared<light>(XMFLOAT4{ .5f, 0.f, 0.f, 0.f }));
-	lights_.emplace_back(std::make_shared<light>(XMFLOAT4{ 0.f, .5f, 0.f, 0.f }));
+	ambient_ = std::make_shared<ambient>(
+		XMFLOAT3{ -.75f, .75f, -.75f },		// direction
+		XMFLOAT4{ .25f, .25f, .25f, 0.f },	// minimum colour
+		XMFLOAT4{ .75f, .75f, .75f, 0.f }	// maximum colour
+	);
+
+	lights_.emplace_back(std::make_shared<spotlight>(
+		XMFLOAT3{ -3.f, 0.f, 0.f },			// position
+		XMFLOAT4{ .25f, 0.f, 0.f, 0.f },	// minimum colour
+		XMFLOAT4{ .75f, 0.f, 0.f, 0.f }		// maximum colour
+	));
+	lights_.emplace_back(std::make_shared<spotlight>(
+		XMFLOAT3{ 0.f, 0.f, 0.f },			// position
+		XMFLOAT4{ 0.f, .25f, 0.f, 0.f },	// minimum colour
+		XMFLOAT4{ 0.f, .25f, 0.f, 0.f }		// maximum colour
+	));
+	lights_.emplace_back(std::make_shared<spotlight>(
+		XMFLOAT3{ 3.f, 0.f, 0.f },			// position
+		XMFLOAT4{ 0.f, 0.f, .25f, 0.f },	// minimum colour
+		XMFLOAT4{ 0.f, 0.f, .75f, 0.f }		// maximum colour
+	));
 
 	timeBeginPeriod(1U);
 }
@@ -244,17 +265,17 @@ void application::render()
 
 	camera_->render();
 
-	light_shader_->render(submarine_, camera_, lights_);
-	light_shader_->render(drebbel_, camera_, lights_);
-	light_shader_->render(cube_, camera_, lights_);
-	light_shader_->render(terrain_, camera_, lights_);
+	light_shader_->render(submarine_, camera_, ambient_, lights_);
+	light_shader_->render(drebbel_, camera_, ambient_, lights_);
+	light_shader_->render(cube_, camera_, ambient_, lights_);
+	light_shader_->render(terrain_, camera_, ambient_, lights_);
 
 	transparent_shader_->render(inner_sphere_, camera_, .25f);
 
 	for (auto const& fish : fish_)
 	{
 		fish->render(texture_shader_, camera_);
-		light_shader_->render(fish, camera_, lights_);
+		light_shader_->render(fish, camera_, ambient_, lights_);
 	}
 
 	transparent_shader_->render(outer_sphere_, camera_, .25f);

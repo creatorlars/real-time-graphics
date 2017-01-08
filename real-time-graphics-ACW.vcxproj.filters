@@ -52,6 +52,12 @@
     <Filter Include="Header Files\Engine">
       <UniqueIdentifier>{ec751f88-3e70-466a-b541-f28c40e7a091}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Lighting">
+      <UniqueIdentifier>{c0e32207-ccba-4b9f-a36f-8d5aa66140bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Lighting">
+      <UniqueIdentifier>{c602c8b3-952e-470a-88b5-e44691be5226}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp">
@@ -89,9 +95,6 @@
     </ClCompile>
     <ClCompile Include="light_shader.cpp">
       <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="light.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="matrix.cpp">
       <Filter>Source Files</Filter>
@@ -137,6 +140,15 @@
     </ClCompile>
     <ClCompile Include="drebbel.cpp">
       <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>Source Files\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="ambient.cpp">
+      <Filter>Source Files\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="spotlight.cpp">
+      <Filter>Source Files\Lighting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,9 +205,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="transparent_shader.h">
@@ -260,6 +269,15 @@
     </ClInclude>
     <ClInclude Include="drebbel.h">
       <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>Header Files\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="ambient.h">
+      <Filter>Header Files\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="spotlight.h">
+      <Filter>Header Files\Lighting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

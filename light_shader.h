@@ -3,7 +3,9 @@
 class direct3d;
 class object;
 class camera;
-class light;
+
+class ambient;
+class spotlight;
 
 class light_shader
 {
@@ -21,16 +23,18 @@ public:
 
 	template<typename T>
 	void render(T const &object, std::shared_ptr<camera> const &camera,
-		std::vector<std::shared_ptr<light>> const &lights) const
+		std::shared_ptr<ambient> const &ambient,
+		std::vector<std::shared_ptr<spotlight>> const &spotlight) const
 	{
 		render(object->render(), camera->render(), object->view(),
-			object->index_count(), lights);
+			object->index_count(), ambient, spotlight);
 	}
 
 private:
 	void render(XMMATRIX const&, XMMATRIX const&,
 		ComPtr<ID3D11ShaderResourceView> const&, unsigned const,
-		std::vector<std::shared_ptr<light>> const&) const;
+		std::shared_ptr<ambient> const&,
+		std::vector<std::shared_ptr<spotlight>> const&) const;
 
 	ComPtr<ID3D11VertexShader> vertex_shader_ = nullptr;
 	ComPtr<ID3D11PixelShader> pixel_shader_ = nullptr;

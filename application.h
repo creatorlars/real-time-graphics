@@ -14,8 +14,10 @@ class transparent_shader;
 class light_shader;
 
 class particle_emitter;
-class light;
 class camera;
+
+class ambient;
+class spotlight;
 
 class application
 {
@@ -72,6 +74,7 @@ private:
 	std::unique_ptr<input> input_ = nullptr;
 	std::unique_ptr<graphics> graphics_ = nullptr;
 
-	// test
-	std::vector<std::shared_ptr<light>> lights_ = {};
+	// lights
+	std::shared_ptr<ambient> ambient_ = {};
+	std::vector<std::shared_ptr<spotlight>> lights_ = {};
 };

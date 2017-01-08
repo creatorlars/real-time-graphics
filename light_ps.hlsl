@@ -5,9 +5,11 @@ SamplerState state;
 
 cbuffer DATA
 {
-	float4 ambient[MAXLIGHTS];
-	float4 diffuse[MAXLIGHTS];
-	float3 direction[MAXLIGHTS];
+	float4 spotlight_min[MAXLIGHTS];
+	float4 spotlight_max[MAXLIGHTS];
+	float4 ambient_min;
+	float4 ambient_max;
+	float3 ambient_direction;
 	float padding;
 	int count;
 };
@@ -23,23 +25,20 @@ struct PS_INPUT
 float4 main(PS_INPUT input) : SV_TARGET
 {
 	float4 total;
+
+	float ambient_intensity = dot(input.normal, -ambient_direction);
+	
+	float4 ambient_colour = ambient_min;
+	if (ambient_intensity > 0.0f)
+	{
+		ambient_colour += (ambient_max * ambient_intensity);
+	}
+	total = ambient_colour;
+
 	for (int i = 0U; i < count; ++i)
 	{
-		/*
-		// calculate light intensity
-		float intensity = dot(input.normal, -direction[i]);
-
-		// calculate diffuse colour
-		float4 colour = ambient[i];
-		if (intensity > 0.0f)
-		{
-			colour += (diffuse[i] * intensity);
-		}
-		total += colour;
-		*/
-
 		float intensity = dot(input.normal, input.light_positions[i]);
-		total += diffuse[i] * intensity;
+		total += spotlight_min[i] * intensity;
 	}
 
 	// multiply by the texture pixel
