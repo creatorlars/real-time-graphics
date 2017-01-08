@@ -1,5 +1,7 @@
 #pragma once
 
+#include "shader.h"
+
 class direct3d;
 class object;
 class camera;
@@ -7,7 +9,7 @@ class camera;
 class ambient;
 class spotlight;
 
-class light_shader
+class light_shader : public shader
 {
 public:
 	explicit light_shader(direct3d const&);
@@ -21,21 +23,22 @@ public:
 	light_shader& operator=(light_shader const&) = default;
 	light_shader& operator=(light_shader&&) = default;
 
-	template<typename T>
-	void render(T const &object, std::shared_ptr<camera> const &camera,
-		std::shared_ptr<ambient> const &ambient,
-		std::vector<std::shared_ptr<spotlight>> const &spotlights) const
+	inline void begin_render(std::shared_ptr<ambient> const &ambient,
+		std::vector<std::shared_ptr<spotlight>> const &spotlights)
 	{
-		render(object->render(), camera->render(), object->view(),
-			object->index_count(), ambient, spotlights);
+		ambient_ = ambient;
+		spotlights_ = spotlights;
 	}
 
-private:
 	void render(XMMATRIX const&, XMMATRIX const&,
 		ComPtr<ID3D11ShaderResourceView> const&, unsigned const,
 		std::shared_ptr<ambient> const&,
 		std::vector<std::shared_ptr<spotlight>> const&) const;
 
+	void render(XMMATRIX const&, XMMATRIX const&,
+		ComPtr<ID3D11ShaderResourceView> const&, unsigned const) const;
+
+private:
 	ComPtr<ID3D11VertexShader> vertex_shader_ = nullptr;
 	ComPtr<ID3D11PixelShader> pixel_shader_ = nullptr;
 	ComPtr<ID3D11InputLayout> layout_ = nullptr;
@@ -43,6 +46,9 @@ private:
 	ComPtr<ID3D11Buffer> matrix_buffer_ = nullptr;
 	ComPtr<ID3D11Buffer> light_buffer_ = nullptr;
 	ComPtr<ID3D11Buffer> light_position_buffer_ = nullptr;
+
+	std::shared_ptr<ambient> ambient_ = nullptr;
+	std::vector<std::shared_ptr<spotlight>> spotlights_ = {};
 
 	direct3d const& d3d_;
 };

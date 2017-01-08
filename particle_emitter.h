@@ -10,7 +10,7 @@ class direct3d;
 class particle_emitter
 {
 public:
-	particle_emitter(direct3d const&);
+	particle_emitter(direct3d const&, std::shared_ptr<texture_shader> const&);
 
 	~particle_emitter() = default;
 
@@ -21,8 +21,8 @@ public:
 	particle_emitter& operator=(particle_emitter&&) = default;
 
 	void frame();
-	void render(std::shared_ptr<texture_shader> const&, std::shared_ptr<camera> const&);
-	void emit(std::shared_ptr<camera> const&);
+	void render(std::shared_ptr<camera> const&);
+	void emit();
 
 	inline XMFLOAT3 const& position()
 	{ return position_; }
@@ -31,6 +31,7 @@ public:
 	{ position_ = position; }
 
 private:
+	std::shared_ptr<texture_shader> shader_ = nullptr;
 	std::vector<std::shared_ptr<particle>> particles_ = {};
 	texture texture_;
 

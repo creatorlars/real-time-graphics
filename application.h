@@ -61,13 +61,6 @@ private:
 
 	// objects
 	std::vector<std::shared_ptr<object>> objects_ = {};
-	std::shared_ptr<submarine> submarine_ = nullptr;
-	std::shared_ptr<drebbel> drebbel_ = nullptr;
-	std::shared_ptr<cube> cube_ = nullptr;
-	std::shared_ptr<object> inner_sphere_ = nullptr;
-	std::shared_ptr<object> outer_sphere_ = nullptr;
-	std::shared_ptr<object> terrain_ = nullptr;
-	std::vector<std::shared_ptr<object>> fish_ = {};
 
 	// shaders
 	std::shared_ptr<texture_shader> texture_shader_ = nullptr;

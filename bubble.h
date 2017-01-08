@@ -7,9 +7,8 @@ class direct3d;
 class bubble final : public particle
 {
 public:
-	bubble(direct3d const&, std::shared_ptr<camera> const&,
-		ComPtr<ID3D11ShaderResourceView> const&, XMFLOAT3 const&,
-		unsigned const);
+	bubble(direct3d const&, ComPtr<ID3D11ShaderResourceView> const&,
+		XMFLOAT3 const&, unsigned const);
 
 	void frame() override;
 

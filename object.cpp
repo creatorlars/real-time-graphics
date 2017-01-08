@@ -2,6 +2,7 @@
 #include "object.h"
 
 #include "direct3d.h"
+#include "shader.h"
 
 object::object(direct3d const& d3d, char const *const model_file,
     char const *const texture_file)

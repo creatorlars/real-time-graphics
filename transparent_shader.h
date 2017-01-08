@@ -1,11 +1,13 @@
 #pragma once
 
-#include "direct3d.h"
-#include "camera.h"
+#include "shader.h"
 
+
+class direct3d;
+class camera;
 class object;
 
-class transparent_shader
+class transparent_shader : public shader
 {
 public:
 	explicit transparent_shader(direct3d const&);
@@ -19,19 +21,11 @@ public:
 	transparent_shader& operator=(transparent_shader const&) = default;
 	transparent_shader& operator=(transparent_shader&&) = default;
 
-	template <typename T>
-	void render(T const &object, std::shared_ptr<camera> const &camera,
-		float const blend) const
-	{
-		render(object->render(), camera->render(), object->view(),
-			object->index_count(), blend);
-	}
-
-private:
 	void render(XMMATRIX const&, XMMATRIX const&,
 		ComPtr<ID3D11ShaderResourceView> const&, unsigned const, float const)
 		const;
 
+private:
 	ComPtr<ID3D11VertexShader> vertex_shader_ = nullptr;
 	ComPtr<ID3D11PixelShader> pixel_shader_ = nullptr;
 	ComPtr<ID3D11InputLayout> layout_ = nullptr;

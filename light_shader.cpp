@@ -295,3 +295,10 @@ void light_shader::render(XMMATRIX const &world, XMMATRIX const &view,
 	// Render the triangle.
 	context->DrawIndexed(index_count, 0U, 0);
 }
+
+void light_shader::render(XMMATRIX const &world, XMMATRIX const &view,
+	ComPtr<ID3D11ShaderResourceView> const &texture, unsigned const index_count)
+	const
+{
+	render(world, view, texture, index_count, ambient_, spotlights_);
+}

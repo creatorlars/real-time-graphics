@@ -73,19 +73,19 @@ application::application()
 		const auto type = settings->read(L"objects", key + L"type");
 		if (type == L"submarine")
 		{
-			object = std::make_shared<submarine>(graphics_->d3d());
+			object = std::make_shared<submarine>(graphics_->d3d(), light_shader_);
 		}
 		else if (type == L"drebbel")
 		{
-			object = std::make_shared<drebbel>(graphics_->d3d());
+			object = std::make_shared<drebbel>(graphics_->d3d(), light_shader_);
 		}
 		else if (type == L"cube")
 		{
-			object = std::make_shared<cube>(graphics_->d3d());
+			object = std::make_shared<cube>(graphics_->d3d(), light_shader_);
 		}
 		else if (type == L"terrain")
 		{
-			object = std::make_shared<terrain>(graphics_->d3d());
+			object = std::make_shared<terrain>(graphics_->d3d(), light_shader_);
 		}
 		else
 		{
@@ -156,18 +156,22 @@ application::application()
 		"min=1000 max=100000 step=100");
 
 	// ! legacy initialisation !
-	inner_sphere_ = std::make_shared<sphere>(graphics_->d3d());
-	inner_sphere_->scale({ -5.f, -5.f, -5.f });
-
-	outer_sphere_ = std::make_shared<sphere>(graphics_->d3d());
-	outer_sphere_->scale({ 5.f, 5.f, 5.f });
-
 	for (auto i = 0U; i < 9U; ++i)
 	{
-		fish_.emplace_back(std::make_shared<fish>(graphics_->d3d(), camera_));
-		fish_.at(i)->scale({ .1f, .1f, .1f });
-		fish_.at(i)->translate({ static_cast<float>(i) - 4.f, 2.f, 0.f });
+		auto fish = std::make_shared<::fish>(graphics_->d3d(), texture_shader_,
+			light_shader_);
+		fish->scale({ .1f, .1f, .1f });
+		fish->translate({ static_cast<float>(i) - 4.f, 2.f, 0.f });
+		objects_.emplace_back(fish);
 	}
+
+	auto inner_sphere = std::make_shared<sphere>(graphics_->d3d(), transparent_shader_);
+	inner_sphere->scale({ -5.f, -5.f, -5.f });
+	objects_.emplace_back(inner_sphere);
+
+	auto outer_sphere = std::make_shared<sphere>(graphics_->d3d(), transparent_shader_);
+	outer_sphere->scale({ 5.f, 5.f, 5.f });
+	objects_.emplace_back(outer_sphere);
 
 	timeBeginPeriod(1U);
 }
@@ -331,11 +335,6 @@ void application::frame()
 		// switch visualisations
 	}
 
-	for (auto const& fish : fish_)
-	{
-		fish->frame();
-	}
-
 	for (auto const &it : objects_)
 	{
 		it->frame();
@@ -345,23 +344,12 @@ void application::frame()
 void application::render()
 {
 	graphics_->begin_render();
-
-	camera_->render();
+	light_shader_->begin_render(ambient_, lights_);
 
 	for (auto const &it : objects_)
 	{
-		light_shader_->render(it, camera_, ambient_, lights_);
+		it->render(camera_);
 	}
-
-	transparent_shader_->render(inner_sphere_, camera_, .25f);
-
-	for (auto const& fish : fish_)
-	{
-		fish->render(texture_shader_, camera_);
-		light_shader_->render(fish, camera_, ambient_, lights_);
-	}
-
-	transparent_shader_->render(outer_sphere_, camera_, .25f);
 
 	graphics_->end_render();
 }

@@ -175,6 +175,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="shader.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="spotlight.cpp" />
     <ClCompile Include="submarine.cpp" />
@@ -425,6 +426,7 @@
     <ClInclude Include="quad.h" />
     <ClInclude Include="particle_emitter.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="shader.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="spotlight.h" />
     <ClInclude Include="submarine.h" />

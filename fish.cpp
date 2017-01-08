@@ -4,13 +4,16 @@
 #include "direct3d.h"
 #include "particle_emitter.h"
 #include "texture_shader.h"
+#include "light_shader.h"
 #include "camera.h"
 
-fish::fish(direct3d const& d3d, std::shared_ptr<camera> const &camera)
-	: object(d3d, "data/fish.obj", "data/orange.tga"), d3d_(d3d), camera_(camera)
+fish::fish(direct3d const& d3d,
+	std::shared_ptr<texture_shader> const &emitter_shader,
+	std::shared_ptr<light_shader> const &shader)
+	: object(d3d, "data/fish.obj", "data/orange.tga"), d3d_(d3d),
+	shader_(shader)
 {
-	emitter_ = std::make_shared<particle_emitter>(d3d);
-
+	emitter_ = std::make_shared<particle_emitter>(d3d, emitter_shader);
 }
 
 void fish::frame()
@@ -22,12 +25,12 @@ void fish::frame()
 	if (wait_ == 0U)
 	{
 		wait_ = 20U;
-		emitter_->emit(camera_);
+		emitter_->emit();
 	}
 }
 
-void fish::render(std::shared_ptr<texture_shader> const &shader,
-	std::shared_ptr<camera> const &camera)
+void fish::render(std::shared_ptr<camera> const &camera) const
 {
-	emitter_->render(shader, camera);
+	emitter_->render(camera);
+	object::render(shader_, camera);
 }

@@ -6,8 +6,9 @@
 #include "bubble.h"
 #include "camera.h"
 
-particle_emitter::particle_emitter(direct3d const &d3d)
-	: texture_(d3d, "data/bubble.tga"), d3d_(d3d)
+particle_emitter::particle_emitter(direct3d const &d3d,
+	std::shared_ptr<texture_shader> const &shader)
+	: texture_(d3d, "data/bubble.tga"), d3d_(d3d), shader_(shader)
 {
 }
 
@@ -33,20 +34,19 @@ void particle_emitter::frame()
 	}
 }
 
-void particle_emitter::render(std::shared_ptr<texture_shader> const &shader,
-	std::shared_ptr<camera> const &camera)
+void particle_emitter::render(std::shared_ptr<camera> const &camera)
 {
 	for (auto const &particle : particles_)
 	{
 		if (particle->alive())
 		{
-			shader->render(particle, camera);
+			particle->render(shader_, camera);
 		}
 	}
 }
 
-void particle_emitter::emit(std::shared_ptr<camera> const &camera)
+void particle_emitter::emit()
 {
-	particles_.emplace_back(std::make_shared<bubble>(d3d_, camera,
-		texture_.view(), position_, 1'000U));
+	particles_.emplace_back(std::make_shared<bubble>(d3d_, texture_.view(),
+		position_, 1'000U));
 }
