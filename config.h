@@ -25,7 +25,7 @@ public:
 
 	void write(std::wstring const&, std::wstring const&, std::wstring const&) const;
 	void write(std::wstring const& app, std::wstring const& key, bool const value) const
-	{ write(app, key, value ? L"true" : L"false"); }
+	{ write(app, key, std::wstring{ value ? L"true" : L"false" }); }
 	//template <typename T>
 	//void write(std::wstring const& app, std::wstring const& key, T const& value) const
 	//{ write(app, key, std::to_wstring(value)); }
