@@ -1,19 +1,23 @@
 #include "pch.h"
 #include "application.h"
 
+#include "window.h"
+#include "graphics.h"
+#include "input.h"
+
 #include "texture_shader.h"
 #include "transparent_shader.h"
 #include "light_shader.h"
 
+#include "camera.h"
+
+#include "object.h"
 #include "submarine.h"
 #include "drebbel.h"
 #include "sphere.h"
 #include "cube.h"
 #include "terrain.h"
 #include "fish.h"
-
-#include "particle_emitter.h"
-#include "camera.h"
 
 #include "ambient.h"
 #include "spotlight.h"
@@ -24,41 +28,139 @@ application::application()
 {
 	auto const settings = std::make_shared<config>(L"data/config.ini");
 
+	// initialise engines
 	window_ = std::make_unique<window>(settings);
-	input_ = std::make_unique<input>();
 	graphics_ = std::make_unique<graphics>(window_->handle(), settings);
+	input_ = std::make_unique<input>();
 
+	// initialise shaders
 	texture_shader_ = std::make_shared<texture_shader>(graphics_->d3d());
 	transparent_shader_ = std::make_shared<transparent_shader>(graphics_->d3d());
 	light_shader_ = std::make_shared<light_shader>(graphics_->d3d());
 
-	submarine_ = std::make_shared<submarine>(graphics_->d3d());
-	submarine_->translate({ 2.f, 1.f, 0.f });
-	submarine_->scale({ .5f, .5f, .5f });
+	// initialise camera
+	auto const c1px = settings->read<float>(L"camera", L"camera1positionx");
+	auto const c1py = settings->read<float>(L"camera", L"camera1positiony");
+	auto const c1pz = settings->read<float>(L"camera", L"camera1positionz");
+	auto const c1rx = settings->read<float>(L"camera", L"camera1rotationx");
+	auto const c1ry = settings->read<float>(L"camera", L"camera1rotationy");
+	auto const c1rz = settings->read<float>(L"camera", L"camera1rotationz");
+	camera1position_ = { c1px, c1py, c1pz };
+	camera1rotation_ = { c1rx, c1ry, c1rz };
 
-	drebbel_ = std::make_shared<drebbel>(graphics_->d3d());
-	drebbel_->translate({ -2.f, 1.f, 0.f });
-	drebbel_->scale({ .5f, .5f, .5f });
-
-	cube_ = std::make_shared<cube>(graphics_->d3d());
-	cube_->translate({ 5.f, 0.f, 0.f });
-
-	inner_sphere_ = std::make_shared<sphere>(graphics_->d3d());
-	inner_sphere_->scale({ -5, -5, -5 });
-
-	outer_sphere_ = std::make_shared<sphere>(graphics_->d3d());
-	outer_sphere_->scale({ 5, 5, 5.f });
-
-	terrain_ = std::make_shared<terrain>(graphics_->d3d());
-	terrain_->scale({ 4.99f, 4.99f, 4.99f });
+	auto const c2px = settings->read<float>(L"camera", L"camera2positionx");
+	auto const c2py = settings->read<float>(L"camera", L"camera2positiony");
+	auto const c2pz = settings->read<float>(L"camera", L"camera2positionz");
+	auto const c2rx = settings->read<float>(L"camera", L"camera2rotationx");
+	auto const c2ry = settings->read<float>(L"camera", L"camera2rotationy");
+	auto const c2rz = settings->read<float>(L"camera", L"camera2rotationz");
+	camera2position_ = { c2px, c2py, c2pz };
+	camera2rotation_ = { c2rx, c2ry, c2rz };
 
 	camera_ = std::make_shared<camera>();
-	camera_->rotation({ 40.f, 0.f, 0.f });
-	camera_->move({ 0.f, 0.f, -15.f });
+	camera_->position(camera1position_);
+	camera_->rotation(camera1rotation_);
 
+	// initialise objects
+	const auto object_count = settings->read<unsigned>(L"objects", L"count");
+	objects_.reserve(object_count);
+
+	for (auto i = 0U; i < object_count; ++i)
+	{
+		auto object = std::shared_ptr<::object>();
+
+		auto const key = std::wstring{ L"object" } + std::to_wstring(i + 1);
+		const auto type = settings->read(L"objects", key + L"type");
+		if (type == L"submarine")
+		{
+			object = std::make_shared<submarine>(graphics_->d3d());
+		}
+		else if (type == L"drebbel")
+		{
+			object = std::make_shared<drebbel>(graphics_->d3d());
+		}
+		else if (type == L"cube")
+		{
+			object = std::make_shared<cube>(graphics_->d3d());
+		}
+		else if (type == L"terrain")
+		{
+			object = std::make_shared<terrain>(graphics_->d3d());
+		}
+		else
+		{
+			continue;
+		}
+
+		const auto px = settings->read<float>(L"objects", key + L"positionx");
+		const auto py = settings->read<float>(L"objects", key + L"positiony");
+		const auto pz = settings->read<float>(L"objects", key + L"positionz");
+		object->position({ px, py, pz });
+
+		const auto rx = settings->read<float>(L"objects", key + L"rotationx");
+		const auto ry = settings->read<float>(L"objects", key + L"rotationy");
+		const auto rz = settings->read<float>(L"objects", key + L"rotationz");
+		object->rotation({ rx, ry, rz });
+
+		const auto sx = settings->read<float>(L"objects", key + L"scalex");
+		const auto sy = settings->read<float>(L"objects", key + L"scaley");
+		const auto sz = settings->read<float>(L"objects", key + L"scalez");
+		object->scale({ sx, sy, sz });
+
+		objects_.emplace_back(object);
+	}
+
+	// initialise lights
+	auto const adx = settings->read<float>(L"lights", L"ambientdirectionx");
+	auto const ady = settings->read<float>(L"lights", L"ambientdirectiony");
+	auto const adz = settings->read<float>(L"lights", L"ambientdirectionz");
+
+	auto const aminr = settings->read<float>(L"lights", L"ambientmincolourr");
+	auto const aming = settings->read<float>(L"lights", L"ambientmincolourg");
+	auto const aminb = settings->read<float>(L"lights", L"ambientmincolourb");
+
+	auto const amaxr = settings->read<float>(L"lights", L"ambientmaxcolourr");
+	auto const amaxg = settings->read<float>(L"lights", L"ambientmaxcolourg");
+	auto const amaxb = settings->read<float>(L"lights", L"ambientmaxcolourb");
+
+	ambient_ = std::make_shared<ambient>(
+		XMFLOAT3{ adx, ady, adz },
+		XMFLOAT3{ aminr, aming, aminb },
+		XMFLOAT3{ amaxr, amaxg, amaxb }
+	);
+
+	const auto light_count = settings->read<unsigned>(L"lights", L"count");
+	lights_.reserve(light_count);
+
+	for (auto i = 0U; i < light_count; ++i)
+	{
+		auto const key = std::wstring{ L"light" } +std::to_wstring(i + 1);
+
+		const auto px = settings->read<float>(L"lights", key + L"positionx");
+		const auto py = settings->read<float>(L"lights", key + L"positiony");
+		const auto pz = settings->read<float>(L"lights", key + L"positionz");
+
+		const auto cr = settings->read<float>(L"lights", key + L"colourr");
+		const auto cg = settings->read<float>(L"lights", key + L"colourg");
+		const auto cb = settings->read<float>(L"lights", key + L"colourb");
+
+		lights_.emplace_back(std::make_shared<spotlight>(
+			XMFLOAT3{ px, py, pz },
+			XMFLOAT3{ cr, cg, cb }
+		));
+	}
+
+	// initialise AntTweakBar
 	tweak_bar_ = TwNewBar("AntTweakBar");
 	TwAddVarRW(tweak_bar_, "Frame Delay", TW_TYPE_INT32, &atb_delay_,
 		"min=1000 max=100000 step=100");
+
+	// ! legacy initialisation !
+	inner_sphere_ = std::make_shared<sphere>(graphics_->d3d());
+	inner_sphere_->scale({ -5.f, -5.f, -5.f });
+
+	outer_sphere_ = std::make_shared<sphere>(graphics_->d3d());
+	outer_sphere_->scale({ 5.f, 5.f, 5.f });
 
 	for (auto i = 0U; i < 9U; ++i)
 	{
@@ -66,25 +168,6 @@ application::application()
 		fish_.at(i)->scale({ .1f, .1f, .1f });
 		fish_.at(i)->translate({ static_cast<float>(i) - 4.f, 2.f, 0.f });
 	}
-
-	ambient_ = std::make_shared<ambient>(
-		XMFLOAT3{ -.75f, .75f, -.75f },	// direction
-		XMFLOAT3{ .1f, .1f, .1f },		// minimum colour
-		XMFLOAT3{ .5f, .5f, .5f }		// maximum colour
-	);
-
-	lights_.emplace_back(std::make_shared<spotlight>(
-		XMFLOAT3{ -3.f, 1.f, -3.f },	// position
-		XMFLOAT3{ .25f, 0.f, 0.f }		// colour
-	));
-	lights_.emplace_back(std::make_shared<spotlight>(
-		XMFLOAT3{ 0.f, 0.f, 0.f },		// position
-		XMFLOAT3{ 0.f, .25f, 0.f }		// colour
-	));
-	lights_.emplace_back(std::make_shared<spotlight>(
-		XMFLOAT3{ 3.f, 0.f, 3.f },		// position
-		XMFLOAT3{ 0.f, 0.f, .25f }		// colour
-	));
 
 	timeBeginPeriod(1U);
 }
@@ -166,7 +249,7 @@ void application::frame()
 		}
 		else
 		{
-			camera_->rotate_up(1.f);
+			camera_->rotate_forwards(1.f);
 		}
 	}
 	if (input_->down(KEYBOARD::DOWN) || input_->down(KEYBOARD::S)
@@ -178,7 +261,7 @@ void application::frame()
 		}
 		else
 		{
-			camera_->rotate_down(1.f);
+			camera_->rotate_backwards(1.f);
 		}
 	}
 	if (input_->down(KEYBOARD::LEFT) || input_->down(KEYBOARD::A)
@@ -217,11 +300,13 @@ void application::frame()
 	// camera switching
 	if (input_->pressed(KEYBOARD::F1))
 	{
-		// select camera 1
+		camera_->position(camera1position_);
+		camera_->rotation(camera1rotation_);
 	}
 	else if (input_->pressed(KEYBOARD::F2))
 	{
-		// select camera 2
+		camera_->position(camera2position_);
+		camera_->rotation(camera2rotation_);
 	}
 	else if (input_->pressed(KEYBOARD::F3))
 	{
@@ -246,13 +331,14 @@ void application::frame()
 		// switch visualisations
 	}
 
-	submarine_->frame();
-	drebbel_->frame();
-	cube_->frame();
-
 	for (auto const& fish : fish_)
 	{
 		fish->frame();
+	}
+
+	for (auto const &it : objects_)
+	{
+		it->frame();
 	}
 }
 
@@ -262,10 +348,10 @@ void application::render()
 
 	camera_->render();
 
-	light_shader_->render(submarine_, camera_, ambient_, lights_);
-	light_shader_->render(drebbel_, camera_, ambient_, lights_);
-	light_shader_->render(cube_, camera_, ambient_, lights_);
-	light_shader_->render(terrain_, camera_, ambient_, lights_);
+	for (auto const &it : objects_)
+	{
+		light_shader_->render(it, camera_, ambient_, lights_);
+	}
 
 	transparent_shader_->render(inner_sphere_, camera_, .25f);
 

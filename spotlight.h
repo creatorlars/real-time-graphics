@@ -5,7 +5,6 @@ class spotlight
 public:
 	spotlight(XMFLOAT3 const&, XMFLOAT3 const&);
 
-	spotlight() = delete;
 	~spotlight() = default;
 
 	explicit spotlight(spotlight const&) = default;

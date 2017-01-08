@@ -54,8 +54,13 @@ private:
 
 	// camera
 	std::shared_ptr<camera> camera_ = nullptr;
+	XMFLOAT3 camera1position_ = {};
+	XMFLOAT3 camera1rotation_ = {};
+	XMFLOAT3 camera2position_ = {};
+	XMFLOAT3 camera2rotation_ = {};
 
 	// objects
+	std::vector<std::shared_ptr<object>> objects_ = {};
 	std::shared_ptr<submarine> submarine_ = nullptr;
 	std::shared_ptr<drebbel> drebbel_ = nullptr;
 	std::shared_ptr<cube> cube_ = nullptr;

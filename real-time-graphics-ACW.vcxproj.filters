@@ -292,7 +292,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="config.ini">
+    <None Include="data\config.ini">
       <Filter>Config</Filter>
     </None>
   </ItemGroup>

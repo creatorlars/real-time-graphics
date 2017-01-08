@@ -33,9 +33,9 @@ public:
 	{ rotate({ 0.f, -delta, 0.f }); }
 	inline void rotate_right(float const delta)
 	{ rotate({ 0.f, delta, 0.f }); }
-	inline void rotate_up(float const delta)
+	inline void rotate_forwards(float const delta)
 	{ rotate({ delta, 0.f, 0.f }); }
-	inline void rotate_down(float const delta)
+	inline void rotate_backwards(float const delta)
 	{ rotate({ -delta, 0.f, 0.f }); }
 	inline void rotate_clockwise(float const delta)
 	{ rotate({ 0.f, 0.f, delta }); }

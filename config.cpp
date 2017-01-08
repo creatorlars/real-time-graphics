@@ -8,7 +8,7 @@ config::config(std::wstring filename)
 std::wstring config::read(std::wstring const &app, std::wstring const& key) const
 {
 	TCHAR test[64];
-	GetPrivateProfileString(app.c_str(), key.c_str(), NULL, test, 64, filename_.c_str());
+	GetPrivateProfileString(app.c_str(), key.c_str(), L"0", test, 64, filename_.c_str());
 	return { test };
 }
 

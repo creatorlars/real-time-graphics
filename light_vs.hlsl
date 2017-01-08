@@ -40,7 +40,7 @@ VS_OUTPUT main(VS_INPUT input)
 	[unroll]
 	for (int i = 0; i < spotlight_count; ++i)
 	{
-		output.spotlight_positions[i] = normalize(spotlight_positions[i] - output.position);
+		output.spotlight_positions[i] = normalize(spotlight_positions[i].xyz - output.position.xyz);
 	}
 
 	output.position = mul(output.position, view);
