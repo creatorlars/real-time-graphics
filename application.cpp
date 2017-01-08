@@ -72,34 +72,22 @@ application::application()
 		auto const key = std::wstring{ L"object" } + std::to_wstring(i + 1);
 		const auto type = settings->read(L"objects", key + L"type");
 		if (type == L"submarine")
-		{
-			object = std::make_shared<submarine>(graphics_->d3d(), light_shader_);
-		}
+		{ object = std::make_shared<submarine>(graphics_->d3d(), light_shader_); }
 		else if (type == L"drebbel")
-		{
-			object = std::make_shared<drebbel>(graphics_->d3d(), light_shader_);
-		}
+		{ object = std::make_shared<drebbel>(graphics_->d3d(), light_shader_); }
 		else if (type == L"cube")
-		{
-			object = std::make_shared<cube>(graphics_->d3d(), light_shader_);
-		}
+		{ object = std::make_shared<cube>(graphics_->d3d(), light_shader_); }
 		else if (type == L"terrain")
-		{
-			object = std::make_shared<terrain>(graphics_->d3d(), light_shader_);
-		}
+		{ object = std::make_shared<terrain>(graphics_->d3d(), light_shader_); }
 		else if (type == L"sphere")
-		{
-			object = std::make_shared<sphere>(graphics_->d3d(), transparent_shader_);
-		}
+		{ object = std::make_shared<sphere>(graphics_->d3d(), transparent_shader_); }
 		else if (type == L"fish")
-		{
+		{ 
 			object = std::make_shared<fish>(graphics_->d3d(), texture_shader_,
 				light_shader_);
 		}
 		else
-		{
-			continue;
-		}
+		{ continue; }
 
 		const auto px = settings->read<float>(L"objects", key + L"positionx");
 		const auto py = settings->read<float>(L"objects", key + L"positiony");
@@ -303,15 +291,23 @@ void application::frame()
 		camera_->position(camera2position_);
 		camera_->rotation(camera2rotation_);
 	}
-	else if (input_->pressed(KEYBOARD::F3))
+	else if (input_->pressed(KEYBOARD::F3) || input_->pressed(KEYBOARD::F4))
 	{
-		// select camera 3
-	}
+		// switch camera focus
+		if (input_->pressed(KEYBOARD::F4))
+		{
+			++focus_;
+			if (focus_ == objects_.size())
+			{
+				focus_ = 0U;
+			}
+		}
 
-	// camera 3 control
-	if (input_->pressed(KEYBOARD::F4))
-	{
-		// switch camera 3 focus
+		auto const object = objects_[focus_];
+		auto const position = object->position();
+		camera_->position(position);
+		camera_->rotation({ 45.f, 0.f, 0.f });
+		camera_->move_backward(5.f);
 	}
 
 	// render mode control

@@ -50,6 +50,7 @@ private:
 
 	// camera
 	std::shared_ptr<camera> camera_ = nullptr;
+	unsigned focus_ = {};
 	XMFLOAT3 camera1position_ = {};
 	XMFLOAT3 camera1rotation_ = {};
 	XMFLOAT3 camera2position_ = {};
