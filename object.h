@@ -5,8 +5,6 @@
 #include "camera.h"
 
 class direct3d;
-class texture_shader;
-class shader;
 
 class object : public matrix
 {
@@ -27,8 +25,15 @@ public:
 	inline void model(std::shared_ptr<::model> const &model)
 	{ model_ = model; }
 
-	virtual XMMATRIX const render() const;
+	virtual void frame() = 0;
+	virtual void render(std::shared_ptr<camera> const&) const = 0;
 
+	inline unsigned index_count() const
+	{ return model_->index_count(); }
+	inline ComPtr<ID3D11ShaderResourceView> view() const
+	{ return model_->view(); }
+
+protected:
 	template <typename T, typename... Args>
 	void render(T const &shader, std::shared_ptr<camera> const &camera,
 		Args... args) const
@@ -54,18 +59,6 @@ public:
 
 		shader->render(matrix, camera->render(), view(), index_count(), args...);
 	}
-
-	virtual void render(std::shared_ptr<texture_shader> const&, std::shared_ptr<camera> const&)
-	{}
-	virtual void render(std::shared_ptr<camera> const&) const
-	{}
-
-	virtual void frame() = 0;
-
-	inline unsigned index_count() const
-	{ return model_->index_count(); }
-	inline ComPtr<ID3D11ShaderResourceView> view() const
-	{ return model_->view(); }
 
 private:
 	std::shared_ptr<::model> model_ = nullptr;

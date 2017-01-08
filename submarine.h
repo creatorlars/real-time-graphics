@@ -19,7 +19,7 @@ public:
 	submarine& operator=(submarine const&) = default;
 	submarine& operator=(submarine&&) = default;
 
-	void frame();
+	void frame() override;
 	inline void render(std::shared_ptr<camera> const &camera) const override
 	{ return object::render(shader_, camera); }
 

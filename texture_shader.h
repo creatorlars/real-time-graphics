@@ -1,12 +1,8 @@
 #pragma once
 
-#include "shader.h"
-
 class direct3d;
-class camera;
-class object;
 
-class texture_shader : public shader
+class texture_shader
 {
 public:
 	explicit texture_shader(direct3d const&);

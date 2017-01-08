@@ -4,16 +4,12 @@
 #include "input.h"
 #include "graphics.h"
 
-class object;
-class submarine;
-class drebbel;
-class cube;
-
 class texture_shader;
 class transparent_shader;
 class light_shader;
 
-class particle_emitter;
+class object;
+
 class camera;
 
 class ambient;

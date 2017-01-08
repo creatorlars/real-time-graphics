@@ -19,7 +19,7 @@ public:
 	drebbel& operator=(drebbel const&) = default;
 	drebbel& operator=(drebbel&&) = default;
 
-	void frame();
+	void frame() override;
 	inline void render(std::shared_ptr<camera> const &camera) const override
 	{ return object::render(shader_, camera); }
 

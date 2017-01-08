@@ -25,9 +25,9 @@ public:
 	virtual bool alive() const = 0;
 	virtual XMMATRIX const render(std::shared_ptr<camera> const&) const;
 
-	template <typename... T>
-	void render(std::shared_ptr<shader> const &shader,
-		std::shared_ptr<camera> const &camera, T... args) const
+	template <typename T, typename... Args>
+	void render(T const &shader, std::shared_ptr<camera> const &camera,
+		Args... args) const
 	{
 		quad::render();
 

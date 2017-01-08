@@ -1,13 +1,8 @@
 #pragma once
 
-#include "shader.h"
-
-
 class direct3d;
-class camera;
-class object;
 
-class transparent_shader : public shader
+class transparent_shader
 {
 public:
 	explicit transparent_shader(direct3d const&);

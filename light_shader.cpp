@@ -178,9 +178,8 @@ light_shader::light_shader(direct3d const& d3d) : d3d_(d3d)
 }
 
 void light_shader::render(XMMATRIX const &world, XMMATRIX const &view,
-	ComPtr<ID3D11ShaderResourceView> const &texture, unsigned const index_count,
-	std::shared_ptr<ambient> const &ambient,
-	std::vector<std::shared_ptr<spotlight>> const &spotlights) const
+	ComPtr<ID3D11ShaderResourceView> const &texture, unsigned const index_count)
+	const
 {
 	HRESULT result{};
 	auto const context = d3d_.context();
@@ -229,16 +228,16 @@ void light_shader::render(XMMATRIX const &world, XMMATRIX const &view,
 	auto const light_buffer = static_cast<LightBufferType*>(mapped_resource.pData);
 
 	// store ambient information
-	light_buffer->ambient_min = XMLoadFloat3(&ambient->min());
-	light_buffer->ambient_max = XMLoadFloat3(&ambient->max());
-	light_buffer->ambient_direction = XMLoadFloat3(&ambient->direction());
+	light_buffer->ambient_min = XMLoadFloat3(&ambient_->min());
+	light_buffer->ambient_max = XMLoadFloat3(&ambient_->max());
+	light_buffer->ambient_direction = XMLoadFloat3(&ambient_->direction());
 
 	// store spotlight information
-	light_buffer->spotlight_count = static_cast<int>(spotlights.size());
-	for (auto i = 0U; i < spotlights.size(); ++i)
+	light_buffer->spotlight_count = static_cast<int>(spotlights_.size());
+	for (auto i = 0U; i < spotlights_.size(); ++i)
 	{
 		// Get vectors
-		auto const spotlight_colour = XMLoadFloat3(&spotlights[i]->colour());
+		auto const spotlight_colour = XMLoadFloat3(&spotlights_[i]->colour());
 
 		// Copy the matrices into the constant buffer
 		light_buffer->spotlight_colours[i] = spotlight_colour;
@@ -264,11 +263,11 @@ void light_shader::render(XMMATRIX const &world, XMMATRIX const &view,
 
 	// Get a pointer to the data in the constant buffer.
 	auto const light_position_buffer = static_cast<LightPositionBufferType*>(mapped_resource.pData);
-	light_position_buffer->count = static_cast<int>(spotlights.size());
-	for (auto i = 0U; i < spotlights.size(); ++i)
+	light_position_buffer->count = static_cast<int>(spotlights_.size());
+	for (auto i = 0U; i < spotlights_.size(); ++i)
 	{
 		// store position
-		auto const position = XMLoadFloat3(&spotlights[i]->position());
+		auto const position = XMLoadFloat3(&spotlights_[i]->position());
 		light_position_buffer->position[i] = position;
 	}
 
@@ -294,11 +293,4 @@ void light_shader::render(XMMATRIX const &world, XMMATRIX const &view,
 
 	// Render the triangle.
 	context->DrawIndexed(index_count, 0U, 0);
-}
-
-void light_shader::render(XMMATRIX const &world, XMMATRIX const &view,
-	ComPtr<ID3D11ShaderResourceView> const &texture, unsigned const index_count)
-	const
-{
-	render(world, view, texture, index_count, ambient_, spotlights_);
 }

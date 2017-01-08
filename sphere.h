@@ -26,5 +26,5 @@ public:
 
 private:
 	direct3d const &d3d_;
-	std::shared_ptr<shader> shader_ = nullptr;
+	std::shared_ptr<transparent_shader> shader_ = nullptr;
 };

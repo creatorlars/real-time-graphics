@@ -1,15 +1,10 @@
 #pragma once
 
-#include "shader.h"
-
 class direct3d;
-class object;
-class camera;
-
 class ambient;
 class spotlight;
 
-class light_shader : public shader
+class light_shader
 {
 public:
 	explicit light_shader(direct3d const&);
@@ -29,11 +24,6 @@ public:
 		ambient_ = ambient;
 		spotlights_ = spotlights;
 	}
-
-	void render(XMMATRIX const&, XMMATRIX const&,
-		ComPtr<ID3D11ShaderResourceView> const&, unsigned const,
-		std::shared_ptr<ambient> const&,
-		std::vector<std::shared_ptr<spotlight>> const&) const;
 
 	void render(XMMATRIX const&, XMMATRIX const&,
 		ComPtr<ID3D11ShaderResourceView> const&, unsigned const) const;

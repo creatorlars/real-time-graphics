@@ -87,6 +87,15 @@ application::application()
 		{
 			object = std::make_shared<terrain>(graphics_->d3d(), light_shader_);
 		}
+		else if (type == L"sphere")
+		{
+			object = std::make_shared<sphere>(graphics_->d3d(), transparent_shader_);
+		}
+		else if (type == L"fish")
+		{
+			object = std::make_shared<fish>(graphics_->d3d(), texture_shader_,
+				light_shader_);
+		}
 		else
 		{
 			continue;
@@ -154,24 +163,6 @@ application::application()
 	tweak_bar_ = TwNewBar("AntTweakBar");
 	TwAddVarRW(tweak_bar_, "Frame Delay", TW_TYPE_INT32, &atb_delay_,
 		"min=1000 max=100000 step=100");
-
-	// ! legacy initialisation !
-	for (auto i = 0U; i < 9U; ++i)
-	{
-		auto fish = std::make_shared<::fish>(graphics_->d3d(), texture_shader_,
-			light_shader_);
-		fish->scale({ .1f, .1f, .1f });
-		fish->translate({ static_cast<float>(i) - 4.f, 2.f, 0.f });
-		objects_.emplace_back(fish);
-	}
-
-	auto inner_sphere = std::make_shared<sphere>(graphics_->d3d(), transparent_shader_);
-	inner_sphere->scale({ -5.f, -5.f, -5.f });
-	objects_.emplace_back(inner_sphere);
-
-	auto outer_sphere = std::make_shared<sphere>(graphics_->d3d(), transparent_shader_);
-	outer_sphere->scale({ 5.f, 5.f, 5.f });
-	objects_.emplace_back(outer_sphere);
 
 	timeBeginPeriod(1U);
 }

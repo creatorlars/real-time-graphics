@@ -19,14 +19,8 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Primitives">
-      <UniqueIdentifier>{4e2d43ca-0fbc-41d9-a7c3-40c3fc59cdcc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{802114dc-b851-41e1-a58b-b5ef73fdeddc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Primitives">
-      <UniqueIdentifier>{364d7fe6-8d07-4c22-aa0e-3340addd3b9d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Shaders">
       <UniqueIdentifier>{b2f9fb35-95d6-4b04-a66d-fd96f872f2df}</UniqueIdentifier>
@@ -58,6 +52,12 @@
     <Filter Include="Header Files\Lighting">
       <UniqueIdentifier>{c602c8b3-952e-470a-88b5-e44691be5226}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Targets">
+      <UniqueIdentifier>{4e2d43ca-0fbc-41d9-a7c3-40c3fc59cdcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Targets">
+      <UniqueIdentifier>{364d7fe6-8d07-4c22-aa0e-3340addd3b9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp">
@@ -69,23 +69,14 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cube.cpp">
-      <Filter>Source Files\Primitives</Filter>
-    </ClCompile>
     <ClCompile Include="quad.cpp">
-      <Filter>Source Files\Primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="sphere.cpp">
-      <Filter>Source Files\Primitives</Filter>
+      <Filter>Source Files\Targets</Filter>
     </ClCompile>
     <ClCompile Include="transparent_shader.cpp">
       <Filter>Source Files\Shaders</Filter>
@@ -147,8 +138,14 @@
     <ClCompile Include="spotlight.cpp">
       <Filter>Source Files\Lighting</Filter>
     </ClCompile>
-    <ClCompile Include="shader.cpp">
-      <Filter>Source Files\Shaders</Filter>
+    <ClCompile Include="cube.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="sphere.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>Source Files\Targets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -198,9 +195,6 @@
     <ClInclude Include="camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -216,14 +210,8 @@
     <ClInclude Include="light_shader.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="cube.h">
-      <Filter>Header Files\Primitives</Filter>
-    </ClInclude>
     <ClInclude Include="quad.h">
-      <Filter>Header Files\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="sphere.h">
-      <Filter>Header Files\Primitives</Filter>
+      <Filter>Header Files\Targets</Filter>
     </ClInclude>
     <ClInclude Include="matrix.h">
       <Filter>Header Files</Filter>
@@ -276,8 +264,14 @@
     <ClInclude Include="spotlight.h">
       <Filter>Header Files\Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="shader.h">
-      <Filter>Header Files\Shaders</Filter>
+    <ClInclude Include="sphere.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="cube.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>Header Files\Targets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
