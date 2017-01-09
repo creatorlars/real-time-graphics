@@ -4,7 +4,7 @@
 
 class direct3d;
 class particle_emitter;
-class texture_shader;
+class transparent_shader;
 class light_shader;
 
 class shader;
@@ -12,7 +12,7 @@ class shader;
 class fish final : public object
 {
 public:
-	fish(direct3d const&, std::shared_ptr<texture_shader> const&,
+	fish(direct3d const&, std::shared_ptr<transparent_shader> const&,
 		std::shared_ptr<light_shader> const&);
 
 	fish() = delete;

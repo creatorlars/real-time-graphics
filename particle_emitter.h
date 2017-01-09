@@ -2,7 +2,7 @@
 
 #include "texture.h"
 
-class texture_shader;
+class transparent_shader;
 class camera;
 class particle;
 class direct3d;
@@ -10,7 +10,7 @@ class direct3d;
 class particle_emitter
 {
 public:
-	particle_emitter(direct3d const&, std::shared_ptr<texture_shader> const&);
+	particle_emitter(direct3d const&, std::shared_ptr<transparent_shader> const&);
 
 	~particle_emitter() = default;
 
@@ -31,7 +31,7 @@ public:
 	{ position_ = position; }
 
 private:
-	std::shared_ptr<texture_shader> shader_ = nullptr;
+	std::shared_ptr<transparent_shader> shader_ = nullptr;
 	std::vector<std::shared_ptr<particle>> particles_ = {};
 	texture texture_;
 

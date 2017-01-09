@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "particle_emitter.h"
 
-#include "texture_shader.h"
+#include "transparent_shader.h"
 #include "particle.h"
 #include "bubble.h"
 #include "camera.h"
 
 particle_emitter::particle_emitter(direct3d const &d3d,
-	std::shared_ptr<texture_shader> const &shader)
+	std::shared_ptr<transparent_shader> const &shader)
 	: texture_(d3d, "data/bubble.tga"), d3d_(d3d), shader_(shader)
 {
 }
@@ -40,7 +40,7 @@ void particle_emitter::render(std::shared_ptr<camera> const &camera)
 	{
 		if (particle->alive())
 		{
-			particle->render(shader_, camera);
+			particle->render(shader_, camera, .5f);
 		}
 	}
 }

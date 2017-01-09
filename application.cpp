@@ -83,8 +83,8 @@ application::application()
 		{ object = std::make_shared<sphere>(graphics_->d3d(), transparent_shader_); }
 		else if (type == L"fish")
 		{ 
-			object = std::make_shared<fish>(graphics_->d3d(), texture_shader_,
-				light_shader_);
+			object = std::make_shared<fish>(graphics_->d3d(),
+				transparent_shader_, light_shader_);
 		}
 		else
 		{ continue; }
