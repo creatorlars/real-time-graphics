@@ -43,9 +43,9 @@ texture::texture(direct3d const& d3d, char const *const filename)
 
 	// Copy the image data into the texture.
 	auto const context = d3d.context();
-	auto const row_pitch = (image.width * 4U) * sizeof(unsigned char);
+	auto const row_pitch = (image.width * 4U) * static_cast<UINT>(sizeof(unsigned char));
 	context->UpdateSubresource(texture_.Get(), 0U, nullptr, image.data.data(),
-		static_cast<UINT>(row_pitch), 0U);
+		row_pitch, 0U);
 
 	// Create the shader resource view for the texture.
 	auto const shader_resource_view_desc = D3D11_SHADER_RESOURCE_VIEW_DESC

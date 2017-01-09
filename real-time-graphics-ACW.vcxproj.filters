@@ -193,6 +193,9 @@
     <Object Include="data\oar.obj">
       <Filter>Models</Filter>
     </Object>
+    <Object Include="data\propeller.obj">
+      <Filter>Models</Filter>
+    </Object>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">

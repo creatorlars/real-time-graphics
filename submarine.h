@@ -20,10 +20,33 @@ public:
 	submarine& operator=(submarine&&) = default;
 
 	void frame() override;
-	inline void render(std::shared_ptr<camera> const &camera) const override
-	{ return object::render(shader_, camera); }
+	void render(std::shared_ptr<camera> const &camera) const override;
 
 private:
 	direct3d const& d3d_;
 	std::shared_ptr<light_shader> shader_ = nullptr;
+
+	class propeller final : public object
+	{
+	public:
+		propeller(direct3d const&, std::shared_ptr<light_shader> const&);
+
+		propeller() = delete;
+		~propeller() = default;
+
+		explicit propeller(propeller const&) = default;
+		explicit propeller(propeller&&) = default;
+
+		propeller& operator=(propeller const&) = default;
+		propeller& operator=(propeller&&) = default;
+
+		void frame() override;
+		inline void render(std::shared_ptr<camera> const &camera) const override
+		{ return object::render(shader_, camera); }
+
+	private:
+		direct3d const& d3d_;
+		std::shared_ptr<light_shader> shader_ = nullptr;
+	};
+	std::shared_ptr<propeller> propeller_ = nullptr;
 };

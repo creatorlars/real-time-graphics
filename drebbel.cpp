@@ -9,7 +9,7 @@ drebbel::drebbel(direct3d const& d3d,
 	: object(d3d, "data/drebbel.obj", "data/blue.tga"), d3d_(d3d),
 	shader_(shader)
 {
-	for (auto i = 0U; i < oars_.size(); ++i)
+	for (auto i = size_t{}; i < oars_.size(); ++i)
 	{
 		oars_[i] = std::make_shared<oar>(d3d, shader);
 	}
@@ -46,7 +46,7 @@ drebbel::oar::oar(direct3d const &d3d,
 
 void drebbel::oar::frame()
 {
-	static unsigned step;
+	static auto step = 0U;
 	if (step % 2)
 	{
 		auto const offset = std::sinf(step / 100.f);

@@ -234,7 +234,7 @@ void light_shader::render(XMMATRIX const &world, XMMATRIX const &view,
 
 	// store spotlight information
 	light_buffer->spotlight_count = static_cast<int>(spotlights_.size());
-	for (auto i = 0U; i < spotlights_.size(); ++i)
+	for (auto i = size_t{}; i < spotlights_.size(); ++i)
 	{
 		// Get vectors
 		auto const spotlight_colour = XMLoadFloat3(&spotlights_[i]->colour());
@@ -264,7 +264,7 @@ void light_shader::render(XMMATRIX const &world, XMMATRIX const &view,
 	// Get a pointer to the data in the constant buffer.
 	auto const light_position_buffer = static_cast<LightPositionBufferType*>(mapped_resource.pData);
 	light_position_buffer->count = static_cast<int>(spotlights_.size());
-	for (auto i = 0U; i < spotlights_.size(); ++i)
+	for (auto i = size_t{}; i < spotlights_.size(); ++i)
 	{
 		// store position
 		auto const position = XMLoadFloat3(&spotlights_[i]->position());
