@@ -92,7 +92,11 @@ model::model(direct3d const& d3d, char const *const modelFilename,
 	}
 }
 
-void model::render()
+model::~model()
+{
+}
+
+void model::render() const
 {
 	auto const context = d3d_.context();
 

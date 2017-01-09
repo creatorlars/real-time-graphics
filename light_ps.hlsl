@@ -10,6 +10,8 @@ cbuffer DATA
 	float4 ambient_max;
 	float3 ambient_direction;
 	float padding;
+	float exposure;
+	float gamma;
 	int spotlight_count;
 };
 
@@ -44,6 +46,10 @@ float4 main(PS_INPUT input) : SV_TARGET
 
 	// multiply by the texture pixel
 	total = saturate(total * tex.Sample(state, input.tex));
+
+	// HDR
+	total *= exposure;
+	total = pow(abs(total), gamma);
 	total.w = 1.f;
 
 	return total;

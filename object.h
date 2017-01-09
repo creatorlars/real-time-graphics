@@ -11,7 +11,7 @@ class object : public matrix
 public:
 	object(direct3d const&, char const *const, char const *const);
 
-	virtual ~object() = default;
+	virtual ~object();
 
 	explicit object(object const&) = default;
 	explicit object(object&&) = default;
@@ -35,7 +35,7 @@ public:
 
 protected:
 	template <typename T, typename... Args>
-	void render(T const &shader, std::shared_ptr<camera> const &camera,
+	void render_(T const &shader, std::shared_ptr<camera> const &camera,
 		Args... args) const
 	{
 		model_->render();

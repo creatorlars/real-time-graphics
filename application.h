@@ -72,4 +72,6 @@ private:
 	// lights
 	std::shared_ptr<ambient> ambient_ = {};
 	std::vector<std::shared_ptr<spotlight>> lights_ = {};
+	std::vector<std::pair<float, float>> presets_ = {};
+	size_t preset_selection_ = {};
 };

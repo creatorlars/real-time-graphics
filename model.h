@@ -10,7 +10,7 @@ public:
 	model(direct3d const&, char const *const, char const *const);
 
 	model() = delete;
-	~model() = default;
+	virtual ~model();
 
 	explicit model(model const&) = default;
 	explicit model(model&&) = default;
@@ -18,7 +18,7 @@ public:
 	model& operator=(model const&) = default;
 	model& operator=(model&&) = default;
 
-	void render();
+	void render() const;
 
 	inline unsigned index_count() const
 	{ return index_count_; }

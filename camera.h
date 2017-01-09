@@ -16,7 +16,7 @@ public:
 
 	XMMATRIX const render() const;
 
-	void move(XMFLOAT3);
+	void move(XMFLOAT3 const&);
 	inline void move_forward(float const delta)
 	{ move({ 0.f, 0.f, delta }); }
 	inline void move_backward(float const delta)

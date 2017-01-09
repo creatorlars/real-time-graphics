@@ -7,9 +7,9 @@ class config;
 class window : public message_handler
 {
 public:
-	window(std::shared_ptr<config> const&);
+	explicit window(std::shared_ptr<config> const&);
 
-	~window() = default;
+	window() = delete;
 
 	explicit window(window const&) = default;
 	explicit window(window&&) = default;

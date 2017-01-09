@@ -24,9 +24,9 @@
 
 #include "config.h"
 
-application::application()
+application::application() : alive_(true), restart_(false), focus_(), preset_selection_(0U)
 {
-	auto const settings = std::make_shared<config>(L"data/config.ini");
+	auto const settings = std::make_shared<config>(L"./config.ini");
 
 	// initialise engines
 	window_ = std::make_unique<window>(settings);
@@ -62,7 +62,7 @@ application::application()
 	camera_->rotation(camera1rotation_);
 
 	// initialise objects
-	const auto object_count = settings->read<unsigned>(L"objects", L"count");
+	const auto object_count = settings->read<unsigned>(L"objects", L"objectcount");
 	objects_.reserve(object_count);
 
 	for (auto i = 0U; i < object_count; ++i)
@@ -126,12 +126,12 @@ application::application()
 		XMFLOAT3{ amaxr, amaxg, amaxb }
 	);
 
-	const auto light_count = settings->read<unsigned>(L"lights", L"count");
+	const auto light_count = settings->read<unsigned>(L"lights", L"lightcount");
 	lights_.reserve(light_count);
 
 	for (auto i = 0U; i < light_count; ++i)
 	{
-		auto const key = std::wstring{ L"light" } +std::to_wstring(i + 1);
+		auto const key = std::wstring{ L"light" } + std::to_wstring(i + 1);
 
 		const auto px = settings->read<float>(L"lights", key + L"positionx");
 		const auto py = settings->read<float>(L"lights", key + L"positiony");
@@ -146,6 +146,22 @@ application::application()
 			XMFLOAT3{ cr, cg, cb }
 		));
 	}
+	lights_.shrink_to_fit();
+
+	const auto preset_count = settings->read<unsigned>(L"lights", L"presetcount");
+	presets_.reserve(preset_count + 1);
+	presets_.emplace_back(1.f, 1.f); // default
+
+	for (auto i = 0U; i < preset_count; ++i)
+	{
+		auto const key = std::wstring{ L"preset" } + std::to_wstring(i + 1);
+
+		const auto exposure = settings->read<float>(L"lights", key + L"exposure");
+		const auto gamma = settings->read<float>(L"lights", key + L"gamma");
+
+		presets_.emplace_back(std::pair<float, float>(exposure, gamma));
+	}
+	presets_.shrink_to_fit();
 
 	// initialise AntTweakBar
 	tweak_bar_ = TwNewBar("AntTweakBar");
@@ -313,13 +329,17 @@ void application::frame()
 	// render mode control
 	if (input_->pressed(KEYBOARD::F5))
 	{
-		// switch render modes
+		graphics_->toggle_mode();
 	}
 
-	// deferred rendering visualisations
+	// change lighting presets
 	if (input_->pressed(KEYBOARD::F6))
 	{
-		// switch visualisations
+		++preset_selection_;
+		if (preset_selection_ == presets_.size())
+		{
+			preset_selection_ = 0U;
+		}
 	}
 
 	for (auto const &it : objects_)
@@ -331,7 +351,8 @@ void application::frame()
 void application::render()
 {
 	graphics_->begin_render();
-	light_shader_->begin_render(ambient_, lights_);
+	auto const preset = presets_[preset_selection_];
+	light_shader_->begin_render(ambient_, lights_, preset.first, preset.second);
 
 	for (auto const &it : objects_)
 	{

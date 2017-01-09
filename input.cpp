@@ -10,29 +10,30 @@ input::input() : message_handler(L"input")
 		0, 0,
 		instance(),
 		nullptr, nullptr, nullptr,
-		nullptr, name()
+		nullptr, name().c_str()
 	};
 	RegisterClass(&window_class);
 
 	auto const hook = SetWindowsHookEx(WH_CBT, message_handler::hook, nullptr,
 		GetCurrentThreadId());
 
+	constexpr auto hwnd_message = reinterpret_cast<HWND>(-3);
 	handle(CreateWindow
 	(
 		window_class.lpszClassName, nullptr,
 		0UL,
 		0, 0,
 		0, 0,
-		HWND_MESSAGE, nullptr,
+		hwnd_message, nullptr,
 		instance(),
 		this
 	));
 
 	UnhookWindowsHookEx(hook);
 
-	constexpr auto usage_page = USHORT{ 0x01 };
-	constexpr auto mouse_usage = USHORT{ 0x02 };
-	constexpr auto keyboard_usage = USHORT{ 0x06 };
+	constexpr auto usage_page = 0x01;
+	constexpr auto mouse_usage = 0x02;
+	constexpr auto keyboard_usage = 0x06;
 	auto const devices = std::array<RAWINPUTDEVICE, 2U>
 	{{
 		{ usage_page, mouse_usage, RIDEV_INPUTSINK, handle() },

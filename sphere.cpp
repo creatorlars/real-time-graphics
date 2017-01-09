@@ -9,3 +9,15 @@ sphere::sphere(direct3d const& d3d,
 	: object(d3d, "data/sphere.obj", "data/blue.tga"), d3d_(d3d),
 	shader_(shader)
 {}
+
+sphere::~sphere()
+{
+}
+
+void sphere::frame()
+{}
+
+void sphere::render(std::shared_ptr<camera> const &camera) const
+{
+	render_(shader_, camera, .25f);
+}

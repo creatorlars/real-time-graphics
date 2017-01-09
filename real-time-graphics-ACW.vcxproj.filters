@@ -299,12 +299,9 @@
     <Image Include="data\sand.tga">
       <Filter>Textures</Filter>
     </Image>
-    <Image Include="data\stone.tga">
-      <Filter>Textures</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\config.ini">
+    <None Include="config.ini">
       <Filter>Config</Filter>
     </None>
   </ItemGroup>

@@ -11,7 +11,7 @@ public:
 	explicit sphere(direct3d const&, std::shared_ptr<transparent_shader> const&);
 
 	sphere() = delete;
-	~sphere() = default;
+	virtual ~sphere();
 
 	explicit sphere(sphere const&) = default;
 	explicit sphere(sphere&&) = default;
@@ -19,10 +19,8 @@ public:
 	sphere& operator=(sphere const&) = default;
 	sphere& operator=(sphere&&) = default;
 
-	void frame() override
-	{}
-	inline void render(std::shared_ptr<camera> const &camera) const override
-	{ return object::render(shader_, camera, .25f); }
+	void frame() override;
+	void render(std::shared_ptr<camera> const&) const override;
 
 private:
 	direct3d const &d3d_;

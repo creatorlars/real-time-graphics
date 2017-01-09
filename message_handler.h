@@ -3,7 +3,7 @@
 class message_handler
 {
 public:
-	explicit message_handler(LPCWSTR);
+	explicit message_handler(std::wstring const&);
 	virtual ~message_handler();
 
 	message_handler() = delete;
@@ -16,15 +16,15 @@ public:
 
 	virtual void update();
 
-	inline HWND const& handle() const
-	{ return handle_; }
-	inline LPCWSTR const& name() const
+	inline HWND const handle() const
+	{ return handle_.get(); }
+	inline std::wstring const& name() const
 	{ return name_; }
 	inline HINSTANCE const& instance() const
 	{ return instance_; }
 
 	inline void handle(HWND const& handle)
-	{ handle_ = handle; }
+	{ handle_.reset(handle); }
 
 protected:
 	virtual void message(UINT const, WPARAM const, LPARAM const);
@@ -33,7 +33,14 @@ protected:
 	static LRESULT CALLBACK proc(HWND, UINT, WPARAM, LPARAM);
 
 private:
-	HINSTANCE const instance_ = GetModuleHandle(NULL);
-	LPCWSTR name_ = nullptr;
-	HWND handle_ = nullptr;
+	struct HWND_DELETER
+	{
+		inline void operator()(HWND const p) const
+		{ DestroyWindow(p); }
+	};
+
+	std::unique_ptr<HWND__, HWND_DELETER> handle_;
+	std::wstring name_ = {};
+
+	static HINSTANCE const instance_;
 };

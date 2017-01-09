@@ -11,7 +11,7 @@ public:
 	explicit cube(direct3d const&, std::shared_ptr<light_shader> const&);
 
 	cube() = delete;
-	~cube() = default;
+	virtual ~cube();
 
 	explicit cube(cube const&) = default;
 	explicit cube(cube&&) = default;
@@ -20,8 +20,7 @@ public:
 	cube& operator=(cube&&) = default;
 
 	void frame() override;
-	inline void render(std::shared_ptr<camera> const &camera) const override
-	{ return object::render(shader_, camera); }
+	void render(std::shared_ptr<camera> const &) const override;
 
 private:
 	direct3d const& d3d_;

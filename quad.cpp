@@ -96,6 +96,10 @@ quad::quad(direct3d const& d3d) : d3d_(d3d)
 	}
 }
 
+quad::~quad()
+{
+}
+
 void quad::render() const
 {
 	auto const context = d3d_.context();

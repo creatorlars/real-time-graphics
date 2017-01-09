@@ -16,7 +16,7 @@ public:
 		std::shared_ptr<light_shader> const&);
 
 	fish() = delete;
-	~fish() = default;
+	virtual ~fish();
 
 	explicit fish(fish const&) = default;
 	explicit fish(fish&&) = default;

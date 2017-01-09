@@ -1,21 +1,20 @@
 #include "pch.h"
 #include "message_handler.h"
 
-message_handler::message_handler(LPCWSTR const name) : name_(name)
+HINSTANCE const message_handler::instance_ = GetModuleHandle(NULL);
+
+message_handler::message_handler(std::wstring const &name) : handle_(nullptr), name_(name)
 {}
 
 message_handler::~message_handler()
 {
-	DestroyWindow(handle_);
-	handle_ = nullptr;
-
-	UnregisterClass(name_, instance_);
+	UnregisterClass(name_.c_str(), instance_);
 }
 
 void message_handler::update()
 {
 	MSG msg{};
-	while (PeekMessage(&msg, handle_, 0U, 0U, PM_REMOVE))
+	while (PeekMessage(&msg, handle_.get(), 0U, 0U, PM_REMOVE))
 	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);

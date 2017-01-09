@@ -6,7 +6,7 @@
 class config;
 
 graphics::graphics(HWND const& handle, std::shared_ptr<config> const &settings)
-	: d3d_(handle, settings)
+	: d3d_(handle, settings), show_atb_(false)
 {}
 
 void graphics::begin_render()

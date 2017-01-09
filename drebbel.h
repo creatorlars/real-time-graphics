@@ -11,7 +11,7 @@ public:
 	explicit drebbel(direct3d const&, std::shared_ptr<light_shader> const&);
 
 	drebbel() = delete;
-	~drebbel() = default;
+	virtual ~drebbel();
 
 	explicit drebbel(drebbel const&) = default;
 	explicit drebbel(drebbel&&) = default;
@@ -32,7 +32,7 @@ private:
 		oar(direct3d const&, std::shared_ptr<light_shader> const&);
 
 		oar() = delete;
-		~oar() = default;
+		virtual ~oar();
 
 		explicit oar(oar const&) = default;
 		explicit oar(oar&&) = default;
@@ -41,8 +41,7 @@ private:
 		oar& operator=(oar&&) = default;
 
 		void frame() override;
-		inline void render(std::shared_ptr<camera> const &camera) const override
-		{ return object::render(shader_, camera); }
+		void render(std::shared_ptr<camera> const &camera) const override;
 
 	private:
 		direct3d const& d3d_;

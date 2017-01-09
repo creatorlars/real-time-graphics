@@ -31,8 +31,11 @@ public:
 	void enable_alpha_blending();
 	void disable_alpha_blending();
 
+	void toggle_mode();
+
 private:
-	bool vsync_;
+	bool vsync_ = false;
+	bool solid_ = true;
 
 	ComPtr<IDXGISwapChain> swap_chain_ = nullptr;
 	ComPtr<ID3D11Device> device_ = nullptr;
@@ -41,7 +44,8 @@ private:
 	ComPtr<ID3D11Texture2D> depth_stencil_buffer_ = nullptr;
 	ComPtr<ID3D11DepthStencilState> depth_stencil_state_ = nullptr;
 	ComPtr<ID3D11DepthStencilView> depth_stencil_view_ = nullptr;
-	ComPtr<ID3D11RasterizerState> raster_state_ = nullptr;
+	ComPtr<ID3D11RasterizerState> raster_state_solid_ = nullptr;
+	ComPtr<ID3D11RasterizerState> raster_state_wireframe_ = nullptr;
 
 	XMMATRIX projection_matrix_ = {};
 	XMMATRIX ortho_matrix_ = {};

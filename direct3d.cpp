@@ -4,13 +4,14 @@
 #include "config.h"
 
 direct3d::direct3d(HWND const &hwnd, std::shared_ptr<config> const &settings)
+	: vsync_(false), solid_(true)
 {
 	HRESULT result{};
 
 	vsync_ = settings->read<bool>(L"general", L"vsync");
-	auto fullscreen = settings->read<bool>(L"general", L"fullscreen");
-	auto width = settings->read<unsigned>(L"general", L"width");
-	auto height = settings->read<unsigned>(L"general", L"height");
+	auto const fullscreen = settings->read<bool>(L"general", L"fullscreen");
+	auto const width = settings->read<unsigned>(L"general", L"width");
+	auto const height = settings->read<unsigned>(L"general", L"height");
 
 	// Create a DirectX graphics interface factory.
 	auto factory = ComPtr<IDXGIFactory>{};
@@ -189,8 +190,9 @@ direct3d::direct3d(HWND const &hwnd, std::shared_ptr<config> const &settings)
 	context_->OMSetRenderTargets(1U, render_target_view_.GetAddressOf(),
 		depth_stencil_view_.Get());
 
-	auto constexpr rasterizer_desc = D3D11_RASTERIZER_DESC
+	auto constexpr solid_desc = D3D11_RASTERIZER_DESC
 	{
+		
 		D3D11_FILL_SOLID, D3D11_CULL_BACK,
 		FALSE,
 		0, .0f, .0f, TRUE,
@@ -198,15 +200,31 @@ direct3d::direct3d(HWND const &hwnd, std::shared_ptr<config> const &settings)
 	};
 
 	// Create the rasterizer state from the description we just filled out.
-	result = device_->CreateRasterizerState(&rasterizer_desc,
-		raster_state_.GetAddressOf());
+	result = device_->CreateRasterizerState(&solid_desc,
+		raster_state_solid_.GetAddressOf());
+	if (FAILED(result))
+	{
+		throw "";
+	}
+
+	auto constexpr wireframe_desc = D3D11_RASTERIZER_DESC
+	{
+		D3D11_FILL_WIREFRAME, D3D11_CULL_BACK,
+		FALSE,
+		0, .0f, .0f, TRUE,
+		FALSE, FALSE, FALSE
+	};
+
+	// Create the rasterizer state from the description we just filled out.
+	result = device_->CreateRasterizerState(&wireframe_desc,
+		raster_state_wireframe_.GetAddressOf());
 	if (FAILED(result))
 	{
 		throw "";
 	}
 
 	// Now set the rasterizer state.
-	context_->RSSetState(raster_state_.Get());
+	context_->RSSetState(raster_state_solid_.Get());
 
 	auto const width_f = static_cast<float>(width);
 	auto const height_f = static_cast<float>(height);
@@ -302,4 +320,18 @@ void direct3d::disable_alpha_blending()
 
 	auto constexpr factor = std::array<float, 4U>{};
 	context_->OMSetBlendState(blend_state, factor.data(), std::numeric_limits<UINT>().max());
+}
+
+void direct3d::toggle_mode()
+{
+	if (solid_)
+	{
+		context_->RSSetState(raster_state_wireframe_.Get());
+		solid_ = false;
+	}
+	else
+	{
+		context_->RSSetState(raster_state_solid_.Get());
+		solid_ = true;
+	}
 }

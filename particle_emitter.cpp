@@ -8,7 +8,7 @@
 
 particle_emitter::particle_emitter(direct3d const &d3d,
 	std::shared_ptr<transparent_shader> const &shader)
-	: texture_(d3d, "data/bubble.tga"), d3d_(d3d), shader_(shader)
+	: shader_(shader), texture_(d3d, "data/bubble.tga"), d3d_(d3d)
 {
 }
 

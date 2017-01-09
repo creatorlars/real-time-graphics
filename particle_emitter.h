@@ -14,8 +14,8 @@ public:
 
 	~particle_emitter() = default;
 
-	particle_emitter(particle_emitter const&) = default;
-	particle_emitter(particle_emitter&&) = default;
+	explicit particle_emitter(particle_emitter const&) = default;
+	explicit particle_emitter(particle_emitter&&) = default;
 
 	particle_emitter& operator=(particle_emitter const&) = default;
 	particle_emitter& operator=(particle_emitter&&) = default;
@@ -24,7 +24,7 @@ public:
 	void render(std::shared_ptr<camera> const&);
 	void emit();
 
-	inline XMFLOAT3 const& position()
+	inline XMFLOAT3 const& position() const
 	{ return position_; }
 
 	inline void position(XMFLOAT3 const &position)

@@ -21,21 +21,23 @@ namespace
 
 	struct LightPositionBufferType
 	{
-		XMVECTOR position[MAXLIGHTS];
+		std::array<XMVECTOR, MAXLIGHTS> position;
 		int count;
 	};
 
 	struct LightBufferType
 	{
-		XMVECTOR spotlight_colours[MAXLIGHTS];
+		std::array<XMVECTOR, MAXLIGHTS> spotlight_colours;
 		XMVECTOR ambient_min;
 		XMVECTOR ambient_max;
 		XMVECTOR ambient_direction;
+		float exposure;
+		float gamma;
 		int spotlight_count;
 	};
 }
 
-light_shader::light_shader(direct3d const& d3d) : d3d_(d3d)
+light_shader::light_shader(direct3d const& d3d) : exposure_(1.f), gamma_(1.f), d3d_(d3d)
 {
 	HRESULT result{};
 	auto const device = d3d_.device();
@@ -231,6 +233,9 @@ void light_shader::render(XMMATRIX const &world, XMMATRIX const &view,
 	light_buffer->ambient_min = XMLoadFloat3(&ambient_->min());
 	light_buffer->ambient_max = XMLoadFloat3(&ambient_->max());
 	light_buffer->ambient_direction = XMLoadFloat3(&ambient_->direction());
+
+	light_buffer->exposure = exposure_;
+	light_buffer->gamma = gamma_;
 
 	// store spotlight information
 	light_buffer->spotlight_count = static_cast<int>(spotlights_.size());

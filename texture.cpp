@@ -70,7 +70,7 @@ ImageData load(char const *const filename)
 {
 	struct targa_header
 	{
-		unsigned char unused1[12];
+		std::array<char, 12U> unused1;
 		unsigned short width;
 		unsigned short height;
 		unsigned char bpp;

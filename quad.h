@@ -5,10 +5,10 @@ class direct3d;
 class quad
 {
 public:
-	quad(direct3d const&);
+	explicit quad(direct3d const&);
 
 	quad() = delete;
-	~quad() = default;
+	virtual ~quad();
 
 	explicit quad(quad const&) = default;
 	explicit quad(quad&&) = default;

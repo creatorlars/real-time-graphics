@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "matrix.h"
 
-#if TEST_MATRIX_VEC
 void matrix::rotate(XMFLOAT3 const &delta)
 {
 	rotation_.x += delta.x;
@@ -22,4 +21,3 @@ void matrix::transform(XMFLOAT3 const &delta)
 	scale_.y *= delta.y;
 	scale_.z *= delta.z;
 }
-#endif

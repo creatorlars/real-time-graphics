@@ -19,10 +19,13 @@ public:
 	light_shader& operator=(light_shader&&) = default;
 
 	inline void begin_render(std::shared_ptr<ambient> const &ambient,
-		std::vector<std::shared_ptr<spotlight>> const &spotlights)
+		std::vector<std::shared_ptr<spotlight>> const &spotlights,
+		float const exposure, float const gamma)
 	{
 		ambient_ = ambient;
 		spotlights_ = spotlights;
+		exposure_ = exposure;
+		gamma_ = gamma;
 	}
 
 	void render(XMMATRIX const&, XMMATRIX const&,
@@ -39,6 +42,8 @@ private:
 
 	std::shared_ptr<ambient> ambient_ = nullptr;
 	std::vector<std::shared_ptr<spotlight>> spotlights_ = {};
+	float exposure_ = 1.f;
+	float gamma_ = 1.f;
 
 	direct3d const& d3d_;
 };

@@ -11,7 +11,7 @@ public:
 	explicit terrain(direct3d const&, std::shared_ptr<light_shader> const&);
 
 	terrain() = delete;
-	~terrain() = default;
+	virtual ~terrain();
 
 	explicit terrain(terrain const&) = default;
 	explicit terrain(terrain&&) = default;
@@ -19,10 +19,8 @@ public:
 	terrain& operator=(terrain const&) = default;
 	terrain& operator=(terrain&&) = default;
 
-	void frame() override
-	{}
-	inline void render(std::shared_ptr<camera> const &camera) const override
-	{ return object::render(shader_, camera); }
+	void frame() override;
+	void render(std::shared_ptr<camera> const &camera) const override;
 
 private:
 	direct3d const& d3d_;

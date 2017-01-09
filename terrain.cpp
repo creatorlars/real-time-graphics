@@ -9,3 +9,15 @@ terrain::terrain(direct3d const& d3d,
 	: object(d3d, "data/terrain.obj", "data/sand.tga"), d3d_(d3d),
 	shader_(shader)
 {}
+
+terrain::~terrain()
+{
+}
+
+void terrain::frame()
+{}
+
+void terrain::render(std::shared_ptr<camera> const &camera) const
+{
+	render_(shader_, camera);
+}

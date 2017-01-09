@@ -15,6 +15,10 @@ drebbel::drebbel(direct3d const& d3d,
 	}
 }
 
+drebbel::~drebbel()
+{
+}
+
 void drebbel::frame()
 {
 	auto const centre = position();
@@ -29,7 +33,7 @@ void drebbel::frame()
 
 void drebbel::render(std::shared_ptr<camera> const &camera) const
 {
-	object::render(shader_, camera);
+	render_(shader_, camera);
 	for (auto const &it : oars_)
 	{
 		it->render(camera);
@@ -42,6 +46,10 @@ drebbel::oar::oar(direct3d const &d3d,
 	: object(d3d, "data/oar.obj", "data/blue.tga"), d3d_(d3d), shader_(shader)
 {
 	scale({ .2f, .2f, .2f });
+}
+
+drebbel::oar::~oar()
+{
 }
 
 void drebbel::oar::frame()
@@ -60,6 +68,10 @@ void drebbel::oar::frame()
 		rotate_left(offset * 10.f);
 		rotate_clockwise(offset * 10.f);
 		++step;
-	}
-	
+	}	
+}
+
+void drebbel::oar::render(std::shared_ptr<camera> const &camera) const
+{
+	render_(shader_, camera);
 }

@@ -7,13 +7,13 @@ class direct3d;
 class camera;
 class shader;
 
-class particle : public matrix, public quad
+class particle : public matrix//, public quad
 {
 public:
 	particle(direct3d const&, ComPtr<ID3D11ShaderResourceView> const&);
 
 	particle() = delete;
-	virtual ~particle() = default;
+	virtual ~particle();
 
 	explicit particle(particle const&) = default;
 	explicit particle(particle&&) = default;
@@ -23,13 +23,12 @@ public:
 
 	virtual void frame() = 0;
 	virtual bool alive() const = 0;
-	virtual XMMATRIX const render(std::shared_ptr<camera> const&) const;
 
 	template <typename T, typename... Args>
 	void render(T const &shader, std::shared_ptr<camera> const &camera,
 		Args... args) const
 	{
-		quad::render();
+		quad_->render();
 
 		auto matrix = XMMatrixIdentity();
 
@@ -47,7 +46,7 @@ public:
 		// translate
 		matrix *= XMMatrixTranslation(p.x, p.y, p.z);
 
-		shader->render(matrix, camera->render(), view_, index_count(), args...);
+		shader->render(matrix, camera->render(), view_, quad_->index_count(), args...);
 	}
 
 	inline ComPtr<ID3D11ShaderResourceView> const& view() const
@@ -55,4 +54,5 @@ public:
 
 private:
 	ComPtr<ID3D11ShaderResourceView> const& view_;
+	std::shared_ptr<quad> quad_ = nullptr;
 };

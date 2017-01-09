@@ -26,7 +26,7 @@ XMMATRIX const camera::render() const
 	return XMMatrixLookAtLH(position_vec, target_vec, up_vec);
 }
 
-void camera::move(XMFLOAT3 delta)
+void camera::move(XMFLOAT3 const &delta)
 {
 	// convert to radians and create rotation matrix
 	auto const r = rotation();
@@ -38,8 +38,9 @@ void camera::move(XMFLOAT3 delta)
 	// transform movement vector by rotation matrix
 	auto vec = XMLoadFloat3(&delta);
 	vec = XMVector3TransformCoord(vec, matrix);
-	XMStoreFloat3(&delta, vec);
+	auto result = XMFLOAT3{};
+	XMStoreFloat3(&result, vec);
 
 	// update position
-	translate(delta);
+	translate(result);
 }

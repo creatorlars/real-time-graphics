@@ -14,9 +14,23 @@ bubble::bubble(direct3d const &d3d,
 	translate_right(0.1f);
 }
 
+bubble::~bubble()
+{
+}
+
 void bubble::frame()
 {
+	auto const rng = random();
 	--life_;
 	transform({ .99f, .99f, .99f });
-	translate({ rand_<float>(-.001f, .001f), .001f, rand_<float>(-.001f, .001f) });
+	translate({
+		rng.get<float>(-.001f, .001f),
+		.001f,
+		rng.get<float>(-.001f, .001f)
+	});
+}
+
+bool bubble::alive() const
+{
+	return life_ != 0U;
 }

@@ -3,7 +3,7 @@
 class config
 {
 public:
-	config(std::wstring);
+	explicit config(std::wstring const&);
 
 	config() = delete;
 	~config() = default;

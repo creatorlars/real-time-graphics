@@ -21,12 +21,13 @@ public:
 
 	inline void toggle_atb()
 	{ show_atb_ = !show_atb_; }
+	inline void toggle_mode()
+	{ d3d_.toggle_mode(); }
 
 	inline direct3d const& d3d() const
 	{ return d3d_; }
 
 private:
-	bool show_atb_ = false;
-
 	direct3d d3d_;
+	bool show_atb_ = false;
 };

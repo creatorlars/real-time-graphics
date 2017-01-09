@@ -32,8 +32,6 @@ class input final : public message_handler
 public:
 	input();
 
-	~input() = default;
-
 	explicit input(input const&) = default;
 	explicit input(input&&) = default;
 

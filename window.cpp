@@ -4,7 +4,7 @@
 #include "config.h"
 
 window::window(std::shared_ptr<config> const &settings)
-	: message_handler(L"window")
+	: message_handler(L"window"), alive_(true)
 {
 	auto const window_class = WNDCLASS
 	{
@@ -13,15 +13,15 @@ window::window(std::shared_ptr<config> const &settings)
 		0, 0,
 		instance(),
 		nullptr, nullptr, nullptr,
-		nullptr, name()
+		nullptr, name().c_str()
 	};
 	RegisterClass(&window_class);
 
 	auto const hook = SetWindowsHookEx(WH_CBT, message_handler::hook, nullptr,
 		GetCurrentThreadId());
 
-	auto width = settings->read<unsigned>(L"general", L"width");
-	auto height = settings->read<unsigned>(L"general", L"height");
+	auto const width = settings->read<unsigned>(L"general", L"width");
+	auto const height = settings->read<unsigned>(L"general", L"height");
 	handle(CreateWindow
 	(
 		window_class.lpszClassName, nullptr,

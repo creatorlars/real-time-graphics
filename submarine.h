@@ -1,6 +1,7 @@
 #pragma once
 
 #include "object.h"
+#include "model.h"
 
 class direct3d;
 class light_shader;
@@ -11,7 +12,7 @@ public:
 	explicit submarine(direct3d const&, std::shared_ptr<light_shader> const&);
 
 	submarine() = delete;
-	~submarine() = default;
+	virtual ~submarine();
 
 	explicit submarine(submarine const&) = default;
 	explicit submarine(submarine&&) = default;
@@ -32,7 +33,7 @@ private:
 		propeller(direct3d const&, std::shared_ptr<light_shader> const&);
 
 		propeller() = delete;
-		~propeller() = default;
+		virtual ~propeller();
 
 		explicit propeller(propeller const&) = default;
 		explicit propeller(propeller&&) = default;
@@ -41,8 +42,7 @@ private:
 		propeller& operator=(propeller&&) = default;
 
 		void frame() override;
-		inline void render(std::shared_ptr<camera> const &camera) const override
-		{ return object::render(shader_, camera); }
+		void render(std::shared_ptr<camera> const&) const override;
 
 	private:
 		direct3d const& d3d_;

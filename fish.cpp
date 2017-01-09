@@ -11,9 +11,12 @@ fish::fish(direct3d const& d3d,
 	std::shared_ptr<transparent_shader> const &emitter_shader,
 	std::shared_ptr<light_shader> const &shader)
 	: object(d3d, "data/fish.obj", "data/orange.tga"), d3d_(d3d),
-	shader_(shader)
+	shader_(shader), emitter_(std::make_shared<particle_emitter>(d3d, emitter_shader)),
+	wait_(20U)
+{}
+
+fish::~fish()
 {
-	emitter_ = std::make_shared<particle_emitter>(d3d, emitter_shader);
 }
 
 void fish::frame()
@@ -32,5 +35,5 @@ void fish::frame()
 void fish::render(std::shared_ptr<camera> const &camera) const
 {
 	emitter_->render(camera);
-	object::render(shader_, camera);
+	render_(shader_, camera);
 }

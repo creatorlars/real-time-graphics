@@ -10,10 +10,11 @@ public:
 	bubble(direct3d const&, ComPtr<ID3D11ShaderResourceView> const&,
 		XMFLOAT3 const&, unsigned const);
 
+	virtual ~bubble();
+
 	void frame() override;
 
-	inline bool alive() const override
-	{ return life_ != 0U; }
+	bool alive() const override;
 
 private:
 	unsigned life_ = 0U;
