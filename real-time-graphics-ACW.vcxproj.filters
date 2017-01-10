@@ -147,9 +147,6 @@
     <ClCompile Include="model.cpp">
       <Filter>Source Files\Targets</Filter>
     </ClCompile>
-    <ClCompile Include="random.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="transparent_vs.hlsl">
@@ -281,9 +278,6 @@
     </ClInclude>
     <ClInclude Include="model.h">
       <Filter>Header Files\Targets</Filter>
-    </ClInclude>
-    <ClInclude Include="random.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

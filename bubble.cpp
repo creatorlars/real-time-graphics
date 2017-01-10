@@ -2,7 +2,6 @@
 #include "bubble.h"
 
 #include "camera.h"
-#include "random.h"
 
 bubble::bubble(direct3d const &d3d,
 	ComPtr<ID3D11ShaderResourceView> const &view, XMFLOAT3 const &origin, 
@@ -20,13 +19,12 @@ bubble::~bubble()
 
 void bubble::frame()
 {
-	auto const rng = random();
 	--life_;
 	transform({ .99f, .99f, .99f });
 	translate({
-		rng.get<float>(-.001f, .001f),
+		rand_<float>(-.001f, .001f),
 		.001f,
-		rng.get<float>(-.001f, .001f)
+		rand_<float>(-.001f, .001f)
 	});
 }
 

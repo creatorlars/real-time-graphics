@@ -42,7 +42,8 @@ using namespace std::literals;
 #include <cstdint>
 
 // libs
-#include "libs\AntTweakBar.h"
+#include <AntTweakBar.h>
+#include <simple_random.h>
 
 // Globals
 float constexpr SCREEN_DEPTH_FAR = 1000.f;

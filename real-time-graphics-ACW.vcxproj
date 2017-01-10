@@ -73,18 +73,21 @@
     <LocalDebuggerEnvironment>PATH=%PATH%;$(ProjectDir)\libs</LocalDebuggerEnvironment>
     <EnableCppCoreCheck>false</EnableCppCoreCheck>
     <EnableExperimentalCppCoreCheck>false</EnableExperimentalCppCoreCheck>
+    <IncludePath>$(ProjectDir)\libs;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(ProjectDir)\libs;$(LibraryPath)</LibraryPath>
     <LocalDebuggerEnvironment>PATH=%PATH%;$(ProjectDir)\libs</LocalDebuggerEnvironment>
     <EnableCppCoreCheck>false</EnableCppCoreCheck>
     <EnableExperimentalCppCoreCheck>false</EnableExperimentalCppCoreCheck>
+    <IncludePath>$(ProjectDir)\libs;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>$(ProjectDir)\libs;$(LibraryPath)</LibraryPath>
     <LocalDebuggerEnvironment>PATH=%PATH%;$(ProjectDir)\libs</LocalDebuggerEnvironment>
     <EnableCppCoreCheck>false</EnableCppCoreCheck>
     <EnableExperimentalCppCoreCheck>false</EnableExperimentalCppCoreCheck>
+    <IncludePath>$(ProjectDir)\libs;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>$(ProjectDir)\libs;$(LibraryPath)</LibraryPath>
@@ -92,6 +95,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <EnableCppCoreCheck>false</EnableCppCoreCheck>
     <EnableExperimentalCppCoreCheck>false</EnableExperimentalCppCoreCheck>
+    <IncludePath>$(ProjectDir)\libs;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -175,7 +179,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="random.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="spotlight.cpp" />
     <ClCompile Include="submarine.cpp" />
@@ -438,7 +441,6 @@
     <ClInclude Include="quad.h" />
     <ClInclude Include="particle_emitter.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="random.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="spotlight.h" />
     <ClInclude Include="submarine.h" />
